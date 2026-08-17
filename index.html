@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Engineer — ตารางงาน</title>
+<style>
+:root{
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb;
+  --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+  --chip:rgba(11,11,11,0.04);
+  --st1:#86b6ef; --st2:#5598e7; --st3:#2a78d6; --st4:#1c5cab; --st5:#104281; --st0:#c3c2b7;
+  --accent:#2a78d6; --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+  --shadow:0 10px 34px rgba(0,0,0,.16);
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --page:#0d0d0d; --surface:#1a1a19;
+  --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+  --chip:rgba(255,255,255,0.06);
+  --st1:#cde2fb; --st2:#9ec5f4; --st3:#6da7ec; --st4:#3987e5; --st5:#184f95; --st0:#4a4a46;
+  --accent:#3987e5; --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+  --shadow:0 10px 34px rgba(0,0,0,.5);
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19;
+    --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --chip:rgba(255,255,255,0.06);
+    --st1:#cde2fb; --st2:#9ec5f4; --st3:#6da7ec; --st4:#3987e5; --st5:#184f95; --st0:#4a4a46;
+    --accent:#3987e5;
+    --shadow:0 10px 34px rgba(0,0,0,.5);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Thai",sans-serif;font-size:15px;line-height:1.55}
+.wrap{max-width:1200px;margin:0 auto;padding:26px 20px 80px}
+header.top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+h1{font-size:22px;font-weight:650;margin:0 0 4px}
+.sub{color:var(--ink2);font-size:13.5px;margin:0}
+.topbtns{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--border);
+  background:var(--surface);color:var(--ink2);padding:8px 14px;font-size:13px}
+button:hover{color:var(--ink)}
+button.primary{background:var(--accent);border-color:transparent;color:#fff;font-weight:600}
+button.primary:hover{filter:brightness(1.07);color:#fff}
+button.danger{color:var(--crit);border-color:var(--crit)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:18px}
+.card h2{font-size:15.5px;font-weight:640;margin:0 0 2px}
+.card .desc{color:var(--muted);font-size:12.5px;margin:0 0 18px}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+.kpi .lab{color:var(--ink2);font-size:12.5px}
+.kpi .val{font-size:30px;font-weight:650;letter-spacing:-.01em;line-height:1.15}
+.kpi .sm{color:var(--muted);font-size:11.5px}
+.kpi.flag{border-color:var(--warn)}
+.kpi.flag .val{color:var(--ink)}
+
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.chart{display:flex;flex-direction:column;gap:12px}
+.brow{display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:center}
+.bname{text-align:right;font-size:13px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btrack{position:relative;height:22px;padding-right:52px}
+.plot{position:relative;height:22px;display:flex;align-items:center}
+.bar{height:20px;display:flex}
+.seg{height:100%}
+.seg+.seg{margin-left:2px}
+.seg:last-child{border-radius:0 4px 4px 0}
+.btip{position:absolute;top:50%;transform:translateY(-50%);margin-left:9px;font-size:12.5px;font-weight:600;
+  color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 16px;font-size:12.5px;color:var(--ink2)}
+.legend span.k{display:inline-flex;align-items:center;gap:6px}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+
+.toolbar{display:grid;grid-template-columns:1fr auto auto auto auto;gap:9px;margin-bottom:12px}
+input[type=search],input[type=text],select,textarea{
+  background:var(--page);color:var(--ink);border:1px solid var(--border);border-radius:10px;
+  padding:10px 12px;font:inherit;font-size:13.5px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.count{color:var(--muted);font-size:12.5px;margin:0 0 10px}
+.count b{color:var(--ink2);font-weight:600}
+.tblwrap{overflow:auto;max-height:640px;border:1px solid var(--border);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{position:sticky;top:0;background:var(--surface);text-align:left;font-weight:600;color:var(--ink2);
+  font-size:12px;padding:10px 11px;border-bottom:1px solid var(--grid);z-index:2;white-space:nowrap;cursor:pointer;user-select:none}
+thead th:hover{color:var(--ink)}
+thead th .ar{color:var(--muted);font-size:10px}
+tbody td{padding:9px 11px;border-bottom:1px solid var(--grid);vertical-align:top}
+tbody tr:hover{background:var(--chip)}
+td.so{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+td.cust b{font-weight:600}
+td.cust small{display:block;color:var(--muted);font-size:11.5px}
+td.work{color:var(--ink2);font-size:12px;max-width:280px}
+td.act{white-space:nowrap;text-align:right}
+td.act button{padding:4px 9px;font-size:12px;border-radius:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:12.5px}
+.pill i{width:9px;height:9px;border-radius:99px;flex:none}
+.engtag{white-space:nowrap}
+.engtag.none{color:var(--muted)}
+.engtag.none::before{content:"⚠ ";color:var(--warn)}
+mark{background:rgba(250,178,25,.35);color:inherit;border-radius:2px}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.dirty{display:none;margin-left:8px;font-size:12px;color:var(--warn)}
+.dirty.on{display:inline}
+
+/* modal */
+.mask{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.mask.on{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);
+  width:min(660px,100%);max-height:90vh;overflow:auto;padding:22px 24px}
+.modal h3{margin:0 0 16px;font-size:17px;font-weight:650}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f{display:flex;flex-direction:column;gap:5px}
+.f.full{grid-column:1/-1}
+.f label{font-size:12.5px;color:var(--ink2)}
+textarea{min-height:64px;resize:vertical}
+.mact{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.mact .left{margin-right:auto}
+.hint{color:var(--muted);font-size:12px;margin:14px 0 0}
+.foot{color:var(--muted);font-size:12px;text-align:center;margin-top:26px}
+
+@media(max-width:900px){ .charts{grid-template-columns:1fr} }
+@media(max-width:640px){
+  .wrap{padding:18px 13px 60px}
+  .card{padding:16px 14px}
+  h1{font-size:19px}
+  .toolbar{grid-template-columns:1fr 1fr}
+  .toolbar .full{grid-column:1/-1}
+  .brow{grid-template-columns:1fr;gap:4px}
+  .bname{text-align:left}
+  .btrack{padding-right:46px}
+  .fgrid{grid-template-columns:1fr}
+  td.work,th.workh{display:none}
+  .tblwrap{max-height:520px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Project Engineer — ตารางงาน</h1>
+      <p class="sub">ผู้รับผิดชอบ · เลข SO · สถานะงาน<span class="dirty" id="dirty">● มีการแก้ไขที่ยังไม่ได้บันทึก</span></p>
+    </div>
+    <div class="topbtns">
+      <button class="primary" id="addBtn" type="button">+ เพิ่มงาน</button>
+      <button id="expBtn" type="button">บันทึกเป็น CSV</button>
+      <button id="impBtn" type="button">นำเข้า CSV</button>
+      <input type="file" id="impFile" accept=".csv,text/csv" style="display:none">
+      <button id="themeBtn" type="button">โหมดมืด</button>
+    </div>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="charts">
+    <section class="card">
+      <h2>สถานะงาน</h2>
+      <p class="desc">จำนวนงานในแต่ละขั้น เรียงตามลำดับการทำงาน</p>
+      <div class="chart" id="chartStatus"></div>
+    </section>
+    <section class="card">
+      <h2>งานต่อผู้รับผิดชอบ</h2>
+      <p class="desc">แถบแบ่งสีตามสถานะ · เข้มขึ้น = ใกล้เสร็จมากขึ้น</p>
+      <div class="legend" id="legendStatus"></div>
+      <div class="chart" id="chartEng"></div>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>รายการงานทั้งหมด</h2>
+    <p class="desc">ค้นหาด้วยเลข SO ชื่อบริษัท โครงการ หรือชื่อผู้รับผิดชอบ · กดหัวคอลัมน์เพื่อเรียง · กดแก้ไขเพื่อปรับข้อมูล</p>
+    <div class="toolbar">
+      <input class="full" type="search" id="q" placeholder="ค้นหา…  เช่น  SO2601  /  Banyan  /  วรวิทย์" autocomplete="off">
+      <select id="fSt"></select>
+      <select id="fEng"></select>
+      <select id="fSrc"></select>
+      <button id="clearBtn" type="button">ล้างตัวกรอง</button>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="tblwrap">
+      <table>
+        <thead><tr>
+          <th data-k="so">เลข SO <span class="ar"></span></th>
+          <th data-k="comp">บริษัท / โครงการ <span class="ar"></span></th>
+          <th class="workh" data-k="work">ประเภทงาน <span class="ar"></span></th>
+          <th data-k="st">สถานะ <span class="ar"></span></th>
+          <th data-k="eng">ผู้รับผิดชอบ <span class="ar"></span></th>
+          <th></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="hint">การแก้ไขเก็บอยู่ในหน้านี้ชั่วคราว — กด <b>บันทึกเป็น CSV</b> เพื่อเก็บไฟล์ไว้ และใช้ <b>นำเข้า CSV</b> เปิดกลับมาแก้ต่อครั้งหน้า</p>
+  </section>
+
+  <p class="foot">ที่มา: ตารางงาน ปี2022–2026.xlsx · ชีต "ปี2026" และ "งานยังไม่เสร็จ ปี2025"</p>
+</div>
+
+<div class="mask" id="mask">
+  <div class="modal">
+    <h3 id="mTitle">เพิ่มงาน</h3>
+    <div class="fgrid">
+      <div class="f"><label for="fSo">เลข SO / OE *</label><input type="text" id="fSo" placeholder="SO2601-001"></div>
+      <div class="f"><label for="fEngI">ผู้รับผิดชอบ</label><input type="text" id="fEngI" list="engList" placeholder="ยังไม่ระบุ"><datalist id="engList"></datalist></div>
+      <div class="f"><label for="fComp">ชื่อบริษัท</label><input type="text" id="fComp"></div>
+      <div class="f"><label for="fProj">โครงการ</label><input type="text" id="fProj"></div>
+      <div class="f full"><label for="fWork">ประเภทงาน / รายละเอียด</label><textarea id="fWork"></textarea></div>
+      <div class="f"><label for="fStI">สถานะ</label><select id="fStI"></select></div>
+      <div class="f"><label for="fSrcI">กลุ่มงาน</label><select id="fSrcI"></select></div>
+      <div class="f"><label for="fY">ปี (ค.ศ.)</label><input type="text" id="fY" inputmode="numeric" placeholder="2026"></div>
+      <div class="f"><label for="fM">เดือน (1-12)</label><input type="text" id="fM" inputmode="numeric" placeholder="1"></div>
+      <div class="f full"><label for="fPay">การชำระเงิน</label><textarea id="fPay"></textarea></div>
+      <div class="f full"><label for="fNote">หมายเหตุ / ความคืบหน้า</label><textarea id="fNote"></textarea></div>
+    </div>
+    <div class="mact">
+      <button class="danger left" id="mDel" type="button">ลบงานนี้</button>
+      <button id="mCancel" type="button">ยกเลิก</button>
+      <button class="primary" id="mSave" type="button">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ROWS=[{"id":1,"src":"ปี 2026","so":"SO2601-001","comp":"บริษัท ลันตา คลิฟฟ์ บีช รีสอร์ท แอนด์ สปา จำกัด","proj":"Avani+Koh Lanta (The Peak building)","work":"งานติดตั้ง PAC ABSOLUTT 270L 1 เครื่อง","pay":"มัดจำแล้ว","prog":"Complete","st":"เสร็จแล้ว","note":"Complete / ส่งมอบงานวันที่ 23/01/2570","eng":"วรวิทย์ เกษร์แก้ว","m":1,"y":2026},{"id":2,"src":"ปี 2026","so":"SO2601-016","comp":"บริษัท เดอะ แพลทินัม สมุย จำกัด","proj":"Holiday Inn Samui","work":"ค่าสินค้า","pay":"เข้าได้เลย 100% เครดิต","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 17/01/2569","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":3,"src":"ปี 2026","so":"SO2601-027","comp":"PAE VILLA LANTA PTE. LTD.","proj":"Avadina Res.8","work":"งานติดตั้ง PAC ABSOLUTT 340L จำนวน 2 เครื่อง","pay":"มัดจำแล้ว 50% เมื่อสั่งซื้อ / 50% เมื่อส่งมอบงาน","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานวันที่ 06/02/2569","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":4,"src":"ปี 2026","so":"SO2601-026","comp":"คุณน้ำ","proj":"Zenithy Pool Villa S27","work":"งานติดตั้ง PAC POOLTEMPER PPX-050HP จำนวน 1 เครื่อง","pay":"ลูกค้าชำระมาแล้ว 50% วันที่ 08/01/2026","prog":"Complete","st":"เสร็จแล้ว","note":"Complete เข้าดำเนินการวันที่ 12/01/2569 / ส่งมอบงานวันที่ 13/01/2569","eng":"วุฒิชัย ยอดสุรางค์","m":1,"y":2026},{"id":5,"src":"ปี 2026","so":"SO2601-025","comp":"บริษัท โคซี่ โฮเต็ล จำกัด","proj":"COSI Samui Chaweng Beach","work":"งานบริการ งานต่อเนื่องจาก PM.ระบบผลิตน้ำร้อน งานเปลี่ยนอะไหล่ Gate Valve ทองเหลือง 2 ตัว","pay":"100% เมื่อดำเนินการเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 23/12/2025","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":6,"src":"ปี 2026","so":"SO2601-034","comp":"บริษัท ซีบีช โฮสเทล จำกัด","proj":"Sea Beach Hostel & Bar","work":"งานบริการ เปลี่ยนอะไหล่ Heater + Thermostat","pay":"มัดจำแล้ว","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 24/01/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":7,"src":"ปี 2026","so":"SO2601-041","comp":"บริษัท ทรี แอนด์ เอิร์ธ พร็อพเพอร์ตี้ จำกัด","proj":"Sinae Phuket (Restaurant)","work":"งานเปลี่ยนคอมเพรสเซอร์ (โซนห้องครัว)","pay":"มัดจำแล้ว 50% เมื่อสั่งซื้อ / 50% เมื่อดำเนินการแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 07/02/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":8,"src":"ปี 2026","so":"SO2601-042","comp":"บริษัท ภูเก็ต ฮอลลิเดย์ เรสซิเด้นท์ จำกัด","proj":"Hemingway Silk","work":"ค่าบริการ ค่าซ่อมท่อทองแดงและข้อต่อทองแดงระบบน้ำร้อน 1จุด","pay":"เข้าได้เลย","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 29/01/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":9,"src":"ปี 2026","so":"SO2601-050","comp":"บริษัท กมลา เบย์ เวนเจอร์ส จำกัด","proj":"Hyatt Regency Phuket Resort * Baan 5,13 *","work":"ค่าบริการ Water flow switch Part no.WFS27025BC for PTR Model:120LY,155LR ** Baan 5,13 ** งานต่อเนื่องจากงาน PM","pay":"มัดจำแล้ว","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 5-6/02/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":10,"src":"ปี 2026","so":"SO2601-058","comp":"บริษัท ภูเก็ตอินเตอร์ กรุ๊ป จำกัด","proj":"HOTEL TIDE PHUKET","work":"ค่าบริการ งานเปลี่ยนปั๊มน้ำหมุนเวียน (Circulating Pump) จำนวน 1 เครื่อง **งานต่อเนื่องจากการให้บริการ PM","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 27/01/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":11,"src":"ปี 2026","so":"SO2601-067","comp":"บริษัท อันดามัน แอสเซท โซลูชั่น จำกัด","proj":"The Residence วิลล่า A4","work":"ค่าบริการ ค่าบริการตรวจเช็ค Pooltemper และแก้ไขปัญหาหน้างาน","pay":"ลูกค้าชำระค่าบริการมาแล้ว 100% วันที่ 16/01/2026","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 15/01/2026 / อ้างอิง เอกสารเลขที่ CSM2601-040","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":12,"src":"ปี 2026","so":"SO2601-070","comp":"บริษัท อ่าวนางวิลล์ จำกัด","proj":"Aonang Villa","work":"ค่าสินค้า Tube in Tube Heat Exchanger / Expansion Valve / Filter Drier","pay":"รอมัดจำ 50% เมื่อสั่งซื้อ / 50% เมื่อดำเนินการซ่อมแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 11-13/01/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":13,"src":"ปี 2026","so":"SO2601-071","comp":"บริษัท อ่าวนางวิลล์ จำกัด","proj":"Aonang Villa","work":"ค่าบริการเปลี่ยน Tube in Tube Heat Exchanger / Expansion Valve / Filter Drier","pay":"รอมัดจำ 50% เมื่อสั่งซื้อ / 50% เมื่อดำเนินการซ่อมแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 11-13/01/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":14,"src":"ปี 2026","so":"SO2601-115","comp":"บริษัท กระบี่รีสอร์ท จำกัด","proj":"Krabi Resort (Zone Villa)","work":"งานซ่อมHeat pump Zone Villa","pay":"รอมัดจำ 50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 10/02/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":15,"src":"ปี 2026","so":"SO2601-086","comp":"โรงเรียนนานาชาติบริติช ภูเก็ต","proj":"โรงเรียนนานาชาติบริติช","work":"งานติดตั้งระยะสั้น งานติดตั้ง PAC ABSOLUTT 340L จำนวน 1 เครื่อง","pay":"มัดจำแล้ว 50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานติดตั้ง 28/01/2569","eng":"วรวิทย์ เกษร์แก้ว","m":1,"y":2026},{"id":16,"src":"ปี 2026","so":"SO2601-089","comp":"บริษัท ภูเก็ตอุปกรณ์สระว่ายน้ำ จำกัด","proj":"Amanpuri Villa17","work":"งานบริการ งานซ่อม Pool Heat Pump \"WATERCO\"","pay":"จ่ายแล้ว 100%","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 5-6/02/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":17,"src":"ปี 2026","so":"SO2601-115","comp":"บริษัท กระบี่รีสอร์ท จำกัด","proj":"Krabi Resort (งานซ่อม) Zone Villa","work":"งานบริการ งานซ่อมHeat pump Zone Villa","pay":"มัดจำแล้ว 50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 10/02/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":18,"src":"ปี 2026","so":"SO2601-117","comp":"บริษัท ซีบีช โฮสเทล จำกัด","proj":"Sea Beach Hostel & Bar","work":"งานบริการ งานซ่อมเปลี่ยน Heater 4800W จำนวน 1 Set","pay":"มัดจำแล้ว 50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"","st":"ไม่ระบุ","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 03/02/2026","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":19,"src":"ปี 2026","so":"SO2601-123","comp":"Wilailak Ferrier","proj":"Baan Nam Yen Khun Wi","work":"งานติดตั้ง PAC POOLTEMPER PPX-060HP จำนวน 1เครื่อง + PM เครื่องเก่า 1ครั้ง","pay":"ลูกค้าชำระมาแล้ว 50% วันที่ 28/01/2026 / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 12/02/2569 / เข้าดำเนินการวันที่ 05-07/02/2569","eng":"วรวิทย์ เกษร์แก้ว","m":1,"y":2026},{"id":20,"src":"ปี 2026","so":"SO2601-119","comp":"บริษัท ภารีสา คอร์ปอเรชั่น จำกัด","proj":"Paresa Kamala (ตึก อาคารสำนักงาน)","work":"PAC HEATRALIZED Compact R410A Heating capacity 5.6kW 220V. จำนวน 1 Pc","pay":"มัดจำแล้ว 50% เมื่อสั่งซื้อ/50% เมื่อส่งสินค้า","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าติดตั้ง 19/02/2569 ส่งมอบงานวันที่ 24/02/2569 / *****งานเคลือบ evaporator coil -Anticorrosion and Antimicrobial coating for HVAC coil 2 ครั้ง (พ่นปีละ 1 ครั้งเป็นระยะเวลา 2 ปี)","eng":"ยังไม่ระบุ","m":1,"y":2026},{"id":21,"src":"ปี 2026","so":"SO2602-014","comp":"บริษัท ภูเก็ต คอลเล็กชั่นส์ พรอพเพอร์ตี้ จำกัด","proj":"The Westin (zone Lobby)","work":"งานติดตั้ง Heat pump 5.6kW จำนวน 2 เครื่อง","pay":"เครดิต 30 วัน (ชำระ 100% หลังติดตั้งแล้วเสร็จ ตามรอบการจ่ายของโรงแรม)","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 16/02/2569","eng":"วุฒิชัย ยอดสุรางค์","m":2,"y":2026},{"id":22,"src":"ปี 2026","so":"SO2602-024","comp":"THAI-CHINESE PROPERTY HOLDINGS CO., LTD.","proj":"Radisson Mai khao (ตึก 8)","work":"งานบริการซ่อมเปลี่ยน Circulate Pump CMA 5-3 Grundfos 380V จำนวน 1 เครื่อง","pay":"รอมัดจำ 50% เมื่อสั่งซื้อ / 50% เมื่อส่งมอบงาน","prog":"รอมัดจำ","st":"รอมัดจำ","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 25/02/2026","eng":"วรวิทย์ เกษร์แก้ว","m":2,"y":2026},{"id":23,"src":"ปี 2026","so":"SO2602-021","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat BUIDING A","work":"งานติดตั้ง Heat Pump 20 kW + EN500C 3 Units. / Electrical & Control system","pay":"รอมัดจำ ค่าสินค้า : 50% เมื่อสั่งซื้อ / 50% เมื่อส่งสินค้า ค่าติดตั้ง : 50% เมื่อสั่งซื้อ / 50% หลัง ตามความก้าวหน้าของงาน","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":2,"y":2026},{"id":24,"src":"ปี 2026","so":"SO2602-022","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat BUIDING B","work":"งานติดตั้ง Heat Pump 12.5 kW + EN500C 3 Units. / Electrical & Control system","pay":"รอมัดจำ ค่าสินค้า : 50% เมื่อสั่งซื้อ / 50% เมื่อส่งสินค้า ค่าติดตั้ง : 50% เมื่อสั่งซื้อ / 50% หลัง ตามความก้าวหน้าของงาน","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":2,"y":2026},{"id":25,"src":"ปี 2026","so":"SO2602-023","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat BUIDING C","work":"งานติดตั้ง Heat Pump 12.5 kW + EN500C 2 Units. / Electrical & Control system","pay":"รอมัดจำ ค่าสินค้า : 50% เมื่อสั่งซื้อ / 50% เมื่อส่งสินค้า ค่าติดตั้ง : 50% เมื่อสั่งซื้อ / 50% หลัง ตามความก้าวหน้าของงาน","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":2,"y":2026},{"id":26,"src":"ปี 2026","so":"SO2602-031","comp":"KATA THANI CO., LTD.","proj":"The Shore at Katathani Resort (ห้อง 8802)","work":"งานซ่อม Pooltemper PPT-020HP1Unit (ห้อง 8802)","pay":"เข้าได้เลย (เครดิต 30วัน ) 100% เมื่อติดตั้งเสร็จ","prog":"อะไหล่ เริ่มว่อม 7/2/2569","st":"กำลังดำเนินการ","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 14/02/2026","eng":"ยังไม่ระบุ","m":2,"y":2026},{"id":27,"src":"ปี 2026","so":"SO2602-032","comp":"KATA THANI CO., LTD.","proj":"The Shore at Katathani Resort (ห้อง 8892)","work":"งานซ่อม Pooltemper PPT-020HP1Unit (ห้อง 8892)","pay":"เข้าได้เลย (เครดิต 30วัน ) 100% เมื่อติดตั้งเสร็จ","prog":"อะไหล่ เริ่มว่อม 7/2/2569","st":"กำลังดำเนินการ","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 14/02/2026","eng":"ยังไม่ระบุ","m":2,"y":2026},{"id":28,"src":"ปี 2026","so":"SO2602-035","comp":"บริษัท แปซิฟิค เวลเนส จำกัด","proj":"Amatara Resort & Wellness (Guestroom No.16)","work":"งานติดตั้ง ถัง 200TW จำนวน 1 ถัง Villa No.16","pay":"เข้าได้เลย (เครดิต 30วัน ) 100% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานวันที่ 12/02/2026 / เข้าติดตั้ง 12/02/2569 เวลา 13.00 น.","eng":"ยังไม่ระบุ","m":2,"y":2026},{"id":29,"src":"ปี 2026","so":"SO2602-042","comp":"บริษัท ภูเก็ต ฮอลลิเดย์ เรสซิเด้นท์ จำกัด","proj":"Hemingway Silk","work":"ค่าติดตั้งท่อน้ำดี-น้ำร้อนต่อเข้ากับแผงโซล่าน้ำร้อนที่ย้ายตำแหน่ง","pay":"รอมัดจำ ค่าสินค้า : 50% เมื่อสั่งซื้อ / 50% เมื่อส่งมอบงาน","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานวันที่ 21/02/2026","eng":"ยังไม่ระบุ","m":2,"y":2026},{"id":30,"src":"ปี 2026","so":"SO2602-047","comp":"KATA THANI CO., LTD.","proj":"The Shore at Katathani Resort (ห้อง 8809)","work":"งานซ่อม Pooltemper PPT-045HP1Unit (ห้อง 8809)","pay":"(เครดิต 30วัน )100% เมื่อติดตั้งเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 14/02/2026","eng":"ยังไม่ระบุ","m":2,"y":2026},{"id":31,"src":"ปี 2026","so":"SO2602-053Rev.1","comp":"บริษัท ที เอส เอ็ม รีสอร์ท จำกัด","proj":"รร.ฮาวเวิร์ด จอห์นสัน ภูเก็ต ในยาง","work":"งานซ่อมเปลี่ยน board and display Pooltemper Model PPV-045HP","pay":"ลูกค้าชำระมาแล้ว 50% วันที่ 11/02/2026 / 50%ที่เหลือเมื่อดำเนินการเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 17/02/2026","eng":"วรวิทย์ เกษร์แก้ว","m":2,"y":2026},{"id":32,"src":"ปี 2026","so":"SO2602-055","comp":"บริษัท ที เอส เอ็ม รีสอร์ท จำกัด","proj":"รร.แรมฮาวเวิร์ด จอห์นสัน ภูเก็ต ในยาง","work":"งานซ่อมเปลี่ยน board and display Pooltemper Model PPV-030HP","pay":"ลูกค้าชำระมาแล้ว 50% วันที่ 11/02/2026 / 50%ที่เหลือเมื่อดำเนินการเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 17/02/2026","eng":"วรวิทย์ เกษร์แก้ว","m":2,"y":2026},{"id":33,"src":"ปี 2026","so":"SO2602-062","comp":"บริษัท เซ็กโก้ เอ็นจิเนียริ่ง แอนด์ คอนสตรัคชั่น จำกัด","proj":"BANYAN TREE Grand Oceanview","work":"งานซ่อมเปลี่ยนอะไหล่ drive board Model : PPX","pay":"(เครดิต 60 วัน) 100% เมื่อดำเนินการซ่อมแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 17/02/2026","eng":"ยังไม่ระบุ","m":2,"y":2026},{"id":34,"src":"ปี 2026","so":"SO2602-089","comp":"บริษัท ลากูน่า บันยัน ทรี จำกัด","proj":"BANYAN TREE (Villa 925)","work":"งานติดตั้ง ถัง EN340V จำนวน 2 เครื่อง","pay":"รอมัดจำ ค่าสินค้า : 50% เมื่อสั่งซื้อ / 50% เมื่อส่งมอบงาน","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานแล้ว 20/05/2026","eng":"วรวิทย์ เกษร์แก้ว","m":2,"y":2026},{"id":35,"src":"ปี 2026","so":"SO2602-090","comp":"บริษัท ลากูน่า บันยัน ทรี จำกัด","proj":"BANYAN TREE (Villa 903)","work":"งานติดตั้ง ถัง EN340V จำนวน 2 เครื่อง","pay":"รอมัดจำ ค่าสินค้า : 50% เมื่อสั่งซื้อ / 50% เมื่อส่งมอบงาน","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":2,"y":2026},{"id":36,"src":"ปี 2026","so":"SO2602-088","comp":"บริษัท คีน คอนแทรคเตอร์ จำกัด","proj":"Samui Hospital","work":"Heatpump 30Kw + Tank 5000L","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ (หักประกันผลงาน 10% ระยะเวลา 1ปี (ครบเวลายื่นเรื่องขอคืน)","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานวันที่ 28/02/2569 / เข้าดำเนินการวันที่ 26/02/2569","eng":"ยังไม่ระบุ","m":2,"y":2026},{"id":37,"src":"ปี 2026","so":"SO2602-112","comp":"บริษัท ทีซีซี โฮเทลแอสเสท แมนเนจเม้นท์ จำกัด","proj":"Melia Samui (Kitchen Zone)","work":"งานติดตั้ง Absolutt 340L จำนวน 2 เครื่อง","pay":"รอมัดจำ 50% เมื่อสั่งซื้อ / 40% เมื่อส่งสินค้า / 10% เมื่อส่งมอบงาน","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 19/05/2569 / เข้าวันที่ 11/05/2569","eng":"วรวิทย์ เกษร์แก้ว","m":2,"y":2026},{"id":38,"src":"ปี 2026","so":"SO2602-124","comp":"บริษัท วอเตอร์ ลิลลี่ สปา จำกัด","proj":"Water Lily Spa Phuket","work":"ตรวจเช็คเครื่องและระบบการทำงานของ Pooltemper 2 Units.","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 09/03/2026","eng":"ยังไม่ระบุ","m":2,"y":2026},{"id":39,"src":"ปี 2026","so":"SO2602-129","comp":"บริษัท แกรนด์ กะตะ วีไอพี จำกัด","proj":"Grand Kata VIP Hotel","work":"งานซ่อมเปลี่ยนCirculate Pump UPS 25-50-180 จำนวน 1 ตัว","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 05/03/2026","eng":"ยังไม่ระบุ","m":2,"y":2026},{"id":40,"src":"ปี 2026","so":"SO2602-133","comp":"MR.CORRADO BUIO","proj":"Mr.Corrado House","work":"งานซ่อมเปลี่ยนอะไหล่ บอร์ด Pooltemper + Magnetic Relay","pay":"ลูกค้าชำระค่าบริการมาแล้ว 100% วันที่ 28/02/2026","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 09/03/2026","eng":"ยังไม่ระบุ","m":2,"y":2026},{"id":41,"src":"ปี 2026","so":"SO2603-044","comp":"บริษัท เซ็นทรัลสมุยบีชรีสอร์ท จำกัด","proj":"Centara Grand Bl.1.4","work":"งานบริการ งานซ่อมเปลี่ยนCompressor Heatpump No.1 Building 1.4","pay":"(เครดิต 30 วัน ) 100% เมื่อดำเนินการซ่อมเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 20/03/2026","eng":"ยังไม่ระบุ","m":3,"y":2026},{"id":42,"src":"ปี 2026","so":"SO2603-043","comp":"บริษัท โซเลมิโอ แมเนจเม้นท์ จำกัด","proj":"Solemio","work":"Repair Heatpump","pay":"100% เมื่อดำเนินการซ่อมเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 18/03/2026","eng":"ยังไม่ระบุ","m":3,"y":2026},{"id":43,"src":"ปี 2026","so":"SO2603-088","comp":"บริษัท เอ็มไอ สแควร์ จำกัด","proj":"Anantara Mai Kho Phuket Villas","work":"งานบริการ งานซ่อมเปลี่ยน Water flow switch + ปั้ม + งานPM (1ครั้ง/เครื่อง)","pay":"เครดิต 30 วัน (100% เมื่อติดตั้งเสร็จ)","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 28 - 29/04/2026","eng":"ยังไม่ระบุ","m":3,"y":2026},{"id":44,"src":"ปี 2026","so":"SO2603-093","comp":"KATA THANI CO., LTD.","proj":"The Shore at Katathani Resort (ห้อง 8823)","work":"งานซ่อม pooltemper PPT-020HP1Unit","pay":"เครดิต 30 วัน (100% เมื่อติดตั้งเสร็จ)","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"ดำเนินการเสร็จแล้ว เมื่อวันที่ 02/04/2026","eng":"ยังไม่ระบุ","m":3,"y":2026},{"id":45,"src":"ปี 2026","so":"SO2603-094","comp":"KATA THANI CO., LTD.","proj":"The Shore at Katathani Resort (ห้อง 8832+8842)","work":"งานติดตั้ง Inveter Pool Pump PFV-IH20 จำนวน 2 Unit","pay":"เครดิต 30 วัน (100% เมื่อติดตั้งเสร็จ)","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 23/03/2026","eng":"ยังไม่ระบุ","m":3,"y":2026},{"id":46,"src":"ปี 2026","so":"SO2603-096","comp":"บริษัท ไม้ขาว ดรีม จำกัด","proj":"Maikhao Soi 9 is a private villa. ไม้ขาวดรีม","work":"Labour cost : Pooltemper PPE-025HP - Replace PCB board - Replace magnetic contactor and power transformer (capacity asspecified) - Replace high/low pressure switch - Perform vacuum and rechargerefrigerant - Run the unit to test the system","pay":"100% upon order","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 01/04/2569","eng":"ยังไม่ระบุ","m":3,"y":2026},{"id":47,"src":"ปี 2026","so":"SO2603-114","comp":"บริษัท ธรรมศักดิ์ แอสเซท จำกัด","proj":"Dinnano Khlong Thom","work":"งานติดตั้ง Pooltemper PPM-012HPS + ปั้ม Inveter Pool Pump IH20","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานวันที่ 2/04/2569 / เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 2/04/2026","eng":"วรวิทย์ เกษร์แก้ว","m":3,"y":2026},{"id":48,"src":"ปี 2026","so":"SO2603-116 สินค้า","comp":"ห้างหุ้นส่วนจำกัด เกี่ยวข้องการค้าและการเกษตร","proj":"หน้างานอ่าวนาง (ในปั้มPTT ไสไทย)","work":"สินค้า Heat pump 21KWx1 + EN500Cx4","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":3,"y":2026},{"id":49,"src":"ปี 2026","so":"SO2603-117 ค่าติดตั้ง","comp":"ห้างหุ้นส่วนจำกัด เกี่ยวข้องการค้าและการเกษตร","proj":"หน้างานอ่าวนาง (ในปั้มPTT ไสไทย)","work":"ติดตั้ง Heat pump 21KWx1 + EN500Cx4","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":3,"y":2026},{"id":50,"src":"ปี 2026","so":"SO2603-118 สินค้า","comp":"บริษัท อันดามานา จำกัด","proj":"โรงแรม อลิซี พลู วิลล่า","work":"สินค้า Absolutt 340Lx2","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":3,"y":2026},{"id":51,"src":"ปี 2026","so":"SO2603-119 ค่าติดตั้ง","comp":"บริษัท อันดามานา จำกัด","proj":"โรงแรม อลิซี พลู วิลล่า","work":"ติดตั้ง Absolutt 340Lx2","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":3,"y":2026},{"id":52,"src":"ปี 2026","so":"SO2603-123","comp":"Ms.Alis Yasiuchynskaya","proj":"Raintree Villa Phuket","work":"งานติดตั้ง PAC POOLTEMPER PrimeMax PPX-050HPx1","pay":"ลูกค้าชำระมาแล้ว 50% / ที่เหลือ เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบแล้ววันที่ 1/06/2569","eng":"วุฒิชัย ยอดสุรางค์","m":3,"y":2026},{"id":53,"src":"ปี 2026","so":"SO2603-125","comp":"บริษัท อาร์.เอ็ม. ซิสเต็ม จำกัด","proj":"Madeit Chalong","work":"งานติดตั้ง Heat pump 29Kw x 1 + Tank 2000Lx1","pay":"ค่าอุปกรณ์ :50% ชำระเมื่อยืนยันสั่งซื้อ /50% ชำระเมื่อส่งมอบอุปกรณ์ ค่าติดตั้ง :50% ชำระเมื่อยืนยันสั่งซื้อ/50% ชำระตามความคืบหน้าของงาน","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":3,"y":2026},{"id":54,"src":"ปี 2026","so":"SO2604-015","comp":"บริษัท โกลบ เอ็นจิเนียริ่ง จำกัด","proj":"Trisara","work":"งานเปลี่ยนอะไหล่ Heater 4800W จำนวน 1PC","pay":"100% เมื่อส่งมอบงาน","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว 07/04/2026","eng":"ยังไม่ระบุ","m":4,"y":2026},{"id":55,"src":"ปี 2026","so":"SO2604-017","comp":"บริษัท เอ็มเอช ไทย แมนเนจเม้นท์ จำกัด","proj":"Anantara Mai Khao Phuket Villas (APKV)","work":"งานติดตั้ง PAC ABSOLUTT 340L 1 Unit (@Turtle Village Restaurant BBP) งานติดตั้ง PAC ABSOLUTT 270L 1 Unit (@Canteen.)","pay":"ค่าสินค้า: 50% เมื่อสั่งซื้อ / 50% เมื่อส่งสินค้า ค่าติดตั้ง: 50% เมื่อสั่งซื้อ / ส่วนที่เหลือตามความก้าวหน้าของงาน","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 10/06/2569","eng":"วรวิทย์ เกษร์แก้ว","m":4,"y":2026},{"id":56,"src":"ปี 2026","so":"SO2604-020","comp":"บริษัท เค วัน (ไทยแลนด์) จำกัด","proj":"Jono X Karon","work":"งานซ่อม Heat Pump เปลี่ยนCompressor ( Building 1)","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อส่งมอบงาน","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 28-29/04/2026","eng":"สรายุทธ ช่วยครุฑ","m":4,"y":2026},{"id":57,"src":"ปี 2026","so":"SO2604-033","comp":"บริษัท เอ็ม ทู พลัส คอนสตรัคชั่น จำกัด","proj":"CAPE YAMU PAVILLION","work":"งานติดตั้ง PAC Pooltemper PPV-020HP จำนวน 1 เครื่อง","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":4,"y":2026},{"id":58,"src":"ปี 2026","so":"SO2604-038","comp":"บริษัท แพลนนิ่ง เอ็นจิเนียริ่ง ดีเวลล็อปเม็นท จำกัด","proj":"Project Patong Beach","work":"ค่าบริการงานซ่อม","pay":"100% เมื่อดำเนินการซ่อมเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 17/04/2026","eng":"ยังไม่ระบุ","m":4,"y":2026},{"id":59,"src":"ปี 2026","so":"SO2604-044","comp":"บริษัท ไรย์แลนด์ โปรเจคท์ จำกัด","proj":"Sole mio","work":"งานบริการ แก้ไขท่อ Return Pipe ชั้น 2","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อส่งมอบงาน","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 6-7/05/2026","eng":"วุฒิชัย ยอดสุรางค์","m":4,"y":2026},{"id":60,"src":"ปี 2026","so":"SO2604-025","comp":"บริษัท ภารีสา คอร์ปอเรชั่น จำกัด","proj":"Paresa Kamala (Grand Villa 1)","work":"งานติดตั้ง Heat pump 27Kw R410a (TIS.) จำนวน 1 Unit","pay":"50% เมื่อสั่งซื้อ / 45% เมื่อติดตั้งเสร็จ / Retention 5% จากยอดทั้งหมด ได้รับคืนเมื่อครบกำหนดการรับประกัน 1 ปี)","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 14/05/2569","eng":"วรวิทย์ เกษร์แก้ว","m":4,"y":2026},{"id":61,"src":"ปี 2026","so":"SO2604-062","comp":"บริษัท ซีรีน เขาหลัก จำกัด","proj":"Grand Mercure Khao Lak Bangsak (Building K1)","work":"งานบริการ งานซ่อมเปลี่ยน อะไหล่","pay":"100% เมื่อติดตั้งเสร็จ (เครดิต 30 วัน)","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 7/05/2026","eng":"ยังไม่ระบุ","m":4,"y":2026},{"id":62,"src":"ปี 2026","so":"SO2604-051","comp":"บริษัท เอ็มเอชจี ภูเก็ต จำกัด","proj":"Anantara Layan (V 31-32)","work":"งานซ่อมเปลี่ยน Heater 2400W จำนวน 2 ชิ้น","pay":"100% หลังดำเนินการซ่อมเสร็จ ***วางบิล 15 วัน หลังจาก ส่งมอบงาน","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 22/04/2026","eng":"ยังไม่ระบุ","m":4,"y":2026},{"id":63,"src":"ปี 2026","so":"SO2604-069","comp":"บริษัท เอ็มเอชจี ภูเก็ต จำกัด","proj":"Anantara Layan (V 33 & Spar part)","work":"งานซ่อมเปลี่ยน Heater 2400W จำนวน 2 ชิ้น","pay":"100% หลังดำเนินการซ่อมเสร็จ ***วางบิล 15 วัน หลังจาก ส่งมอบงาน","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 25/04/2026","eng":"สรายุทธ ช่วยครุฑ","m":4,"y":2026},{"id":64,"src":"ปี 2026","so":"SO2604-067","comp":"บริษัท สมุย วิพรรธน์ จำกัด","proj":"Hyatt Regency Samui Bl.6,7,8","work":"งานบริการ งานซ่อมเปลี่ยนอะไหล่","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ ***วางบิลทางเมล","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 25/06/2026","eng":"ยังไม่ระบุ","m":4,"y":2026},{"id":65,"src":"ปี 2026","so":"SO2604-068","comp":"บริษัท สมุย วิพรรธน์ จำกัด","proj":"Hyatt Regency Samui Bl.1&2","work":"งานบริการ งานซ่อมเปลี่ยนอะไหล่","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ ***วางบิลทางเมล","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 25/06/2026","eng":"ยังไม่ระบุ","m":4,"y":2026},{"id":66,"src":"ปี 2026","so":"SO2604-079","comp":"บริษัท ทรี แอนด์ เอิร์ธ พร็อพเพอร์ตี้ จำกัด","proj":"Sinae Phuket Villa 109","work":"งานซ่อมเปลี่ยนฝาครอบหัวเครื่อง Absolutt 1 ชิ้น","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 29/04/2026","eng":"ยังไม่ระบุ","m":4,"y":2026},{"id":67,"src":"ปี 2026","so":"SO2604-075","comp":"ALEENTA RESORT PHANG-NGA CO., LTD.","proj":"Aleenta (Heat Pump Bl. RDA)","work":"งานบริการ งานซ่อมเปลี่ยนอะไหล่","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 15/05/2026","eng":"ยังไม่ระบุ","m":4,"y":2026},{"id":68,"src":"ปี 2026","so":"SO2604-076","comp":"ALEENTA RESORT PHANG-NGA CO., LTD.","proj":"Aleenta (Flow Switch & Circulating Pump)","work":"งานบริการ งานซ่อมเปลี่ยนอะไหล่","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 27/06/2027","eng":"ยังไม่ระบุ","m":4,"y":2026},{"id":69,"src":"ปี 2026","so":"SO2605-001","comp":"บริษัท ภูเก็ต เวิลด์คลาส เมดิคอล สปา จำกัด","proj":"Kalliste Wellness Resort & Spa","work":"งานซ่อม Heat pump","pay":"100% หลังเข้างานซ่อมแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 11/05/2026","eng":"ยังไม่ระบุ","m":5,"y":2026},{"id":70,"src":"ปี 2026","so":"SO2605-017","comp":"บ้านส่วนตัวคุณติ๊ก (ป่าตอง)","proj":"บ้านส่วนตัวคุณติ๊ก (ป่าตอง)","work":"งานติดตั้งถังน้ำร้อน EN200H + Solar Collector","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบแล้ว 28/05/2569","eng":"วุฒิชัย ยอดสุรางค์","m":5,"y":2026},{"id":71,"src":"ปี 2026","so":"SO2605-024","comp":"บริษัท สมุย บีช คลับ โอนเนอร์ จำกัด","proj":"Anantara Vacation Club (เครื่อง 1 COM 1)","work":"งานบริการ ซ่อม เปลี่ยน Compressor และCommissioning ระบบ","pay":"100% หลังเข้างานซ่อมแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 26-27/05/2026","eng":"ยังไม่ระบุ","m":5,"y":2026},{"id":72,"src":"ปี 2026","so":"SO2605-027","comp":"บริษัท เดอะ บลีส ภูเก็ต จำกัด","proj":"Homm Bliss Southbeach Patong (SGH Building)","work":"ซ่อมเปลี่ยนคอม (เคลม) + อะไหล่ พร้อมตัดต่อระบบใหม่","pay":"100% หลังเข้างานซ่อมแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 13/05/2026","eng":"ยังไม่ระบุ","m":5,"y":2026},{"id":73,"src":"ปี 2026","so":"SO2605-029","comp":"PAE VILLA LANTA PTE. LTD.","proj":"Avadina Hills Residence 8","work":"งานซ่อมเปลี่ยนอะไหล่ Expansion+ Drier +เทสรันระบบใหม่","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อดำเนินการแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 02/06/2026","eng":"ยังไม่ระบุ","m":5,"y":2026},{"id":74,"src":"ปี 2026","so":"SO2605-043","comp":"บริษัท อันดามัน รีสอร์ท จำกัด","proj":"Amanpuri (Pavilion room)","work":"งานติดตั้ง ถัง AO Smith EES-40, 150L. จำนวน 8 Uint","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 02/07/2569","eng":"วรวิทย์ เกษร์แก้ว","m":5,"y":2026},{"id":75,"src":"ปี 2026","so":"SO2605-047","comp":"บริษัท เดอะ แพลทินัม สมุย","proj":"Holiday Inn Bophut Resort Samui","work":"งานซ่อม เปลี่ยน Compressor ZR81KCE-TFD-522 +Drier+Expansion","pay":"เครดิต 30 วัน ตามรอบจ่ายทางโรงแรม","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 16/06/2026","eng":"ยังไม่ระบุ","m":5,"y":2026},{"id":76,"src":"ปี 2026","so":"SO2605-054","comp":"คุณฉัตรชัย งานวงศ์พาณิชย์","proj":"บ้านคุณโจ้","work":"(ค่าติดตั้ง Absolutt340L ) อ้างอิงงาน SO2604-065(เฉพาะสินค้า)","pay":"100% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานแล้ว 20/05/2026","eng":"วุฒิชัย ยอดสุรางค์","m":5,"y":2026},{"id":77,"src":"ปี 2026","so":"SO2605-062","comp":"บริษัท บาวแมน คาซ่า จำกัด","proj":"BaumanCasa Beach Hotel, ดาดฟ้า Building 4","work":"งานติดตั้ง PAC POOLTEMPER Chiller PPC-015SVS จำนวน 1Unit","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 10/07/2569","eng":"วรวิทย์ เกษร์แก้ว","m":5,"y":2026},{"id":78,"src":"ปี 2026","so":"SO2605-067","comp":"บริษัท ชวนพัฒนา โฮเต็ล จำกัด","proj":"COSI Krabi Ao Nang Beach (HP01)","work":"งานบริการ งานซ่อม เปลี่ยน Compressor ZB38KQE-TFD-558","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 02/07/2026","eng":"ยังไม่ระบุ","m":5,"y":2026},{"id":79,"src":"ปี 2026","so":"SO2605-072","comp":"บริษัท อาร์.เอ็ม. ซิสเต็ม จำกัด","proj":"(เครื่องลูกค้าอยู่ที่โกดัง สาขา ภูเก็ต)","work":"งานบริการ ตรวจเช็คและซ่อมรอยรั่ว","pay":"100% เมื่อติดตั้งเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 01/06/2026","eng":"ยังไม่ระบุ","m":5,"y":2026},{"id":80,"src":"ปี 2026","so":"SO2605-071","comp":"บริษัท ธาราภูรี จำกัด","proj":"The Nature Heat pmp NO.1-2 ดาดฟ้าตึก1","work":"งานซ่อม Heat pmp NO.1-2 ดาดฟ้าตึก1","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 04/07/2026","eng":"ยังไม่ระบุ","m":5,"y":2026},{"id":81,"src":"ปี 2026","so":"SO2605-090","comp":"บริษัท เทวา เอสเตท จำกัด","proj":"Zenmaya Oceanfront Phuket ตึก B2","work":"งานติดตั้ง Absolutt340L จำนวน 3 Unit","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":5,"y":2026},{"id":82,"src":"ปี 2026","so":"SO2605-104","comp":"ห้างหุ้นส่วนจำกัด อ่าวนาง บุรี","proj":"Aonang Buri","work":"งานติดตั้ง Heat pump 27 Kw R410A TIS SUS + PM (2 ครั้ง/ปี)","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 10/07/2569","eng":"วรวิทย์ เกษร์แก้ว","m":5,"y":2026},{"id":83,"src":"ปี 2026","so":"SO2605-103","comp":"ห้างหุ้นส่วนจำกัด บลูโซเทล","proj":"Bluesotel","work":"งานติดตั้ง Heat pump 35 Kw R407C TIS SUS + PM(2 ครั้ง/ปี)","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 10/07/2569","eng":"วรวิทย์ เกษร์แก้ว","m":5,"y":2026},{"id":84,"src":"ปี 2026","so":"SO2606-004","comp":"บริษัท เอ็มเอชจี ภูเก็ต จำกัด","proj":"Anantara Residence 104","work":"งานติดตั้ง PAC pooltemper รุ่น PPC-008HS จำนวน 1 เครื่อง + งาน PM.","pay":"100% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 18/06/2569","eng":"วรวิทย์ เกษร์แก้ว","m":6,"y":2026},{"id":85,"src":"ปี 2026","so":"SO2606-005","comp":"บริษัท เอ็มเอชจี ภูเก็ต จำกัด","proj":"Anantara Residence 104","work":"งานซ่อม POOLTEMPER รุ่น PPT-060SVP โหมดร้อน เปลี่ยนอะไหล่","pay":"100% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 18/06/2026","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":86,"src":"ปี 2026","so":"SO2606-012","comp":"บริษัท มิว เอ็นจิเนียริ่ง ซิสเท็ม จำกัด","proj":"Layan Green Park (ตึก B)","work":"งานซ่อม เปลี่ยนอะไหล่ Check Valve \"Swing+Gate Valve","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 05/06/2026","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":87,"src":"ปี 2026","so":"SO2606-015","comp":"บริษัท แอทติจูดสเตย์ จำกัด","proj":"Blu Monkey Hub and Hotel Phuket","work":"งานตรวจเช็คเครื่อง","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 06/06/2026","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":88,"src":"ปี 2026","so":"SO2606-016","comp":"KATA THANI CO., LTD.","proj":"The Shore at Katathani Resort (ห้อง 8803)","work":"งานซ่อม Pooltemper PPT-020HP 1 Uint","pay":"100% เมื่อติดตั้งเสร็จ (เครดิต 30วัน )","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 03/07/2026","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":89,"src":"ปี 2026","so":"SO2606-019","comp":"ALEENTA RESORT PHANG-NGA CO., LTD.","proj":"Aleenta Villa711-712, 715-716,727-728","work":"งานติดตั้ง Heat pump 12Kw R410A (TIS) + EN500C","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":6,"y":2026},{"id":90,"src":"ปี 2026","so":"SO2606-020","comp":"บริษัท ซีรีน เขาหลัก จำกัด","proj":"Grand Mercure Khao Lak Bangsak Patio (Kitchen Zone)","work":"งานติดตั้ง PAC ABSOLUTT 340L จำนวน 1Uint","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"2569-06-25 00:00:00","eng":"วรวิทย์ เกษร์แก้ว","m":6,"y":2026},{"id":91,"src":"ปี 2026","so":"SO2606-037","comp":"บริษัท ทีซีซี โฮเทลแอสเสท แมนเนจเมนท์ จำกัด","proj":"Melia Koh Samui","work":"งานซ่อม Heat Pump (โซนตึก 1-4 เครื่องที่ 3 คอม 2)","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":92,"src":"ปี 2026","so":"SO2606-041","comp":"บริษัท ทีซีซี โฮเทลแอสเสท แมนเนจเมนท์ จำกัด","proj":"Melia Koh Samui","work":"งานซ่อม Heat Pump ( โซนตึก 1-4 เครื่องที่ 1 และ 3)","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":93,"src":"ปี 2026","so":"SO2606-044","comp":"บริษัท อีเอ็มเอส เอ็นจิเนียริ่ง จำกัด","proj":"Radisson Maikhao","work":"งานซ่อมเปลี่ยนอะไหล่ แมกเนติกโอเวอร์โหลด+เทอร์มินอลคอลโทรล","pay":"100% เมื่อติดตั้งเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 24/06/2026","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":94,"src":"ปี 2026","so":"SO2606-057","comp":"บริษัท วายูดูท รีสอร์ท(ไทยแลนด์) จำกัด","proj":"THE LUNAR RESIDENCE","work":"งานติดตั้ง Heat pump 29kw จำนวน 2Unit","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 02/07/2569","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":95,"src":"ปี 2026","so":"SO2606-059","comp":"บริษัท ภูเก็ตอุปกรณ์สระว่ายน้ำ","proj":"YAMU Villa 20 (full option)","work":"งานซ่อมเปลี่ยนอะไหล่ หน้าจอ บอร์ด Hi Low pressure switch","pay":"100% เมื่อสั่งซื้อ","prog":"รอมัดจำ","st":"รอมัดจำ","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 22/06/2026","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":96,"src":"ปี 2026","so":"SO2606-060","comp":"บริษัท วิชญะ ภูเก็ต จำกัด","proj":"V-VillasV.5","work":"งานซ่อม เปลี่ยน Hi Low + วนเพลส","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 20/06/2026","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":97,"src":"ปี 2026","so":"SO2606-061","comp":"บริษัท ซีรีน เขาหลัก จำกัด","proj":"Grand Mercure Khao Lak Bangsak","work":"Fan and Evaporater / Sensor for PBT Model: 270, 340 Building J3","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 25/06/2026","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":98,"src":"ปี 2026","so":"SO2606-075","comp":"บริษัท ภูเก็ตไอแลนด์วิว จำกัด","proj":"Phuket Island View Bl.A","work":"งานติดตั้ง Heat pmup 27 Kw R410A SUS (TIT.) 1 Unit","pay":"ค่าสินค้า : 50% เมื่อสั่งซื้อ/50% เมื่อส่งสินค้า ค่าติดตั้ง : 50% เมื่อสั่งซื้อ/50% ตามความก้าวหน้าของงาน","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 14/07/2569","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":99,"src":"ปี 2026","so":"SO2606-083","comp":"บริษัท ลากูน่า บันยัน ทรี จำกัด","proj":"BANYAN TREE Villa 914","work":"งานติดตั้ง ถัง EN340V จำนวน 2 เครื่อง","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งแล้วเสร็จ (เครดิต 30วัน หลังติดตั้งแล้วเสร็จ)","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":100,"src":"ปี 2026","so":"SO2606-087","comp":"บริษัท สมุย บีช คลับ โอนเนอร์ จำกัด","proj":"Avani+ Mai Khoa building E1, E2","work":"งานติดตั้ง Heat pump35Kw R407C (TIS.) x2 งานติดตั้ง Tank 5,000L x1","pay":"50% เมื่อสั่งซื้อ / 50% ติดตั้งเสร็จ","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":101,"src":"ปี 2026","so":"SO2606-090","comp":"บริษัท วาร์ซอณ จำกัด","proj":"รร.ครามอันดา","work":"งานติดตั้ง PAC ABSOLUTT Model: PBTPB38/ 340 with 340 Liter จำนวน 2 Pc","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อส่งสินค้า","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":102,"src":"ปี 2026","so":"SO2606-091","comp":"บริษัท จีเค ไทกา จำกัด","proj":"Thaiga Sauna & Spa Bang tao","work":"งานติดตั้ง Pooltemper PPC-020PPX-030","pay":"ลูกค้าชำระมัดจำมาแล้ว 50% วันที่ 24/06/2026 / 50% เมื่อติดตั้งเสร็จ","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":103,"src":"ปี 2026","so":"SO2606-098","comp":"คุณโกวิทย์ จันทร์คง","proj":"Ayara Surin Villa 5B","work":"งานซ่อมเปลี่ยนอะไหล่ มอเตอร์ + ใบพัด ของ Absolutt","pay":"ลูกค้าชำระค่าบริการมาแล้ว 50% วันที่28/06/2026 / 50%ที่เหลือเมื่อดำเนินการ","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"เข้าดำเนินการเสร็จแล้ว เมื่อวันที่ 03/07/2026","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":104,"src":"ปี 2026","so":"SO2606-100","comp":"บริษัท อาร์.เอ็ม. ซิสเต็ม จำกัด","proj":"Madeit Chalong","work":"งานซ่อมเปลี่ยนอะไหล่ + PM 1ครั้ง","pay":"ลูกค้าได้ฝากเช็คเรียกเก็บ (ชำระค่าบริการ 100%) เมื่อวันที่ 29 มิ.ย. 69","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":105,"src":"ปี 2026","so":"SO2606-104","comp":"บริษัท บาวแมน คาซ่า จำกัด","proj":"BaumanCasa Beach Hotel,ดาดฟ้า Building 4","work":"งานต่อเนื่อง ของงานติดตั้ง Pooltempe SO2605-062","pay":"100% เมื่อติดตั้งเสร็จ","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบวันที่ 10/07/2569","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":106,"src":"ปี 2026","so":"SO2606-106","comp":"บริษัท เซ็นทรัลสมุยบีชรีสอร์ท จำกัด","proj":"Centara Grand Bl.1.7","work":"งานซ่อมเปลี่ยน Valve ,Fitting","pay":"100% เมื่อติดตั้งเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":6,"y":2026},{"id":107,"src":"ปี 2026","so":"SO2607-010","comp":"บริษัท บาวแมน คาซ่า จำกัด","proj":"Baumancasa Building 4 (ทดแทนเครื่องเก่าที่เสีย)","work":"งานติดตั้ง Heat pump30Kw R410A (TIS.) 1Unit","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":108,"src":"ปี 2026","so":"SO2607-028","comp":"บริษัท ภารีสา คอร์ปอเรชั่น จำกัด","proj":"Paresa Kamala (Spa)","work":"งานติดตั้ง Heat pump 35 kW R407C (TIT.) จำนวน 1 Unit","pay":"50% เมื่อสั่งซื้อ/50% เมื่อส่งสินค้า(หัก Retention 5% ได้รับคืนเมื่อครบกำหนดการรับประกัน 1ปี) ค่าติดตั้ง : 50% เมื่อสั่งซื้อ/ส่วนที่เหลือตามความก้าวหน้า ของงาน (หัก Retention 5% ได้รับคืนเมื่อครบกำหนดการรับประกัน 1ปี)","prog":"Complete","st":"เสร็จแล้ว","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":109,"src":"ปี 2026","so":"SO2607-043","comp":"บริษัท ศรีสมนาม จำกัด","proj":"The Kee Resort & Spa Patong","work":"งานซ่อม Heat Pump","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":110,"src":"ปี 2026","so":"SO2607-040","comp":"บริษัท ธาราภูรี จำกัด","proj":"The Nature (ตึก1) Heat pump No.2","work":"ค่าของ งานซ่อม ปั้ม","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อส่งสินค้า","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":111,"src":"ปี 2026","so":"SO2607-041","comp":"บริษัท ธาราภูรี จำกัด","proj":"The Nature (ตึก1) Heat pump No.2","work":"ค่าแรง งานซ่อม ปั้ม","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"มัดจำแล้ว","st":"มัดจำแล้ว","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":112,"src":"ปี 2026","so":"SO2607-039","comp":"บริษัท ลากูน่า บันยัน ทรี จำกัด","proj":"BANYAN TREE Kitchen Zone 9","work":"งานติดตั้ง 12Kw R410A (TIS)+EN500C","pay":"30% เมื่อสั่งซื้อ / 70% เมื่อติดตั้งเสร็จ","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":113,"src":"ปี 2026","so":"SO2607-044","comp":"บริษัท สิรธนา เอ็นจิเนียริ่ง แอนด์ คอนสตรัคชั่น จำกัด","proj":"สถานแสดงพันธุ์สัตว์น้ำภูเก็ต PHUKET AQUARIUM","work":"งานซ่อม ปั้ม (ค่าสินค้า)","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อส่งสินค้า","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":114,"src":"ปี 2026","so":"SO2607-045","comp":"บริษัท สิรธนา เอ็นจิเนียริ่ง แอนด์ คอนสตรัคชั่น จำกัด","proj":"สถานแสดงพันธุ์สัตว์น้ำภูเก็ต PHUKET AQUARIUM","work":"งานซ่อม ปั้ม (ค่าติดตั้ง)","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":115,"src":"ปี 2026","so":"SO2607-053","comp":"บริษัท อันดามัน แอสเซท โซลูชั่น จำกัด","proj":"The Residence Prime","work":"กล่องคอลโทรล17กล่อง + ค่าติดตั้ง Pooltemper 1ห้อง (ติดตั้งตัวอย่างและ Trainingสำหรับห้องตัวอย่าง จำนวน 1 ห้อง)","pay":"100% เมื่อสั่งซื้อ (ลูกค้ามีแพลนชำระเงินมัดจำ100% วันที่ 22/07/2026)","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":116,"src":"ปี 2026","so":"SO2607-054","comp":"บริษัท ดิ แอล รีสอร์ท กระบี่ จำกัด","proj":"The L Krabi","work":"งานซ่อม Heat pump","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อดำเนินการแล้วเสร็จ","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":117,"src":"ปี 2026","so":"SO2607-061","comp":"บริษัท ตงซัน จำกัด","proj":"Pakasai Resort Ao Nang ตึก 15","work":"งานติดตั้ง Heat pump30Kw R410A (TIS) จำนวน 1 Unit ถังEN300TW จำนวน 3 Unit","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":118,"src":"ปี 2026","so":"SO2607-062","comp":"บริษัท ตงซัน จำกัด","proj":"Pakasai Resort Ao Nang ตึก 2","work":"งานติดตั้ง Heat pump 4Kw R410A (TIS) จำนวน 1 Unit ถังEN200TW จำนวน 1 Unit","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":119,"src":"ปี 2026","so":"SO2607-098","comp":"บริษัท เซ็นทรัลสมุยบีชรีสอร์ท จำกัด","proj":"Centara Grand Beach Resort Phuket Building 1.1","work":"งานซ่อม Heat pump","pay":"100% เมื่อซ่อมแล้วเสร็จ (ตามรอบจ่ายของโรงแรม)","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":120,"src":"ปี 2026","so":"SO2607-099","comp":"บริษัท เซ็นทรัลสมุยบีชรีสอร์ท จำกัด","proj":"Centara Grand Beach Resort Phuket Building 1.8","work":"งานซ่อม Heat pump","pay":"100% เมื่อซ่อมแล้วเสร็จ (ตามรอบจ่ายของโรงแรม)","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":121,"src":"ปี 2026","so":"SO2607-100","comp":"บริษัท เซ็นทรัลสมุยบีชรีสอร์ท จำกัด","proj":"Centara Grand Beach Resort Phuket Building 1.9","work":"งานซ่อม Heat pump","pay":"100% เมื่อซ่อมแล้วเสร็จ (ตามรอบจ่ายของโรงแรม)","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":122,"src":"ปี 2026","so":"SO2607-102","comp":"บริษัท มิว เอ็นจิเนียริ่ง ซิสเท็ม จำกัด","proj":"LayanGreen Park (BL. F )","work":"งานติดตั้ง Heat pump35Kw + Tank 3000L ***Heat Pump สั่งผลิต 90-120 วันหลังชำระเงินมัดจำ ***ถังน้ำร้อน สั่งผลิต 60 วันหลังชำระเงินมัดจำ","pay":"ค่าสินค้า: 30% เมื่อสั่งซื้อ / 70% หลังส่งสินค้า (เครดิต 30 วัน) ค่าติดตั้ง (รายการที่ 10-14) : 30% เมื่อสั่งซื้อ (จ่ายล่วงหน้าก่อนเข้างานติดตั้ง 15 วัน) / ส่วนที่เหลือตามความก้าวหน้าของงาน","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":7,"y":2026},{"id":123,"src":"ปี 2026","so":"SO2608-007","comp":"บริษัท ศรีสมนาม จำกัด","proj":"The Kee Patong","work":"งานซ่อมเปลี่ยน พัดลม Heat pump 2 Pc","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":124,"src":"ปี 2026","so":"SO2608-014","comp":"บริษัท วายูดูท รีสอร์ท(ไทยแลนด์) จำกัด","proj":"THE LUNAR RESIDENCE","work":"งานซ่อมท่อน้ำร้อนที่รั่ว","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":125,"src":"ปี 2026","so":"SO2608-016","comp":"บริษัท โรงแรมกะรนภูเก็ต จำกัด","proj":"Centara Karon (Tropical Building)","work":"งานติดตั้ง Heat pump 22Kw R134A (TIT.) จำนวน 1Unit **Heat pump อยู่คลัง กทม.","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ ***วางบิล ติดต่อ คุณจิรนันท์ 098-6414242","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":126,"src":"ปี 2026","so":"SO2608-019","comp":"บริษัท เอแอนด์เอ ลากูน จำกัด","proj":"รร.สุพิชฌาย์ เกาะแก้ว","work":"งานซ่อมเปลี่ยนอะไหล่ Magnetic + Overload 1 Job","pay":"100% เมื่อดำเนินการแล้วเสร็จ","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":127,"src":"ปี 2026","so":"SO2608-028","comp":"บริษัท ลากูน่า บันยัน ทรี จำกัด","proj":"BANYAN TREE Villa 909","work":"งานติดตั้ง EN340C จำนวน 2 Unit","pay":"(เครดิต 30วัน หลังติดตั้งแล้วเสร็จ)","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":128,"src":"ปี 2026","so":"SO2608-045","comp":"บริษัท เดอะ แพลทินัม สมุย จำกัด","proj":"Holiday Inn Bophut Resort Samui Building C","work":"งานซ่อม Heat pump Building C","pay":"100% เมื่อเข้าดำเนินการซ่อมเสร็จ (เข้าดำเนินการพร้อมรอบ PM)","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":129,"src":"ปี 2026","so":"SO2608-046","comp":"บริษัท วีทีแอล พูล เซอร์วิส แอนด์ บิลดิ้งส์ จำกัด","proj":"Tira Herbal Sauna&Spa @Chalong","work":"งานตรวจเช็ก","pay":"ลูกค้าชำระมาแล้ว 100% วันที่ 11/08/2026 โดยทางลูกค้าหัก ณ ที่จ่าย 3% แล้ว","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":130,"src":"ปี 2026","so":"SO2608-050","comp":"บริษัท วีทีแอล พูล เซอร์วิส แอนด์ บิลดิ้งส์ จำกัด","proj":"Tira Herbal Sauna&Spa @Chalong","work":"งานเปลี่ยนอะไหล่สายเซ็นเซอร์","pay":"ลูกค้าชำระมาแล้ว 100% วันที่ 13/08/2026","prog":"เข้าได้เลย","st":"พร้อมเข้างาน","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":131,"src":"ปี 2026","so":"SO2608-054","comp":"บริษัท ดี โฮเต็ล เอ็กซ์เพรส จำกัด","proj":"Marina House","work":"งานติดตั้ง Pooltemper - PPPC04001030VS / สินค้า อยู่คลัง กทม. (ใช้1 เครื่อง) - PPPX08001050HP / สินค้า อยู่คลังภูเก็ต (ใช้1 เครื่อง)","pay":"50% เมื่อสั่งซื้อ / 50% เมื่อติดตั้งเสร็จ (วางบิลผ่านทางเซลล์ ได้เลยค่ะ)","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":132,"src":"ปี 2026","so":"SO2608-056","comp":"บริษัท สมุย วิพรรธน์ จำกัด","proj":"Hyatt Regency Samui","work":"Repair Heat Pump No2 (Bl7)","pay":"50% เมื่อสั่งซื้อ/50% เมื่อดำเนินการซ่อมเสร็จ","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":133,"src":"ปี 2026","so":"SO2608-059","comp":"บริษัท ปิยะอินเตอร์เนชั่นแนล จำกัด","proj":"ภูเล เบย์อะ ริทซ์-คาร์ลตัน รีเซิร์ฟ","work":"งานติดตั้ง Poolttemper PPX-080HP จำนวน 4 Unit","pay":"ค่าสินค้า : 50% เมื่อสั่งซื้อ(ทำจ่ายภายใน15วัน หลังจากวางบิล) 50% เมื่อส่งสินค้า / (50% เมื่อส่งสินค้า (ตามรอบจ่าย)) ค่าติดตั้ง : 50% เมื่อสั่งซื้อ(ทำจ่ายภายใน15วัน หลังจากวางบิล) 50% เมื่อส่งมอบงาน / ( 50% ตามความสำเร็จของงาน)","prog":"รอมัดจำ","st":"รอมัดจำ","note":"","eng":"ยังไม่ระบุ","m":8,"y":2026},{"id":134,"src":"ค้างปี 2025","so":"OE2501-020","comp":"บริษัท คีน คอนแทรคเตอร์ จำกัด","proj":"Samui Hospital","work":"1. PAC HEATRALIZED Heating capacity 30kW 380V. = 1 Unit 2. ปั๊มน้ำ Grundfos รุน CM5-2/380V = 1 Unit 3. PAC HOT WATER STORAGE TANK 5000 Litre = 1 Unit แรงดันทดสอบ 16 บาร์ 4. TRANSPORTATION AND HEAVY TOOL = 1 Job","pay":"Complete","prog":"ส่งมอบงานวันที่ 28/02/2569","st":"เสร็จแล้ว","note":"ส่งของเข้าหน้างาน 13/02/2569","eng":"ยังไม่ระบุ","m":1,"y":2025},{"id":135,"src":"ค้างปี 2025","so":"OE2503-138","comp":"KATA THANI CO.,LTD.","proj":"Katathani ตึกกะตะบุรี","work":"Water Heater 6000-12000 W (STIEBEL ELTRON)","pay":"มัดจำแล้ว","prog":"","st":"ไม่ระบุ","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":3,"y":2025},{"id":136,"src":"ค้างปี 2025","so":"SO2507-004","comp":"บริษัท เดอะ แพลทินัม สมุย จำกัด","proj":"","work":"","pay":"Complete","prog":"","st":"ไม่ระบุ","note":"งานเสร็จแล้ว","eng":"ยังไม่ระบุ","m":7,"y":2025},{"id":137,"src":"ค้างปี 2025","so":"SO2507-006","comp":"บริษัท มิว เอ็นจิเนียริ่ง ซิสเท็ม จำกัด","proj":"Layan Green Park(BL.H)","work":"PAC HEATRALIZED Performance R407C Heating capacity 47 kW/380V จำนวน 2 Pc HOT WATER STORAGE TANK 3000 L. จำนวน 2 Pc Aluminium Jacket","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ส่งของเข้าหน้างาน 16/09/2568","eng":"วุฒิชัย ยอดสุรางค์","m":7,"y":2025},{"id":138,"src":"ค้างปี 2025","so":"SO2507-007","comp":"บริษัท มิว เอ็นจิเนียริ่ง ซิสเท็ม จำกัด","proj":"Layan Green Park(BL.G)","work":"PAC HEATRALIZED Performance R407C Heating capacity 47 kW/380V จำนวน 2 Pc HOT WATER STORAGE TANK 3000 L. จำนวน 2 Pc Aluminium Jacket","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ส่งของเข้าหน้างาน 16/09/2568","eng":"วุฒิชัย ยอดสุรางค์","m":7,"y":2025},{"id":139,"src":"ค้างปี 2025","so":"SO2507-108","comp":"บริษัท เขาหลักพาราไดซ์ จำกัด","proj":"Khaolak Paradise","work":"งานติดตั้ง PPT 22 kw. = 1Pc / EN500C = 2Pc","pay":"Complete","prog":"ส่งมอบงานแล้ววันที่ 11/05/2569","st":"เสร็จแล้ว","note":"เข้าดำเนินการวันที่ 16/03/2569","eng":"วุฒิชัย ยอดสุรางค์","m":7,"y":2025},{"id":140,"src":"ค้างปี 2025","so":"SO2508-046","comp":"บริษัท มิว เอ็นจิเนียริ่ง ซิสเท็ม จำกัด","proj":"LayanGreen Park (BL. K )","work":"PAC HEATRALIZED Performance R407C Heating capacity 57 kW/380V จำนวน 2 Pc PAC HOT WATER STORAGE TANK 3000 L. จำนวน 2 Unit","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ส่งของเข้าหน้างาน 16/09/2568","eng":"วุฒิชัย ยอดสุรางค์","m":8,"y":2025},{"id":141,"src":"ค้างปี 2025","so":"SO2509-020","comp":"คุณวิษณุ แก้วศิริ","proj":"บ้านพักส่วนตัวคุณวิษณุ แก้วศิริ","work":"ติดตั้ง PAC ABSOLUTT Model :PBTPB38/270 with 270 Liter จำนวน 1 Pc","pay":"มัดจำแล้ว","prog":"ส่งมอบงานแล้ว","st":"เสร็จแล้ว","note":"ผรม. พี่พงษ์ติดตั้ง","eng":"ยังไม่ระบุ","m":9,"y":2025},{"id":142,"src":"ค้างปี 2025","so":"SO2510-006","comp":"บริษัท กมลา เบย์ เวนเจอร์ส จำกัด","proj":"HYATT REGENCY PHUKET RESORT KITCHEN","work":"งานติดตั้ง Heat pump21Kw 1 เครื่อง + EN500C 2เครื่อง","pay":"มัดจำแล้ว","prog":"เหลืองานเก็บ Defact","st":"กำลังดำเนินการ","note":"","eng":"วุฒิชัย ยอดสุรางค์","m":10,"y":2025},{"id":143,"src":"ค้างปี 2025","so":"SO2510-096","comp":"บริษัท ทีซีซี โฮเทล แอสเสท แมนเนจเม้นท์ จำกัด","proj":"Vana Belle, a Luxury Collection Resort","work":"งาน ติดตั้ง Tank 1,000L จำนวน 3 Tank","pay":"มัดจำแล้ว","prog":"เข้าดำเนินการวันที่ 9/03/2569 ถังเข้าหน้างาน 11/03/2569","st":"กำลังดำเนินการ","note":"รอเอกสารส่งมอบตัวจริง","eng":"วุฒิชัย ยอดสุรางค์","m":10,"y":2025},{"id":144,"src":"ค้างปี 2025","so":"SO2511-005","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat Onsen(Female)","work":"Onsen(Female)","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ผรม. เจเทค","eng":"วรวิทย์ เกษร์แก้ว","m":11,"y":2025},{"id":145,"src":"ค้างปี 2025","so":"SO2511-006","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat Onsen(Male)","work":"Onsen(Male)","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ผรม. เจเทค","eng":"วรวิทย์ เกษร์แก้ว","m":11,"y":2025},{"id":146,"src":"ค้างปี 2025","so":"SO2511-007","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat (ONSEN Nano Male & Famale)","work":"(ONSEN Nano Male & Famale)","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ผรม. เจเทค","eng":"วรวิทย์ เกษร์แก้ว","m":11,"y":2025},{"id":147,"src":"ค้างปี 2025","so":"SO2511-008","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat (Onsen Soda Male & Female)","work":"(Onsen Soda Male & Female)","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ผรม. เจเทค","eng":"วรวิทย์ เกษร์แก้ว","m":11,"y":2025},{"id":148,"src":"ค้างปี 2025","so":"SO2511-009","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat Cold Bath(Female)","work":"Cold Bath(Female","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ผรม. เจเทค","eng":"วรวิทย์ เกษร์แก้ว","m":11,"y":2025},{"id":149,"src":"ค้างปี 2025","so":"SO2511-010","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat Cold Bath(Male )","work":"Cold Bath(Male","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ผรม. เจเทค","eng":"วรวิทย์ เกษร์แก้ว","m":11,"y":2025},{"id":150,"src":"ค้างปี 2025","so":"SO2511-011","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat (Sauna Room Male & Female)","work":"(Sauna Room Male & Female)","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ผรม. เจเทค","eng":"วรวิทย์ เกษร์แก้ว","m":11,"y":2025},{"id":151,"src":"ค้างปี 2025","so":"SO2511-012","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat (Steam Generator Male & Female)","work":"(Steam Generator Male & Female)","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ผรม. เจเทค","eng":"วรวิทย์ เกษร์แก้ว","m":11,"y":2025},{"id":152,"src":"ค้างปี 2025","so":"SO2511-013","comp":"บริษัท คลี เอจ โฮเทล แมเนจเม้นท์ จำกัด","proj":"Kleage Wellness Retreat (Steam Generator Male & Female)","work":"(Steam Generator Male & Female)","pay":"มัดจำแล้ว","prog":"อยู่ระหว่างดำเนินการ","st":"กำลังดำเนินการ","note":"ผรม. เจเทค","eng":"วรวิทย์ เกษร์แก้ว","m":11,"y":2025},{"id":153,"src":"ค้างปี 2025","so":"SO2511-038","comp":"บริษัท วาร์ซอณ จำกัด","proj":"รร.ครามอันดา","work":"งานติดตั้ง Heat pump35kW = 2 Pc + Tank 3,000L = 2 Pc","pay":"มัดจำแล้ว","prog":"รอเข้างานติดตั้ง","st":"พร้อมเข้างาน","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":11,"y":2025},{"id":154,"src":"ค้างปี 2025","so":"SO2511-168","comp":"บริษัท ธาราภูรี จำกัด","proj":"The Nature","work":"ติดตั้ง PAC KOMMERCIALPSH-EN340V จำนวน 1 เครื่อง เปลี่ยน Heater เป็น 6 kW x 3 Set","pay":"มัดจำแล้ว","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานวันที่ 30/01/2569","eng":"วุฒิชัย ยอดสุรางค์","m":11,"y":2025},{"id":155,"src":"ค้างปี 2025","so":"SO2511-169","comp":"บริษัท ธาราภูรี จำกัด","proj":"The Nature","work":"ติดตั้ง PAC KOMMERCIALPSH-EN340V จำนวน 1 เครื่อง เปลี่ยน Heater เป็น 6 kW x 3 Set","pay":"มัดจำแล้ว","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานวันที่ 30/01/2569","eng":"วุฒิชัย ยอดสุรางค์","m":11,"y":2025},{"id":156,"src":"ค้างปี 2025","so":"SO2511-170","comp":"บริษัท ธาราภูรี จำกัด","proj":"The Nature","work":"Repair Heater Tank & Return Pump","pay":"มัดจำแล้ว","prog":"Complete","st":"เสร็จแล้ว","note":"ส่งมอบงานวันที่ 30/01/2569","eng":"วุฒิชัย ยอดสุรางค์","m":11,"y":2025},{"id":157,"src":"ค้างปี 2025","so":"SO2512-095","comp":"บริษัท ซีรีน เขาหลัก จำกัด","proj":"Grand Mercure Khao Lak","work":"งานบริการ","pay":"มัดจำแล้ว","prog":"Complete","st":"เสร็จแล้ว","note":"","eng":"ยังไม่ระบุ","m":12,"y":2025},{"id":158,"src":"ค้างปี 2025","so":"SO2512-107","comp":"บริษัท ศรีสมนาม จำกัด","proj":"บริษัท ศรีสมนาม จำกัด / The KEE","work":"การติดตั้งระยะสั้น","pay":"มัดจำแล้ว","prog":"ส่งมอบแล้ววันที่ 30/04/2569","st":"เสร็จแล้ว","note":"เข้าติดตั้งวันที่ 23/03/2569","eng":"ยังไม่ระบุ","m":12,"y":2025},{"id":159,"src":"ค้างปี 2025","so":"SO2512-111","comp":"BANGTAO GRANDE CO., LTD.","proj":"Angsana Laguna","work":"การติดตั้งระยะสั้น","pay":"มัดจำแล้ว","prog":"เข้าดำเนินการวันที่ 13/01/2569","st":"กำลังดำเนินการ","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":12,"y":2025},{"id":160,"src":"ค้างปี 2025","so":"SO2512-128","comp":"บริษัท ศรีสมนาม จำกัด","proj":"The KEE","work":"งานบริการ","pay":"มัดจำแล้ว","prog":"ส่งมอบแล้ววันที่ 30/04/2569","st":"เสร็จแล้ว","note":"","eng":"ยังไม่ระบุ","m":12,"y":2025},{"id":161,"src":"ค้างปี 2025","so":"SO2512-118","comp":"คุณวรเทพ ราชเมืองขวาง","proj":"คุณวรเทพ ราชเมืองขวาง หน้างานกมลา","work":"การติดตั้งระยะสั้น","pay":"มัดจำแล้ว","prog":"เข้าดำเนินการวันที่ 13/01/2569 ผรม.พี่พงษ์เข้า","st":"กำลังดำเนินการ","note":"","eng":"วรวิทย์ เกษร์แก้ว","m":12,"y":2025}];
+
+const $ = s => document.querySelector(s);
+const nf = n => n.toLocaleString('th-TH');
+const STATUSES = ['รอมัดจำ','มัดจำแล้ว','พร้อมเข้างาน','กำลังดำเนินการ','เสร็จแล้ว','ไม่ระบุ'];
+const ST_VAR = {'รอมัดจำ':'--st1','มัดจำแล้ว':'--st2','พร้อมเข้างาน':'--st3','กำลังดำเนินการ':'--st4','เสร็จแล้ว':'--st5','ไม่ระบุ':'--st0'};
+const stColor = s => 'var(' + (ST_VAR[s] || '--st0') + ')';
+const NO_ENG = 'ยังไม่ระบุ';
+const MONTHS = ['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+
+let rows = ROWS.map(r => ({...r}));
+let nextId = Math.max(0, ...rows.map(r => r.id)) + 1;
+let dirty = false;
+let sortKey = 'so', sortDir = 1;
+let editingId = null;
+
+const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function hl(text, q){
+  const t = String(text ?? '');
+  if (!q) return esc(t);
+  const i = t.toLowerCase().indexOf(q);
+  if (i < 0) return esc(t);
+  return esc(t.slice(0,i)) + '<mark>' + esc(t.slice(i,i+q.length)) + '</mark>' + esc(t.slice(i+q.length));
+}
+function setDirty(v){ dirty = v; $('#dirty').classList.toggle('on', v); }
+
+/* ---------- theme ---------- */
+const themeBtn = $('#themeBtn');
+function curDark(){
+  const t = document.documentElement.getAttribute('data-theme');
+  return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+themeBtn.textContent = curDark() ? 'โหมดสว่าง' : 'โหมดมืด';
+themeBtn.addEventListener('click', () => {
+  document.documentElement.setAttribute('data-theme', curDark() ? 'light' : 'dark');
+  themeBtn.textContent = curDark() ? 'โหมดสว่าง' : 'โหมดมืด';
+});
+
+/* ---------- derived ---------- */
+const uniq = k => [...new Set(rows.map(r => r[k]).filter(Boolean))];
+function statusCounts(list){
+  const c = {}; STATUSES.forEach(s => c[s] = 0);
+  list.forEach(r => { c[r.st] = (c[r.st] || 0) + 1; });
+  return c;
+}
+
+/* ---------- KPI ---------- */
+function renderKpis(){
+  const total = rows.length;
+  const done = rows.filter(r => r.st === 'เสร็จแล้ว').length;
+  const open = total - done;
+  const noEng = rows.filter(r => !r.eng || r.eng === NO_ENG).length;
+  const running = rows.filter(r => r.st === 'กำลังดำเนินการ').length;
+  const tiles = [
+    ['งานทั้งหมด', nf(total), 'ปี 2026 + งานค้างปี 2025', ''],
+    ['ยังไม่เสร็จ', nf(open), Math.round(open/total*100) + '% ของงานทั้งหมด', ''],
+    ['กำลังดำเนินการ', nf(running), 'อยู่ระหว่างหน้างาน', ''],
+    ['เสร็จแล้ว', nf(done), Math.round(done/total*100) + '% ของงานทั้งหมด', ''],
+    ['ยังไม่ระบุผู้รับผิดชอบ', nf(noEng), 'ควรกรอกชื่อผู้ควบคุมงาน', 'flag']
+  ];
+  $('#kpis').innerHTML = tiles.map(([l,v,s,c]) =>
+    '<div class="kpi '+c+'"><div class="lab">'+l+'</div><div class="val">'+v+'</div><div class="sm">'+s+'</div></div>').join('');
+}
+
+/* ---------- charts ---------- */
+function barRow(name, segs, total, max, sub){
+  const inner = segs.filter(s => s.v > 0).map(s =>
+    '<div class="seg" style="width:'+(s.v/max*100)+'%;background:'+s.c+'" title="'+esc(s.k)+' '+s.v+'"></div>').join('');
+  return '<div class="brow"><div class="bname" title="'+esc(name)+'">'+esc(name)+(sub?' <span style="color:var(--muted)">'+sub+'</span>':'')+'</div>' +
+    '<div class="btrack"><div class="plot"><div class="bar" style="width:'+(total/max*100)+'%">'+inner+'</div>' +
+    '<div class="btip" style="left:'+(total/max*100)+'%">'+nf(total)+'</div></div></div></div>';
+}
+function renderCharts(){
+  const c = statusCounts(rows);
+  const stMax = Math.max(1, ...STATUSES.map(s => c[s]));
+  $('#chartStatus').innerHTML = STATUSES.filter(s => c[s] > 0)
+    .map(s => barRow(s, [{k:s, v:c[s], c:stColor(s)}], c[s], stMax)).join('');
+
+  $('#legendStatus').innerHTML = STATUSES.map(s =>
+    '<span class="k"><i class="sw" style="background:'+stColor(s)+'"></i>'+s+'</span>').join('');
+
+  const byEng = {};
+  rows.forEach(r => { (byEng[r.eng] = byEng[r.eng] || []).push(r); });
+  const engs = Object.keys(byEng).sort((a,b) => byEng[b].length - byEng[a].length);
+  const engMax = Math.max(1, ...engs.map(e => byEng[e].length));
+  $('#chartEng').innerHTML = engs.map(e => {
+    const cc = statusCounts(byEng[e]);
+    const segs = STATUSES.map(s => ({k:s, v:cc[s], c:stColor(s)}));
+    return barRow(e, segs, byEng[e].length, engMax);
+  }).join('');
+}
+
+/* ---------- filters + table ---------- */
+function fillSelect(el, items, allLabel){
+  el.innerHTML = '<option value="">' + allLabel + '</option>' +
+    items.map(v => '<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
+}
+function refreshFilters(){
+  const keepSt = $('#fSt').value, keepEng = $('#fEng').value, keepSrc = $('#fSrc').value;
+  fillSelect($('#fSt'), STATUSES.filter(s => rows.some(r => r.st === s)), 'ทุกสถานะ');
+  fillSelect($('#fEng'), uniq('eng').sort((a,b) => a === NO_ENG ? 1 : b === NO_ENG ? -1 : a.localeCompare(b,'th')), 'ทุกคน');
+  fillSelect($('#fSrc'), uniq('src'), 'ทุกกลุ่มงาน');
+  $('#fSt').value = keepSt; $('#fEng').value = keepEng; $('#fSrc').value = keepSrc;
+  $('#engList').innerHTML = uniq('eng').filter(e => e !== NO_ENG).map(e => '<option value="'+esc(e)+'">').join('');
+  fillSelect($('#fStI'), STATUSES, 'ไม่ระบุ');
+  fillSelect($('#fSrcI'), uniq('src'), 'ปี 2026');
+}
+function filtered(){
+  const q = $('#q').value.trim().toLowerCase();
+  const st = $('#fSt').value, eng = $('#fEng').value, src = $('#fSrc').value;
+  let out = rows.filter(r => {
+    if (st && r.st !== st) return false;
+    if (eng && r.eng !== eng) return false;
+    if (src && r.src !== src) return false;
+    if (q){
+      const hay = (r.so+' '+r.comp+' '+r.proj+' '+r.work+' '+r.eng+' '+r.st+' '+r.note).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  const idx = s => { const i = STATUSES.indexOf(s); return i < 0 ? 99 : i; };
+  out.sort((a,b) => {
+    let x, y;
+    if (sortKey === 'st'){ x = idx(a.st); y = idx(b.st); return (x-y)*sortDir; }
+    x = String(a[sortKey] ?? ''); y = String(b[sortKey] ?? '');
+    return x.localeCompare(y,'th') * sortDir;
+  });
+  return out;
+}
+function renderTable(){
+  const q = $('#q').value.trim().toLowerCase();
+  const out = filtered();
+  const done = out.filter(r => r.st === 'เสร็จแล้ว').length;
+  $('#count').innerHTML = 'แสดง <b>' + nf(out.length) + '</b> งาน จากทั้งหมด ' + nf(rows.length) +
+    ' · ยังไม่เสร็จ <b>' + nf(out.length - done) + '</b> · เสร็จแล้ว <b>' + nf(done) + '</b>';
+  document.querySelectorAll('thead th').forEach(th => {
+    const s = th.querySelector('.ar'); if (!s) return;
+    s.textContent = th.dataset.k === sortKey ? (sortDir > 0 ? '▲' : '▼') : '';
+  });
+  if (!out.length){ $('#tbody').innerHTML = '<tr><td colspan="6" class="empty">ไม่พบงานที่ตรงกับเงื่อนไข</td></tr>'; return; }
+  $('#tbody').innerHTML = out.map(r =>
+    '<tr>' +
+      '<td class="so">' + hl(r.so, q) + '<br><span style="color:var(--muted);font-weight:400;font-size:11.5px">' +
+        (r.m ? MONTHS[r.m] + ' ' + (r.y + 543) : '—') + '</span></td>' +
+      '<td class="cust"><b>' + hl(r.comp, q) + '</b><small>' + hl(r.proj, q) + '</small></td>' +
+      '<td class="work">' + hl((r.work || '').slice(0,150), q) + ((r.work||'').length > 150 ? '…' : '') + '</td>' +
+      '<td><span class="pill"><i style="background:' + stColor(r.st) + '"></i>' + esc(r.st) + '</span></td>' +
+      '<td><span class="engtag ' + (r.eng === NO_ENG ? 'none' : '') + '">' + hl(r.eng, q) + '</span></td>' +
+      '<td class="act"><button type="button" data-edit="' + r.id + '">แก้ไข</button></td>' +
+    '</tr>').join('');
+}
+function renderAll(){ renderKpis(); renderCharts(); refreshFilters(); renderTable(); }
+
+['#q','#fSt','#fEng','#fSrc'].forEach(s => {
+  $(s).addEventListener('input', renderTable);
+  $(s).addEventListener('change', renderTable);
+});
+$('#clearBtn').addEventListener('click', () => {
+  $('#q').value = ''; $('#fSt').value = ''; $('#fEng').value = ''; $('#fSrc').value = '';
+  renderTable();
+});
+document.querySelectorAll('thead th[data-k]').forEach(th => th.addEventListener('click', () => {
+  const k = th.dataset.k;
+  if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = 1; }
+  renderTable();
+}));
+$('#tbody').addEventListener('click', e => {
+  const b = e.target.closest('button[data-edit]');
+  if (b) openModal(+b.dataset.edit);
+});
+
+/* ---------- add / edit / delete ---------- */
+const mask = $('#mask');
+function openModal(id){
+  editingId = id;
+  const r = id == null ? null : rows.find(x => x.id === id);
+  $('#mTitle').textContent = r ? 'แก้ไขงาน ' + r.so : 'เพิ่มงานใหม่';
+  $('#mDel').style.display = r ? '' : 'none';
+  $('#fSo').value = r ? r.so : '';
+  $('#fEngI').value = r && r.eng !== NO_ENG ? r.eng : '';
+  $('#fComp').value = r ? r.comp : '';
+  $('#fProj').value = r ? r.proj : '';
+  $('#fWork').value = r ? r.work : '';
+  $('#fStI').value = r ? r.st : '';
+  $('#fSrcI').value = r ? r.src : '';
+  $('#fY').value = r && r.y ? r.y : new Date().getFullYear();
+  $('#fM').value = r && r.m ? r.m : (new Date().getMonth() + 1);
+  $('#fPay').value = r ? r.pay : '';
+  $('#fNote').value = r ? r.note : '';
+  mask.classList.add('on');
+  setTimeout(() => $('#fSo').focus(), 30);
+}
+function closeModal(){ mask.classList.remove('on'); editingId = null; }
+$('#addBtn').addEventListener('click', () => openModal(null));
+$('#mCancel').addEventListener('click', closeModal);
+mask.addEventListener('click', e => { if (e.target === mask) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && mask.classList.contains('on')) closeModal(); });
+
+$('#mSave').addEventListener('click', () => {
+  const so = $('#fSo').value.trim();
+  if (!so){ $('#fSo').focus(); $('#fSo').style.outline = '2px solid var(--crit)'; return; }
+  $('#fSo').style.outline = '';
+  const data = {
+    so, comp: $('#fComp').value.trim(), proj: $('#fProj').value.trim(), work: $('#fWork').value.trim(),
+    pay: $('#fPay').value.trim(), note: $('#fNote').value.trim(),
+    st: $('#fStI').value || 'ไม่ระบุ', src: $('#fSrcI').value || 'ปี 2026',
+    eng: $('#fEngI').value.trim() || NO_ENG,
+    y: parseInt($('#fY').value, 10) || 0, m: Math.min(12, Math.max(0, parseInt($('#fM').value, 10) || 0))
+  };
+  data.prog = data.note || data.st;
+  if (editingId == null) rows.push({id: nextId++, ...data});
+  else Object.assign(rows.find(r => r.id === editingId), data);
+  setDirty(true); closeModal(); renderAll();
+});
+$('#mDel').addEventListener('click', () => {
+  const r = rows.find(x => x.id === editingId);
+  if (!r) return closeModal();
+  if (!confirm('ลบงาน ' + r.so + ' ออกจากตาราง?')) return;
+  rows = rows.filter(x => x.id !== editingId);
+  setDirty(true); closeModal(); renderAll();
+});
+
+/* ---------- CSV export / import ---------- */
+const COLS = ['so','comp','proj','work','st','eng','src','y','m','pay','note'];
+const HEAD  = ['เลขSO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ'];
+const csvCell = v => '"' + String(v ?? '').replace(/"/g,'""') + '"';
+$('#expBtn').addEventListener('click', () => {
+  const body = rows.map(r => COLS.map(k => csvCell(r[k])).join(',')).join('\r\n');
+  const csv = '﻿' + HEAD.map(csvCell).join(',') + '\r\n' + body;
+  const a = document.createElement('a');
+  const url = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.href = url;
+  a.download = 'PE_Jobs_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  setDirty(false);
+});
+function parseCSV(text){
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+  const out = []; let row = [], cell = '', q = false;
+  for (let i = 0; i < text.length; i++){
+    const ch = text[i];
+    if (q){
+      if (ch === '"'){ if (text[i+1] === '"'){ cell += '"'; i++; } else q = false; }
+      else cell += ch;
+    } else if (ch === '"') q = true;
+    else if (ch === ','){ row.push(cell); cell = ''; }
+    else if (ch === '\n'){ row.push(cell); out.push(row); row = []; cell = ''; }
+    else if (ch !== '\r') cell += ch;
+  }
+  if (cell !== '' || row.length){ row.push(cell); out.push(row); }
+  return out.filter(r => r.some(c => c.trim() !== ''));
+}
+$('#impBtn').addEventListener('click', () => $('#impFile').click());
+$('#impFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const fr = new FileReader();
+  fr.onload = () => {
+    try{
+      const t = parseCSV(fr.result);
+      if (t.length < 2) throw new Error('ไฟล์ว่าง');
+      const body = t.slice(1);
+      const next = body.map((r,i) => {
+        const o = {id: i+1};
+        COLS.forEach((k,j) => o[k] = (r[j] ?? '').trim());
+        o.y = parseInt(o.y,10) || 0; o.m = parseInt(o.m,10) || 0;
+        o.eng = o.eng || NO_ENG;
+        o.st = STATUSES.includes(o.st) ? o.st : 'ไม่ระบุ';
+        o.prog = o.note || o.st;
+        return o;
+      });
+      rows = next; nextId = rows.length + 1;
+      setDirty(false); renderAll();
+      alert('นำเข้าสำเร็จ ' + rows.length + ' งาน');
+    } catch(err){ alert('อ่านไฟล์ไม่สำเร็จ: ' + err.message); }
+    e.target.value = '';
+  };
+  fr.readAsText(f, 'utf-8');
+});
+window.addEventListener('beforeunload', e => { if (dirty){ e.preventDefault(); e.returnValue = ''; } });
+
+renderAll();
+</script>
+</body>
+</html>
