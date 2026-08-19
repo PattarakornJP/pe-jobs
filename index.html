@@ -128,6 +128,12 @@ textarea{min-height:64px;resize:vertical}
 .mact .left{margin-right:auto}
 .hint{color:var(--muted);font-size:12px;margin:14px 0 0}
 .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:26px}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.nav a{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;
+  border:1px solid var(--border);background:var(--surface);color:var(--ink2);font-size:12.5px;text-decoration:none}
+.nav a:hover{color:var(--ink)}
+.nav a.on{border-color:var(--ink2);color:var(--ink);font-weight:600;background:var(--chip)}
+
 
 @media(max-width:900px){ .charts{grid-template-columns:1fr} }
 @media(max-width:640px){
@@ -161,6 +167,12 @@ textarea{min-height:64px;resize:vertical}
       <button id="themeBtn" type="button">โหมดมืด</button>
     </div>
   </header>
+
+  <nav class="nav">
+    <a href="https://pattarakornjp.github.io/sales-phuket/">ภาระงานเซลล์ ↗</a>
+    <a href="https://pattarakornjp.github.io/sales-map/">แผนที่ลูกค้า ↗</a>
+    <a class="on" href="https://pattarakornjp.github.io/pe-jobs/">Project Engineer</a>
+  </nav>
 
   <div class="kpis" id="kpis"></div>
 
