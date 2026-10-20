@@ -173,28 +173,73 @@ button.textbtn:hover{text-decoration:underline;color:var(--accent)}
   td.work,th.workh{display:none}
   .tblwrap{max-height:520px}
 }
+.viewtabs{display:flex;gap:8px;margin:0 0 16px;flex-wrap:wrap}
+.viewtabs a{display:inline-flex;align-items:center;justify-content:center;padding:10px 18px;border-radius:12px;
+  border:1px solid var(--border);background:var(--surface);color:var(--ink2);text-decoration:none;font-weight:650;font-size:14.5px}
+.viewtabs a:hover{color:var(--ink)}
+.viewtabs a.on{background:var(--ink);color:var(--page);border-color:transparent}
+html[data-boot="service"] .view-project,html[data-boot="service"] .only-project{display:none!important}
+html:not([data-boot="service"]) body:not([data-view]) .view-service{display:none}
+body[data-view="project"] .view-service{display:none}
+body[data-view="service"] .view-project,body[data-view="service"] .only-project{display:none!important}
+body[data-view="project"] .only-service{display:none!important}
+body.svc-readonly[data-view="service"] #addBtn,
+body.svc-readonly[data-view="service"] #saveBtn{display:none!important}
+.toolbar.svc{display:flex;flex-wrap:wrap}
+.toolbar.svc>*{flex:1 1 150px;min-width:0}
+.toolbar.svc input.full{flex:1 1 100%}
+button.kpi{font:inherit;text-align:left;width:100%;color:inherit}
+button.kpi .val{color:var(--ink)}
+button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.steps{display:flex;flex-direction:column;gap:8px}
+.step{padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:var(--page)}
+.step .slab{font-size:12.5px;color:var(--ink2);font-weight:650}
+.opts{display:flex;flex-wrap:wrap;gap:8px 14px}
+.opt{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--ink);cursor:pointer}
+.uplist{display:flex;flex-direction:column;gap:8px}
+.upitem{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:start;padding:10px 12px;
+  border:1px solid var(--border);border-radius:10px;background:var(--page)}
+.upitem b{font-weight:650}
+.upitem small{display:block;color:var(--muted);font-size:12px}
+.warnline{color:#9a6b00;font-size:11.5px;margin-top:3px}
+:root[data-theme="dark"] .warnline{color:var(--warn)}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])) .warnline{color:var(--warn)}
+}
+.stageNow{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-weight:650}
+@media(max-width:640px){
+  .viewtabs a{flex:1}
+  .upitem{grid-template-columns:1fr}
+}
+
 </style>
+<script>if(location.hash==="#service")document.documentElement.setAttribute("data-boot","service");</script>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <div>
       <h1>Project Engineer — ตารางงาน</h1>
-      <p class="sub">ผู้รับผิดชอบ · เลข SO · สถานะงาน<span class="saveState" id="saveState"><i></i><span id="saveTxt">พร้อมใช้งาน</span></span></p>
+      <p class="sub"><span id="subLead">ผู้รับผิดชอบ · เลข SO · สถานะงาน</span><span class="saveState" id="saveState"><i></i><span id="saveTxt">พร้อมใช้งาน</span></span></p>
     </div>
     <div class="topbtns">
       <button class="save" id="saveBtn" type="button" hidden>บันทึก</button>
       <button id="reloadBtn" type="button" hidden>โหลดใหม่</button>
       <button class="primary" id="addBtn" type="button">+ เพิ่มงาน</button>
-      <button id="rosterBtn" type="button">จัดการผู้รับผิดชอบ</button>
-      <button id="expBtn" type="button">บันทึกเป็น CSV</button>
+      <button id="rosterBtn" class="only-project" type="button">จัดการผู้รับผิดชอบ</button>
+      <button id="expBtn" class="only-project" type="button">บันทึกเป็น CSV</button>
       <button id="xlsxBtn" type="button">ส่งออก Excel</button>
-      <button id="impBtn" type="button">นำเข้า CSV</button>
-      <button id="resetBtn" type="button">คืนค่าต้นฉบับ</button>
+      <button id="impBtn" class="only-project" type="button">นำเข้า CSV</button>
+      <button id="resetBtn" class="only-project" type="button">คืนค่าต้นฉบับ</button>
       <input type="file" id="impFile" accept=".csv,text/csv" style="display:none">
       <button id="themeBtn" type="button">โหมดมืด</button>
     </div>
   </header>
+
+  <div class="viewtabs" role="tablist">
+    <a role="tab" id="tabProject" href="#project">งาน Project</a>
+    <a role="tab" id="tabService" href="#service">งาน Service &amp; PM</a>
+  </div>
 
   <nav class="nav">
     <a href="https://pattarakornjp.github.io/sales-phuket/">ภาระงานเซลล์ ↗</a>
@@ -202,6 +247,7 @@ button.textbtn:hover{text-decoration:underline;color:var(--accent)}
     <a class="on" href="https://pattarakornjp.github.io/pe-jobs/">Project Engineer</a>
   </nav>
 
+  <div id="viewProject" class="view-project">
   <div class="banner" id="banner" role="status"></div>
 
   <div class="kpis" id="kpis"></div>
@@ -248,6 +294,58 @@ button.textbtn:hover{text-decoration:underline;color:var(--accent)}
   </section>
 
   <p class="foot">ที่มา: ตารางงาน ปี2022–2026.xlsx · ชีต "ปี2026" และ "งานยังไม่เสร็จ ปี2025"</p>
+  </div>
+  <div id="viewService" class="view-service">
+  <div class="banner" id="svcBanner" role="status"></div>
+  <div class="kpis" id="svcKpis"></div>
+  <div class="charts">
+    <section class="card">
+      <h2>ขั้นงานตอนนี้</h2>
+      <p class="desc">ไล่จากซ้ายไปขวา หยุดที่ขั้นแรกที่ยังไม่ผ่าน · ข้ามขั้นที่ไม่ได้ติ๊ก</p>
+      <div class="chart" id="svcChartStage"></div>
+    </section>
+    <section class="card">
+      <h2>ประเภทงาน</h2>
+      <p class="desc">ตรวจเช็ค · งานซ่อม · งานเคลม · PM (บำรุงรักษา)</p>
+      <div class="chart" id="svcChartType"></div>
+    </section>
+  </div>
+  <section class="card">
+    <h2>งานที่รอเข้า / นัดไว้</h2>
+    <p class="desc">งานที่ยังไม่เสร็จ และอยู่ขั้นรอเข้างาน หรือมีวันเข้างาน</p>
+    <div class="uplist" id="svcUpcoming"></div>
+  </section>
+  <section class="card">
+    <h2>รายการงาน Service &amp; PM</h2>
+    <p class="desc">ค้นหาชื่อลูกค้า เลข SO หรือทีมช่าง · กดแก้ไขเพื่อติ๊กขั้นงาน</p>
+    <div class="toolbar svc">
+      <input class="full" type="search" id="svcQ" placeholder="ค้นหา…  เช่น  Centara  /  SO2609  /  พี่ตี๋" autocomplete="off">
+      <select id="svcType" aria-label="ประเภท"></select>
+      <select id="svcStage" aria-label="ขั้นงาน"></select>
+      <select id="svcTeam" aria-label="ทีมช่าง"></select>
+      <select id="svcMonth" aria-label="เดือน"></select>
+      <button id="svcClear" type="button">ล้างตัวกรอง</button>
+    </div>
+    <p class="count" id="svcCount"></p>
+    <div class="tblwrap">
+      <table>
+        <thead><tr>
+          <th data-sk="date">วันที่ <span class="ar"></span></th>
+          <th data-sk="customer">งาน / ลูกค้า <span class="ar"></span></th>
+          <th data-sk="type">ประเภท <span class="ar"></span></th>
+          <th data-sk="stage">ขั้นปัจจุบัน <span class="ar"></span></th>
+          <th data-sk="so">SO <span class="ar"></span></th>
+          <th data-sk="team">ทีมช่าง <span class="ar"></span></th>
+          <th data-sk="workDate">นัดเข้า <span class="ar"></span></th>
+          <th></th>
+        </tr></thead>
+        <tbody id="svcBody"></tbody>
+      </table>
+    </div>
+    <p class="hint" id="svcHint"></p>
+  </section>
+  <p class="foot">ที่มา: ชีต Service · วันในระบบเป็น พ.ศ. · ลำดับ 9 แก้วันที่จาก 23/92/569 เป็น 23/09/2569</p>
+  </div>
 </div>
 
 <div class="mask" id="mask">
@@ -289,6 +387,35 @@ button.textbtn:hover{text-decoration:underline;color:var(--accent)}
     <p id="rosterMsg"></p>
     <div class="mact">
       <button id="rosterClose" type="button">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<div class="mask" id="svcMask">
+  <div class="modal">
+    <h3 id="svcTitle">เพิ่มงาน Service</h3>
+    <p class="stageNow" id="svcStageNow"></p>
+    <div class="fgrid">
+      <div class="f"><label for="svcDate">วันที่รับงาน</label><input type="text" id="svcDate" inputmode="numeric" placeholder="30/06/2569" autocomplete="off"></div>
+      <div class="f"><label for="svcSo">เลข SO</label><input type="text" id="svcSo" placeholder="SO2610-001, PSE-PHK…, Presale หรือเว้นว่าง" autocomplete="off"></div>
+      <div class="f full"><label>ประเภทงาน</label><div class="opts" id="svcTypes"></div></div>
+      <div class="f full"><label for="svcCustomer">ชื่องาน / ลูกค้า *</label><textarea id="svcCustomer"></textarea></div>
+      <div class="f full"><label for="svcDetail">รายละเอียดงาน</label><textarea id="svcDetail"></textarea></div>
+      <div class="f full">
+        <label>ขั้นงาน</label>
+        <p class="hint" style="margin:0 0 8px">เลือกได้ขั้นละข้อ ถ้ายังไม่ถึงขั้นนั้น ให้เลือก ยังไม่ถึง</p>
+        <div class="steps" id="svcSteps"></div>
+      </div>
+      <div class="f"><label for="svcSales">ส่งต่อเซลล์</label><input type="text" id="svcSales" placeholder="เช่น แจ้งพี่ทราย" autocomplete="off"></div>
+      <div class="f"><label for="svcWorkDate">วันเข้างาน</label><input type="text" id="svcWorkDate" placeholder="29/09/2569 หรือ 5 - 8 ต.ค.69" autocomplete="off"></div>
+      <div class="f full"><label for="svcTeam">ทีมช่าง</label><input type="text" id="svcTeam" list="svcTeamList" placeholder="พิมพ์ชื่อทีม หรือเลือกจากรายการ" autocomplete="off"><datalist id="svcTeamList"></datalist></div>
+      <div class="f full"><label for="svcNote">หมายเหตุ</label><textarea id="svcNote"></textarea></div>
+    </div>
+    <p class="hint" id="svcFormWarn"></p>
+    <div class="mact">
+      <button class="danger left" id="svcDel" type="button">ลบงานนี้</button>
+      <button id="svcCancel" type="button">ยกเลิก</button>
+      <button class="primary" id="svcSave" type="button">บันทึก</button>
     </div>
   </div>
 </div>
@@ -522,9 +649,17 @@ function nowHHMM(){
   const d = new Date();
   return ('0'+d.getHours()).slice(-2) + ':' + ('0'+d.getMinutes()).slice(-2);
 }
+let projectSave = {txt:'พร้อมใช้งาน', warn:false};
+function paintSave(txt, warn){
+  const el = $('#saveTxt');
+  if (el) el.textContent = txt;
+  const box = $('#saveState');
+  if (box) box.classList.toggle('warn', !!warn);
+}
 function setSaveState(txt, warn){
-  $('#saveTxt').textContent = txt;
-  $('#saveState').classList.toggle('warn', !!warn);
+  projectSave = {txt: txt, warn: !!warn};
+  if (view() === 'service') return;
+  paintSave(txt, warn);
 }
 function save(){
   const payload = jobRows().map(r => ({...r})).concat([rosterRow()]);
@@ -567,6 +702,7 @@ function fmtTime(iso){
   catch(e){ return d.toLocaleString('th-TH'); }
 }
 function updateSaveBtn(){
+  if (view() === 'service') { updateSvcSaveBtn(); return; }
   const btn = $('#saveBtn');
   if (!SHARED || !btn) return;
   if (booting || saving) {
@@ -654,8 +790,19 @@ function jsonpGet(url){
     document.head.appendChild(s);
   });
 }
-async function apiGet(){
-  const url = SHEET_API.trim();
+function apiBase(){
+  try {
+    const q = new URLSearchParams(location.search).get('api');
+    if (q && /^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?(\/|$)/.test(q)) return q;
+  } catch(e){}
+  return String(SHEET_API || '').trim();
+}
+function withTable_(url, table){
+  if (!table) return url;
+  return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'table=' + encodeURIComponent(table);
+}
+async function apiGet(table){
+  const url = withTable_(apiBase(), table);
   try {
     const res = await fetch(url, {method:'GET', redirect:'follow', cache:'no-store', credentials:'omit'});
     if (!res.ok) throw new Error('status');
@@ -667,7 +814,7 @@ async function apiGet(){
   }
 }
 async function apiPost(payload){
-  const res = await fetch(SHEET_API.trim(), {
+  const res = await fetch(apiBase(), {
     method: 'POST',
     redirect: 'follow',
     credentials: 'omit',
@@ -736,7 +883,8 @@ function commitChange(auto){
   renderAll();
   if (auto) scheduleAutoSave();
 }
-function openConflict(){
+function openConflict(target){
+  conflictTarget = target === 'service' ? 'service' : 'jobs';
   $('#askText').textContent = 'มีคนอื่นเพิ่งบันทึกข้อมูลใหม่กว่านี้ ถ้าโหลดใหม่ การแก้บนหน้านี้จะหาย ถ้าบันทึกทับ ข้อมูลบนหน้านี้จะไปแทนของเดิม';
   $('#askMask').classList.add('on');
 }
@@ -974,7 +1122,7 @@ function renderTable(){
   const done = out.filter(r => r.st === 'เสร็จแล้ว').length;
   $('#count').innerHTML = 'แสดง <b>' + nf(out.length) + '</b> งาน จากทั้งหมด ' + nf(jobRows().length) +
     ' · ยังไม่เสร็จ <b>' + nf(out.length - done) + '</b> · เสร็จแล้ว <b>' + nf(done) + '</b>';
-  document.querySelectorAll('thead th').forEach(th => {
+  document.querySelectorAll('#viewProject thead th').forEach(th => {
     const s = th.querySelector('.ar'); if (!s) return;
     s.textContent = th.dataset.k === sortKey ? (sortDir > 0 ? '▲' : '▼') : '';
   });
@@ -1000,7 +1148,7 @@ $('#clearBtn').addEventListener('click', () => {
   $('#q').value = ''; $('#fSt').value = ''; $('#fEng').value = ''; $('#fSrc').value = '';
   renderTable();
 });
-document.querySelectorAll('thead th[data-k]').forEach(th => th.addEventListener('click', () => {
+document.querySelectorAll('#viewProject thead th[data-k]').forEach(th => th.addEventListener('click', () => {
   const k = th.dataset.k;
   if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = 1; }
   renderTable();
@@ -1048,11 +1196,15 @@ function openModal(id){
   setTimeout(() => $('#fSo').focus(), 30);
 }
 function closeModal(){ mask.classList.remove('on'); editingId = null; }
-$('#addBtn').addEventListener('click', () => openModal(null));
+$('#addBtn').addEventListener('click', () => {
+  if (view() === 'service') openSvcModal(null);
+  else openModal(null);
+});
 $('#mCancel').addEventListener('click', closeModal);
 mask.addEventListener('click', e => { if (e.target === mask) closeModal(); });
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
+  if ($('#svcMask') && $('#svcMask').classList.contains('on')) { closeSvcModal(); return; }
   if ($('#rosterMask').classList.contains('on')) { closeRoster(); return; }
   if (mask.classList.contains('on')) closeModal();
 });
@@ -1192,6 +1344,7 @@ function loadSheetJS(i){
   });
 }
 $('#xlsxBtn').addEventListener('click', async () => {
+  if (view() === 'service') { exportServiceXlsx(); return; }
   const btn = $('#xlsxBtn');
   const prev = btn.textContent;
   btn.disabled = true;
@@ -1356,21 +1509,947 @@ $('#rosterList').addEventListener('keydown', e => {
   }
 });
 
-$('#saveBtn').addEventListener('click', () => saveToSheet(false, true));
+$('#saveBtn').addEventListener('click', () => {
+  if (view() === 'service') saveService(false, true);
+  else saveToSheet(false, true);
+});
 $('#reloadBtn').addEventListener('click', () => {
+  if (view() === 'service') {
+    if (svcMode === 'live' && svcDirty() > 0 && !confirm('มีการแก้ไขที่ยังไม่บันทึก โหลดใหม่จะทิ้งการแก้ไขนี้')) return;
+    svcHold = false;
+    loadService();
+    return;
+  }
   if (dirtyCount() > 0 && !confirm('มีการแก้ไขที่ยังไม่บันทึก โหลดใหม่จะทิ้งการแก้ไขนี้')) return;
   holdAuto = false;
   loadFromSheet();
 });
-$('#askOk').addEventListener('click', () => { closeConflict(); holdAuto = false; loadFromSheet(); });
-$('#askAlt').addEventListener('click', () => { closeConflict(); holdAuto = false; saveToSheet(true, true); });
+$('#askOk').addEventListener('click', () => {
+  closeConflict();
+  if (conflictTarget === 'service') { svcHold = false; loadService(); return; }
+  holdAuto = false;
+  loadFromSheet();
+});
+$('#askAlt').addEventListener('click', () => {
+  closeConflict();
+  if (conflictTarget === 'service') { svcHold = false; saveService(true, true); return; }
+  holdAuto = false;
+  saveToSheet(true, true);
+});
 window.addEventListener('beforeunload', e => {
-  if (SHARED && sheetReady && dirtyCount() > 0) {
+  const projDirty = SHARED && sheetReady && dirtyCount() > 0;
+  const svcDirtyNow = svcMode === 'live' && svcDirty() > 0;
+  if (projDirty || svcDirtyNow) {
     e.preventDefault();
     e.returnValue = '';
   }
 });
 
+/* ---------- งาน Service & PM ----------
+ * ขั้นปัจจุบัน อ่านทีละขั้นจากซ้ายไปขวาของชีต
+ * รอตรวจเช็ค → รอสรุปรายงาน → รอมัดจำ → รอของ → รอเข้างาน → กำลังดำเนินการ → เสร็จ
+ * คู่ช่อง: ติ๊กฝั่งเสร็จ = ผ่าน, ติ๊กฝั่งรออย่างเดียว = ค้างขั้นนั้น,
+ *         ติ๊กทั้งคู่ = ถือว่าผ่าน (และจำว่าข้อมูลกำกวม), ว่างทั้งคู่ = ไม่ได้ใช้ขั้นนี้
+ * 1) ติ๊กเสร็จ → เสร็จ
+ * 2) เจอขั้นที่ติ๊กรอ → หยุดที่ขั้นนั้น แม้ขั้นถัดไปจะติ๊กไว้ด้วย
+ * 3) ขั้นที่ว่างทั้งคู่ ให้ข้าม ถ้ามีขั้นถัดไปถูกติ๊กแล้ว
+ * 4) ถ้าไม่มีขั้นถัดไป ขั้นว่างที่อยู่หลังขั้นที่ผ่านแล้ว = ขั้นปัจจุบัน
+ * 5) ถ้าไม่มีติ๊กเลย: ประเภทตรวจเช็คหรือยังไม่ระบุประเภท → รอตรวจเช็ค, ประเภทอื่น → รอมัดจำ
+ * 6) ถ้าผ่านเข้างานแล้วแต่งานยังไม่เสร็จ → กำลังดำเนินการ
+ * วันที่เก็บเป็น ISO ค.ศ. แสดงเป็น พ.ศ. เสมอ
+ * ลำดับ 9 ในไฟล์เดิมพิมพ์วันที่เป็น 23/92/569 แก้เป็น 23/09/2569
+ */
+const SVC_VERSION = "2026-10-20";
+const SERVICE_ROWS = [{"id":1,"no":1,"date":"2026-06-30","customer":"บริษัท เซ็นทรัลสมุยบีชรีสอร์ท จำกัด Centara Grand Bl.1.7","detail":"เปลี่ยน Valve","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2606-106","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":2,"no":2,"date":"2026-08-03","customer":"บริษัท ศรีสมนาม จำกัด The Kee Patong","detail":"เปลี่ยน Axial Fan Motor","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2608-007","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":1,"workDate":"5 - 8 ต.ค.69","workOpen":0,"workDone":1,"team":"(พี่ตี๋/พี่หนิง/กร/เบิร์ด)","note":""},{"id":3,"no":3,"date":"2026-08-05","customer":"บริษัท วายูดูท รีสอร์ท(ไทยแลนด์) จำกัด THE LUNAR RESIDENCE","detail":"งานซ่อมท่อ","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2608-014","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":1,"workDate":"2026-09-29","workOpen":0,"workDone":1,"team":"ปาร์ค/กฤษ/และห์/มีน/ฮาริฟ","note":"29/9/2569 นัดลูกค้าแล้ว"},{"id":4,"no":4,"date":"2026-08-07","customer":"Aleenta Heat pump 27 Kw. (Bl. OVL)","detail":"งานซ่อม Heat Pump","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2608-031","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":5,"no":5,"date":"2026-08-20","customer":"Centara Grand Beach Resort Phuket Building 1.4","detail":"งานซ่อม Heat Pump","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2608-101","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":1,"workDate":"2026-09-24","workOpen":0,"workDone":1,"team":"ปาร์ค/พี่หนิง/เบิร์ด","note":"24/9/2569 นัดลูกค้าแล้ว"},{"id":6,"no":6,"date":"2026-09-01","customer":"ALEENTA RESORT PHANG-NGA CO., LTD. (RDA)","detail":"เปลี่ยน Thermostat","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2609-003","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":7,"no":7,"date":"2026-09-01","customer":"ALEENTA RESORT PHANG-NGA CO., LTD.","detail":"เปลี่ยน Circulate Pump/Magnetic/Breaker","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2609-004","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":8,"no":8,"date":"2026-09-08","customer":"บริษัท ศรีสมนาม จำกัด The Kee Patong","detail":"งานซ่อม Heat Pump","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2609-041","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":1,"workDate":"5 - 8 ต.ค.69","workOpen":0,"workDone":1,"team":"(พี่ตี๋/พี่หนิง/กร/เบิร์ด)","note":""},{"id":9,"no":9,"date":"2026-09-23","customer":"Centara Grand Beach Resort Phuket Building 1.4","detail":"เปลี่ยน Control Display/PCB Board","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2609-103","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":1,"workDate":"2026-09-28","workOpen":0,"workDone":1,"team":"พี่ตี๋/พี่หนิง/เบิร์ด/กร","note":""},{"id":10,"no":10,"date":"2026-04-07","customer":"Aleenta Resort Phang-Nga Co.,Ltd.(Bl. OVL)","detail":"คอมเพรสเซอร์ 27kW","type":"งานเคลม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"PSE - PHK6904-002","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":11,"no":11,"date":"2026-08-17","customer":"บริษัท ยู แอร์ โซลูชั่น จำกัด The Kee Patong","detail":"คอมเพรสเซอร์ 60kW","type":"งานเคลม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"PSE - PHK6908-003","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"5 - 8 ต.ค.69","workOpen":0,"workDone":1,"team":"(พี่ตี๋/พี่หนิง/กร/เบิร์ด)","note":""},{"id":12,"no":12,"date":"2026-08-27","customer":"ALEENTA RESORT PHANG-NGA CO., LTD","detail":"Heater","type":"งานเคลม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"PSE - PHK6908-006","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":13,"no":13,"date":"2026-08-28","customer":"บริษัท เอ็มเอช ไทย แมนเนจเม้นท์ จำกัด","detail":"Circulate Pump","type":"งานเคลม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"PSE - PHK6908-007","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":1,"workDate":"2026-10-01","workOpen":0,"workDone":1,"team":"บ่าว/พี่โย/แป๊ะ","note":""},{"id":14,"no":14,"date":"2026-08-29","customer":"Bangtao Grande Co.,Ltd.","detail":"ฝาปั๊ม ของ ปั้มน้า Grundfos CM10-2/380 V.","type":"งานเคลม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":1,"sales":"","so":"PSE - PHK6908-009","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":15,"no":15,"date":"2026-09-11","customer":"บริษัท ทีซีซี ลักซ์ชูรี โฮเทลส์ และ รีสอร์ท จากัด","detail":"Heat exchanger สำหรับ Heat Pump 57kW","type":"งานเคลม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"PSE - PHK6909-001","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":1,"workDate":"1 - 3/10/2569","workOpen":0,"workDone":1,"team":"พี่ตี๋/พี่หนิง/เบิร์ด/กร","note":"ใช้เวลาดำเนินการ 3 วัน"},{"id":16,"no":16,"date":"2026-09-15","customer":"Wilailak Ferrier Projcet : Baan Nam Yen Khun Wi","detail":"Display Controller","type":"งานเคลม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"PSE - PHK6909-006","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"","workOpen":0,"workDone":1,"team":"","note":""},{"id":17,"no":18,"date":"2026-09-25","customer":"บริษัท พริสร จำกัด Wyndham Grand Phuket Kalim ตึก F","detail":"งานเปลี่ยนตู้ควบคุมระบบ Electric Controller Box","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2609-116","depWait":0,"depDone":0,"partsWait":1,"partsDone":0,"enterWait":0,"enterDone":1,"workDate":"2026-09-30","workOpen":0,"workDone":1,"team":"พี่ตี๋/เบิร์ด/กร","note":"30/9/2569 นัดลูกค้าแล้ว"},{"id":18,"no":19,"date":"2026-09-28","customer":"บริษัท อาร์ เอส อี โซลูชั่น จำกัด Project : Andara VP-19","detail":"ตรวจเช็ค ABSOLUTT จำนวน 2 เครื่อง","type":"ตรวจเช็ค","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":1,"sales":"แจ้งพี่ทราย","so":"OE2211-083","depWait":0,"depDone":0,"partsWait":0,"partsDone":0,"enterWait":0,"enterDone":1,"workDate":"2026-09-29","workOpen":0,"workDone":1,"team":"พี่ตี๋/พี่หนิง/เบิร์ด/กร","note":"29/9/2569 นัดลูกค้าแล้ว"},{"id":19,"no":20,"date":"2026-09-28","customer":"บริษัท ม่วงเช้า จากัด Projcet : Arinara Beach Resort Phuket","detail":"เคลม Heat exchanger","type":"งานเคลม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"PSE - PHK6909-007","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":"14 - 15/10/69 นัดลูกค้าแล้ว"},{"id":20,"no":21,"date":"2026-09-29","customer":"บริษัท ขิงแดง จำกัด Project: Red Ginger","detail":"ตรวจเช็ค ABSOLUTT ลูกค้าแจ้งว่าเครื่องรั่ว","type":"ตรวจเช็ค","chkWait":1,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2510-095","depWait":0,"depDone":0,"partsWait":0,"partsDone":0,"enterWait":1,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":21,"no":22,"date":"2026-09-29","customer":"บริษัท เอ็มเอช ไทย แมนเนจเม้นท์ จำกัด \nProject : Anantara Mai Kho Phuket Villas คัตเตอร์ 13","detail":"เปลี่ยน flow switch\n(RPTRWFS0200200 Brass Water flow switch DN25)","type":"","chkWait":1,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2603-088 rev.1","depWait":0,"depDone":1,"partsWait":1,"partsDone":1,"enterWait":1,"enterDone":0,"workDate":"2026-10-01","workOpen":0,"workDone":1,"team":"บ่าว/พี่โย/แป๊ะ","note":"รับประกันงานซ่อม"},{"id":22,"no":23,"date":"2026-09-30","customer":"บริษัท ภารีสา คอร์ปอเรชั่น จำกัด Project : Paresa Kamala (Spa)","detail":"เปลี่ยน Circulate Pump จำนวน 2 ตัว","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2607-028","depWait":0,"depDone":0,"partsWait":0,"partsDone":1,"enterWait":1,"enterDone":1,"workDate":"2026-10-02","workOpen":0,"workDone":1,"team":"ปาร์ค/กฤษ/ฮาน นศ. ฝึกงาน","note":"02/10/2569"},{"id":23,"no":24,"date":"2026-10-01","customer":"KATA THANI CO., LTD. ตึกแปซิฟิค","detail":"เปลี่ยน Evaporator coil","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2609-125","depWait":1,"depDone":0,"partsWait":0,"partsDone":0,"enterWait":0,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":24,"no":25,"date":"2026-10-01","customer":"ALEENTA RESORT PHANG-NGA CO., LTD. (Aleenta CWS)","detail":"เปลี่ยน หน้าจอควบคุม","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":1,"rptDone":0,"sales":"","so":"SO2609-132","depWait":1,"depDone":0,"partsWait":0,"partsDone":0,"enterWait":0,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":25,"no":26,"date":"2026-10-03","customer":"The Shore at Katathani Resort (ห้อง 8905)","detail":"งานซ่อม Pooltemper ห้อง 8905 ซ่อมที่โกดัง","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2610-012","depWait":0,"depDone":0,"partsWait":1,"partsDone":1,"enterWait":0,"enterDone":1,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":26,"no":27,"date":"2026-10-06","customer":"บริษัท เดอะ แพลทินัม สมุย จำกัด HOLIDAY INN SAMUI ตึก L","detail":"งานเปลี่ยน Compressor, Filter Drier, Vacuum","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2610-011","depWait":0,"depDone":0,"partsWait":1,"partsDone":0,"enterWait":0,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":27,"no":28,"date":"2026-10-09","customer":"บริษัท พริสร จำกัด Wyndham Grand Phuket Kalim","detail":"ตึก K เปลี่ยน Heater\nตึก L เปลี่ยน Control Display, Board\nตึก J เปลี่ยน Tube in Shell Heat Exchanger","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2610-047","depWait":1,"depDone":0,"partsWait":0,"partsDone":0,"enterWait":0,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":28,"no":29,"date":"2026-10-14","customer":"บริษัท แพลนนิ่ง เอ็นจิเนียริ่ง ดีเวลล็อปเม็นท จำกัด\nPatong Beach Hotel","detail":"งานซ่อมเชื่อมรอยรั่วระบบน้ำยา\nเป็นงานต่อเนื่องจาก PM. (ตึก. B4)","type":"งานซ่อม","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"SO2610-052","depWait":0,"depDone":0,"partsWait":1,"partsDone":0,"enterWait":0,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":29,"no":30,"date":"2026-10-15","customer":"THREE DOLPHINS RESORT CO., LTD. โรงแรมตรีสรา รีสอร์ท","detail":"ตรวจเช็ค Chiller No.1 มีน้ำรั่วออกจาก Plate Heat Exchanger","type":"ตรวจเช็ค","chkWait":0,"chkDone":1,"rptWait":0,"rptDone":0,"sales":"","so":"Presale","depWait":0,"depDone":0,"partsWait":0,"partsDone":0,"enterWait":0,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":30,"no":31,"date":"2026-10-16","customer":"คุณบรรจง บูรณถาวรสม Project : Ocean and Ole Patong","detail":"น้ำไม่ร้อน","type":"ตรวจเช็ค","chkWait":0,"chkDone":1,"rptWait":0,"rptDone":1,"sales":"","so":"OE2311-093","depWait":0,"depDone":0,"partsWait":0,"partsDone":0,"enterWait":0,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":"ติดต่อลูกค้าเรียบร้อยแล้ว"},{"id":31,"no":32,"date":"2026-10-16","customer":"ปาล์มเมตโต้ ปาร์ค คอนโดมิเนียม ห้อง 404","detail":"ถังน้ำร้อน 30 ลิตร รั่วที่ข้อต่อ","type":"ตรวจเช็ค","chkWait":1,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"","depWait":0,"depDone":0,"partsWait":0,"partsDone":0,"enterWait":0,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":32,"no":33,"date":"2026-10-17","customer":"บริษัท กระบี่รีสอร์ท จำกัด Project : Krabi Resort Zone Villa","detail":"Heat Pump ใช้งานไม่ได้ทั้ง 2 เครื่อง\nเครื่องที่ 01 คอมเพรสเซอร์รั่วที่หัวหลักคอม\nเครื่องที่ 02 Er.06","type":"ตรวจเช็ค","chkWait":0,"chkDone":0,"rptWait":0,"rptDone":0,"sales":"","so":"","depWait":0,"depDone":0,"partsWait":0,"partsDone":0,"enterWait":0,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"","note":""},{"id":33,"no":34,"date":"2026-10-17","customer":"บริษัท ชัยนริศภูเก็ต เอ็นจิเนียริ่ง จำกัด Project : บ้านคุณหมอเลอศักดิ์ แลนด์ แอนด์ เฮ้าส์ เกาะแก้ว ภูเก็ต เลขที่ 88/118","detail":"ตรวจเช็ค ABSOLUTT  270 L. หน้าจอไม่ติด พร้อมช่าง CNR","type":"ตรวจเช็ค","chkWait":0,"chkDone":1,"rptWait":0,"rptDone":1,"sales":"แจ้งพี่ทราย","so":"","depWait":0,"depDone":0,"partsWait":0,"partsDone":0,"enterWait":0,"enterDone":0,"workDate":"","workOpen":0,"workDone":0,"team":"พี่ตี๋/พี่หนิง/เบิร์ด","note":""}];
+const SVC_STAGES = ['รอตรวจเช็ค','รอสรุปรายงาน','รอมัดจำ','รอของ','รอเข้างาน','กำลังดำเนินการ','เสร็จ'];
+const SVC_TYPES = [
+  {id:'ตรวจเช็ค', label:'ตรวจเช็ค'},
+  {id:'งานซ่อม', label:'งานซ่อม'},
+  {id:'งานเคลม', label:'งานเคลม'},
+  {id:'PM', label:'PM (บำรุงรักษา)'}
+];
+const SVC_STEPS = [
+  {key:'chk', wait:'chkWait', done:'chkDone', label:'ตรวจเช็ค', waitLabel:'รอดำเนินการ', doneLabel:'ดำเนินการแล้ว', stage:'รอตรวจเช็ค'},
+  {key:'rpt', wait:'rptWait', done:'rptDone', label:'สรุปรายงาน', waitLabel:'รอดำเนินการ', doneLabel:'ดำเนินการแล้ว', stage:'รอสรุปรายงาน'},
+  {key:'dep', wait:'depWait', done:'depDone', label:'การชำระเงิน', waitLabel:'รอมัดจำ', doneLabel:'มัดจำแล้ว', stage:'รอมัดจำ'},
+  {key:'parts', wait:'partsWait', done:'partsDone', label:'เบิกของ', waitLabel:'รอของ', doneLabel:'ของครบ', stage:'รอของ'},
+  {key:'enter', wait:'enterWait', done:'enterDone', label:'เข้างาน', waitLabel:'รอเข้างาน', doneLabel:'ดำเนินการแล้ว', stage:'รอเข้างาน'},
+  {key:'work', wait:'workOpen', done:'workDone', label:'การดำเนินการ', waitLabel:'ไม่เสร็จ', doneLabel:'เสร็จ', stage:'กำลังดำเนินการ'}
+];
+const SVC_FLAGS = ['chkWait','chkDone','rptWait','rptDone','depWait','depDone','partsWait','partsDone','enterWait','enterDone','workOpen','workDone'];
+const SVC_COLOR = {
+  'รอตรวจเช็ค':'--st1','รอสรุปรายงาน':'--st2','รอมัดจำ':'--st1','รอของ':'--st3',
+  'รอเข้างาน':'--st3','กำลังดำเนินการ':'--st4','เสร็จ':'--st5'
+};
+const SVC_STORE = 'pe-service-data-v1';
+const SVC_BANNER = {
+  old: 'หน้างาน Service แสดงข้อมูลตั้งต้นให้อ่านก่อน ยังแก้ไม่ได้ ให้อัปเดตสคริปต์ครั้งเดียว: เปิด Apps Script วางโค้ดใหม่จาก Code.gs แล้วกดบันทึก จากนั้น Deploy → จัดการการทำให้ใช้งานได้ → รูปดินสอ → เวอร์ชัน: เวอร์ชันใหม่ → ทำให้ใช้งานได้ (ลิงก์เดิมไม่เปลี่ยน) แล้วเปิด Google Sheet เลือกเมนู PE Jobs → นำเข้างาน Service จากนั้นกดโหลดใหม่',
+  empty: 'แท็บ service ยังว่าง จึงแสดงข้อมูลตั้งต้นให้อ่านก่อน เปิด Google Sheet แล้วเลือกเมนู PE Jobs → นำเข้างาน Service จากนั้นกดโหลดใหม่',
+  bad: 'โหลดงาน Service ไม่สำเร็จ ตอนนี้แสดงข้อมูลตั้งต้นในเว็บ แก้ยังไม่ได้ กดโหลดใหม่เมื่อเชื่อมต่อได้'
+};
+let svcRows = [];
+let svcBase = [];
+let svcRev = '';
+let svcMode = 'loading';
+let svcBooted = false;
+let svcLoading = false;
+let svcSaving = false;
+let svcLock = false;
+let svcQueued = false;
+let svcHold = false;
+let svcTimer = null;
+let svcEditing = null;
+let svcSortKey = 'no';
+let svcSortDir = 1;
+let conflictTarget = 'jobs';
+
+function view(){
+  return document.body && document.body.getAttribute('data-view') === 'service' ? 'service' : 'project';
+}
+function onFlag(v){ return v === 1 || v === true || v === '1' || v === 'true'; }
+function pad2(n){ n = String(n); return n.length < 2 ? '0' + n : n; }
+function parseSingleDate(v){
+  const s = String(v || '').trim();
+  if (!s) return '';
+  if (s === '23/92/569') return '2026-09-23';
+  let m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+  if (m) {
+    let y = +m[1];
+    if (y >= 2400) y -= 543;
+    return y + '-' + m[2] + '-' + m[3];
+  }
+  m = /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/.exec(s);
+  if (!m) return '';
+  let d = +m[1], mo = +m[2], y = +m[3];
+  if (y < 100) y = y >= 50 ? 2500 + y : 2000 + y;
+  if (y >= 2400) y -= 543;
+  if (mo < 1 || mo > 12 || d < 1 || d > 31) return '';
+  return y + '-' + pad2(mo) + '-' + pad2(d);
+}
+function fmtDMY(v){
+  const s = String(v || '');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const p = s.split('-');
+  return p[2] + '/' + p[1] + '/' + (+p[0] + 543);
+}
+function fmtBEPretty(v){
+  const s = String(v || '');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return s || '—';
+  const p = s.split('-');
+  const mo = +p[1];
+  return (+p[2]) + ' ' + (MONTHS[mo] || '') + ' ' + (+p[0] + 543);
+}
+function fmtWork(v){
+  const s = String(v || '').trim();
+  if (!s) return 'ยังไม่ระบุวัน';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return fmtBEPretty(s);
+  return s;
+}
+function cleanSvc(r){
+  r = r || {};
+  const o = {
+    id: +r.id || 0,
+    no: +r.no || 0,
+    date: String(r.date || ''),
+    customer: String(r.customer || ''),
+    detail: String(r.detail || ''),
+    type: String(r.type || ''),
+    sales: String(r.sales || ''),
+    so: String(r.so || ''),
+    workDate: String(r.workDate || ''),
+    team: String(r.team || ''),
+    note: String(r.note || '')
+  };
+  if (o.type === 'PM (บำรุงรักษา)') o.type = 'PM';
+  SVC_FLAGS.forEach(k => { o[k] = onFlag(r[k]) ? 1 : 0; });
+  return o;
+}
+function deriveStage(row){
+  const issues = [];
+  const gates = SVC_STEPS.filter(s => s.key !== 'work').map(s => {
+    const w = onFlag(row[s.wait]);
+    const d = onFlag(row[s.done]);
+    let state = 'empty';
+    if (w && d) { issues.push(s.label + ' ติ๊กทั้งรอและแล้ว'); state = 'done'; }
+    else if (d) state = 'done';
+    else if (w) state = 'wait';
+    return { step: s, state: state };
+  });
+  const workW = onFlag(row.workOpen);
+  const workD = onFlag(row.workDone);
+  if (workW && workD) issues.push('การดำเนินการ ติ๊กทั้งรอและแล้ว');
+  if (!row.type) issues.push('ยังไม่เลือกประเภทงาน');
+  if (row.type === 'ตรวจเช็ค' && !onFlag(row.chkWait) && !onFlag(row.chkDone)) {
+    const later = gates.slice(1).some(g => g.state !== 'empty') || workW || workD;
+    if (later) issues.push('เป็นงานตรวจเช็ค แต่ไม่ได้ติ๊กช่องตรวจเช็ค');
+  }
+  if (workD) {
+    if (onFlag(row.enterWait) && !onFlag(row.enterDone)) issues.push('ติ๊กเสร็จ แต่เข้างานยังเป็นรอเข้างาน');
+    if (onFlag(row.partsWait) && !onFlag(row.partsDone)) issues.push('ติ๊กเสร็จ แต่ยังติ๊กรอของ');
+    return { stage: 'เสร็จ', issues: issues };
+  }
+  const waiting = gates.filter(g => g.state === 'wait');
+  if (waiting.length > 1) issues.push('มีหลายขั้นที่ติ๊กรอ ใช้ขั้นที่มาก่อน: ' + waiting[0].step.stage);
+  function laterTouched(i){
+    for (let j = i + 1; j < gates.length; j++) if (gates[j].state !== 'empty') return true;
+    return !!workW;
+  }
+  for (let i = 0; i < gates.length; i++) {
+    const g = gates[i];
+    if (g.state === 'wait') return { stage: g.step.stage, issues: issues };
+    if (g.state === 'empty') {
+      if (laterTouched(i)) continue;
+      const earlierDone = gates.slice(0, i).some(x => x.state === 'done');
+      const anyTouch = gates.some(x => x.state !== 'empty') || workW;
+      if (earlierDone || !anyTouch) {
+        if (!anyTouch) {
+          const stage = (!row.type || row.type === 'ตรวจเช็ค') ? 'รอตรวจเช็ค' : 'รอมัดจำ';
+          return { stage: stage, issues: issues };
+        }
+        return { stage: g.step.stage, issues: issues };
+      }
+    }
+  }
+  return { stage: 'กำลังดำเนินการ', issues: issues };
+}
+function svcSerious(info){
+  if (!info || !info.issues.length) return false;
+  return info.issues.some(msg => {
+    if (info.stage === 'เสร็จ' && /ติ๊กทั้งรอและแล้ว$/.test(msg)) return false;
+    return true;
+  });
+}
+function svcTypeLabel(id){
+  const hit = SVC_TYPES.find(t => t.id === id);
+  if (hit) return hit.label;
+  return id ? id : 'ไม่ระบุประเภท';
+}
+function svcColor(stage){ return 'var(' + (SVC_COLOR[stage] || '--st0') + ')'; }
+function showSvcBanner(text, bad){
+  const b = $('#svcBanner');
+  if (!b) return;
+  if (!text) { b.className = 'banner'; b.textContent = ''; return; }
+  b.textContent = text;
+  b.className = 'banner on' + (bad ? ' bad' : '');
+}
+function svcStoreGet(){
+  try { const raw = localStorage.getItem(SVC_STORE); return raw ? JSON.parse(raw) : null; }
+  catch(e){ return null; }
+}
+function svcStoreSet(){
+  try {
+    localStorage.setItem(SVC_STORE, JSON.stringify({
+      v: SVC_VERSION, at: new Date().toLocaleString('th-TH'), rows: svcRows.map(cleanSvc)
+    }));
+    paintSave('บันทึกอัตโนมัติแล้ว ' + nowHHMM(), false);
+  } catch(e) {
+    paintSave('เบราว์เซอร์นี้บันทึกอัตโนมัติไม่ได้', true);
+  }
+}
+function svcUseSeed(kind){
+  svcRows = SERVICE_ROWS.map(cleanSvc);
+  svcBase = svcRows.map(r => ({...r}));
+  svcRev = '';
+  svcMode = 'readonly';
+  svcHold = false;
+  document.body.classList.add('svc-readonly');
+  showSvcBanner(SVC_BANNER[kind] || SVC_BANNER.bad, kind === 'bad');
+  paintSave('อ่านอย่างเดียว', true);
+}
+function svcResponseKind(data){
+  if (!data || data.ok !== true || !Array.isArray(data.rows)) return 'bad';
+  if (data.table !== 'service') return 'old';
+  if (!data.rows.length) return 'empty';
+  const sample = data.rows.find(r => r && (r.customer != null || r.detail != null || r.chkWait != null || r.type != null));
+  const jobLike = data.rows.find(r => r && r.comp && r.st && r.customer == null);
+  if (!sample && jobLike) return 'old';
+  return 'live';
+}
+function applySvcServer(data){
+  svcRows = (data.rows || []).map(cleanSvc);
+  svcBase = svcRows.map(r => ({...r}));
+  svcRev = data.lastSaved || '';
+  svcMode = 'live';
+  svcHold = false;
+  document.body.classList.remove('svc-readonly');
+  showSvcBanner('');
+  paintSave(svcRev ? ('บันทึกล่าสุด ' + fmtTime(svcRev)) : 'โหลดจากชีตแล้ว', false);
+}
+function loadSvcLocal(){
+  const saved = svcStoreGet();
+  let source = SERVICE_ROWS;
+  if (saved && Array.isArray(saved.rows) && saved.rows.length) {
+    if (saved.v === SVC_VERSION) source = saved.rows;
+    else {
+      const useNew = confirm(
+        'ไฟล์ Service มีข้อมูลชุดใหม่ (' + SVC_VERSION + ')\n' +
+        'แต่ในเครื่องนี้มีข้อมูลที่คุณเคยแก้ไว้ ' + saved.rows.length + ' งาน\n\n' +
+        'กด "ตกลง" = ใช้ข้อมูลชุดใหม่\nกด "ยกเลิก" = ใช้ข้อมูลที่คุณแก้ไว้ต่อ');
+      source = useNew ? SERVICE_ROWS : saved.rows;
+      if (useNew) { try { localStorage.removeItem(SVC_STORE); } catch(e){} }
+    }
+  }
+  svcRows = source.map(cleanSvc);
+  svcBase = svcRows.map(r => ({...r}));
+  svcRev = '';
+  svcMode = 'local';
+  svcBooted = true;
+  document.body.classList.remove('svc-readonly');
+  showSvcBanner('');
+  paintSave('บันทึกอัตโนมัติในเครื่องนี้', false);
+  renderSvcAll();
+  updateSaveBtn();
+}
+async function loadService(){
+  if (!SHARED) { loadSvcLocal(); return; }
+  if (svcLoading) return;
+  svcLoading = true;
+  svcBooted = true;
+  svcMode = 'loading';
+  document.body.classList.add('svc-readonly');
+  paintSave('กำลังโหลดข้อมูล...', false);
+  updateSaveBtn();
+  renderSvcAll();
+  try {
+    const data = await apiGet('service');
+    const kind = svcResponseKind(data);
+    if (kind === 'live') applySvcServer(data);
+    else svcUseSeed(kind);
+  } catch(e) {
+    svcUseSeed('bad');
+  } finally {
+    svcLoading = false;
+    renderSvcAll();
+    updateSaveBtn();
+  }
+}
+function svcSig(r){ return JSON.stringify(cleanSvc(r)); }
+function svcSigList(list){ return list.map(svcSig).join('\n'); }
+function svcDirty(){
+  const base = new Map(svcBase.map(r => [String(r.id), svcSig(r)]));
+  const cur = new Map(svcRows.map(r => [String(r.id), svcSig(r)]));
+  let n = 0;
+  cur.forEach((sig, id) => { if (base.get(id) !== sig) n++; });
+  base.forEach((_, id) => { if (!cur.has(id)) n++; });
+  return n;
+}
+function updateSvcSaveBtn(){
+  const btn = $('#saveBtn');
+  if (!btn || !SHARED) return;
+  if (svcLoading || svcSaving) {
+    btn.disabled = true;
+    btn.classList.remove('ok');
+    btn.textContent = svcSaving ? 'กำลังบันทึก...' : 'กำลังโหลด...';
+    return;
+  }
+  if (svcMode !== 'live') {
+    btn.disabled = false;
+    btn.classList.remove('ok');
+    btn.textContent = 'บันทึก';
+    return;
+  }
+  const n = svcDirty();
+  btn.disabled = false;
+  btn.classList.toggle('ok', n === 0);
+  btn.textContent = n > 0 ? ('บันทึก (' + n + ')') : 'บันทึกแล้ว ✓';
+  if (n > 0) paintSave('ยังไม่ได้บันทึก ' + n + ' รายการ', true);
+}
+function scheduleSvcSave(){
+  if (svcMode !== 'live' || svcHold || svcLock) return;
+  clearTimeout(svcTimer);
+  if (svcDirty() === 0 || !getKey()) return;
+  svcTimer = setTimeout(() => { saveService(false, false); }, 1500);
+}
+function commitSvc(auto){
+  if (svcMode === 'readonly' || svcMode === 'loading') return;
+  if (svcMode === 'local') { svcStoreSet(); renderSvcAll(); return; }
+  if (svcDirty() === 0) clearTimeout(svcTimer);
+  updateSaveBtn();
+  renderSvcAll();
+  if (auto) scheduleSvcSave();
+}
+async function saveService(force, interactive, allowRetry){
+  if (svcMode !== 'live') return;
+  if (svcLock) { svcQueued = true; return; }
+  svcLock = true;
+  let retryAuth = false;
+  try {
+    if (!force && svcDirty() === 0) return;
+    const key = await ensureKey(!!interactive);
+    if (!key) {
+      if (interactive) showSvcBanner('ยังไม่ได้บันทึก กด บันทึก แล้วใส่รหัสผู้ดูแล', true);
+      return;
+    }
+    svcSaving = true;
+    updateSaveBtn();
+    const payloadRows = svcRows.map(cleanSvc);
+    const payload = { key: key, table: 'service', lastSaved: svcRev, force: !!force, rows: payloadRows };
+    let data = null;
+    try { data = await apiPost(payload); }
+    catch(err){
+      showSvcBanner('ยังบันทึกไม่สำเร็จ ตรวจอินเทอร์เน็ต แล้วกดปุ่ม บันทึก อีกครั้ง', true);
+      paintSave('ยังไม่ได้บันทึก', true);
+      return;
+    }
+    if (data && data.auth === false) {
+      clearKey();
+      svcQueued = false;
+      showSvcBanner(data.error || 'รหัสไม่ถูกต้อง ใส่รหัสใหม่อีกครั้ง แล้วกด บันทึก', true);
+      paintSave('ยังไม่ได้บันทึก', true);
+      retryAuth = !!interactive && allowRetry !== false && String(data.error || '').indexOf('รหัสไม่ถูกต้อง') >= 0;
+    } else if (data && data.conflict) {
+      svcHold = true;
+      svcQueued = false;
+      paintSave('มีข้อมูลใหม่กว่าบนชีต', true);
+      openConflict('service');
+    } else if (!data || data.saved !== true || data.table !== 'service') {
+      showSvcBanner((data && data.error) || 'ยังบันทึกไม่สำเร็จ กดปุ่ม บันทึก อีกครั้ง', true);
+      paintSave('ยังไม่ได้บันทึก', true);
+    } else {
+      const sent = svcSigList(payloadRows);
+      const nowSig = svcSigList(svcRows);
+      svcRev = data.lastSaved || svcRev;
+      svcMode = 'live';
+      svcHold = false;
+      document.body.classList.remove('svc-readonly');
+      if (sent === nowSig) {
+        svcRows = payloadRows;
+        svcBase = payloadRows.map(r => ({...r}));
+        showSvcBanner('');
+        paintSave('บันทึกล่าสุด ' + fmtTime(svcRev), false);
+      } else {
+        svcBase = payloadRows.map(r => ({...r}));
+        svcQueued = true;
+        paintSave('บันทึกแล้วบางส่วน กำลังส่งที่เหลือ', false);
+      }
+      setKey(key);
+    }
+  } finally {
+    svcSaving = false;
+    svcLock = false;
+    updateSaveBtn();
+    renderSvcAll();
+    const queued = svcQueued;
+    svcQueued = false;
+    if (queued && !svcHold && svcDirty() > 0) scheduleSvcSave();
+  }
+  if (retryAuth) {
+    const again = await ensureKey(true);
+    if (again) return saveService(force, true, false);
+  }
+}
+function svcCounts(list){
+  const c = {};
+  SVC_STAGES.forEach(s => { c[s] = 0; });
+  list.forEach(r => {
+    const s = deriveStage(r).stage;
+    c[s] = (c[s] || 0) + 1;
+  });
+  return c;
+}
+function renderSvcKpis(){
+  const list = svcRows;
+  const c = svcCounts(list);
+  const total = list.length;
+  const done = c['เสร็จ'] || 0;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  const cur = $('#svcStage') ? $('#svcStage').value : '';
+  const tiles = [
+    ['งานทั้งหมด', total, 'ทุกประเภท', '', ''],
+    ['เสร็จ', done, pct + '% ของงานทั้งหมด', '', 'เสร็จ'],
+    ['รอมัดจำ', c['รอมัดจำ'] || 0, 'ขั้นปัจจุบันคือรอมัดจำ', 'flag', 'รอมัดจำ'],
+    ['รอของ', c['รอของ'] || 0, 'ขั้นปัจจุบันคือรอของ', 'flag', 'รอของ'],
+    ['นัดเข้างาน', c['รอเข้างาน'] || 0, 'อยู่ขั้นรอเข้างาน', '', 'รอเข้างาน'],
+    ['กำลังดำเนินการ', c['กำลังดำเนินการ'] || 0, 'เข้างานแล้ว ยังไม่เสร็จ', '', 'กำลังดำเนินการ']
+  ];
+  $('#svcKpis').innerHTML = tiles.map(([lab, n, sm, cls, stage]) =>
+    '<button type="button" class="kpi ' + cls + (cur === stage && stage ? ' on' : '') + '" data-stage="' + esc(stage) + '">' +
+    '<div class="lab">' + lab + '</div><div class="val">' + nf(n) + '</div><div class="sm">' + sm + '</div></button>').join('');
+}
+function renderSvcCharts(){
+  const list = svcRows;
+  const c = svcCounts(list);
+  const stMax = Math.max(1, ...SVC_STAGES.map(s => c[s] || 0));
+  $('#svcChartStage').innerHTML = SVC_STAGES.map(s =>
+    barRow(s, [{k:s, v:c[s] || 0, c:svcColor(s)}], c[s] || 0, stMax)).join('');
+  const typeIds = SVC_TYPES.map(t => t.id);
+  if (list.some(r => !r.type)) typeIds.push('');
+  const tc = {};
+  typeIds.forEach(id => { tc[id] = 0; });
+  list.forEach(r => {
+    const id = typeIds.includes(r.type) ? r.type : '';
+    tc[id] = (tc[id] || 0) + 1;
+  });
+  const tMax = Math.max(1, ...typeIds.map(id => tc[id] || 0));
+  $('#svcChartType').innerHTML = typeIds.map((id, i) =>
+    barRow(svcTypeLabel(id), [{k:id, v:tc[id] || 0, c:'var(--st' + ((i % 5) + 1) + ')'}], tc[id] || 0, tMax)).join('');
+}
+function scheduleKey(r){
+  const w = String(r.workDate || '').trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(w)) return w;
+  let m = /(\d{1,2})\s*\/\s*(\d{1,2})\s*\/\s*(\d{2,4})/.exec(w);
+  if (m) {
+    let d = +m[1], mo = +m[2], y = +m[3];
+    if (y < 100) y = y >= 50 ? 2500 + y : 2000 + y;
+    if (y >= 2400) y -= 543;
+    if (mo >= 1 && mo <= 12) return y + '-' + pad2(mo) + '-' + pad2(d);
+  }
+  const th = /(ม\.ค\.|ก\.พ\.|มี\.ค\.|เม\.ย\.|พ\.ค\.|มิ\.ย\.|ก\.ค\.|ส\.ค\.|ก\.ย\.|ต\.ค\.|พ\.ย\.|ธ\.ค\.)\s*(\d{2,4})?/.exec(w);
+  if (th) {
+    const mo = MONTHS.indexOf(th[1]);
+    let y = th[2] ? +th[2] : 0;
+    if (y && y < 100) y = y >= 50 ? 2500 + y : 2000 + y;
+    if (y >= 2400) y -= 543;
+    const day = /(\d{1,2})/.exec(w);
+    if (mo > 0) return (y || 9999) + '-' + pad2(mo) + '-' + pad2(day ? +day[1] : 1);
+  }
+  return '9999-99-99';
+}
+function renderSvcUpcoming(){
+  const box = $('#svcUpcoming');
+  const items = svcRows.filter(r => {
+    const st = deriveStage(r).stage;
+    if (st === 'เสร็จ') return false;
+    return st === 'รอเข้างาน' || String(r.workDate || '').trim() !== '';
+  }).sort((a, b) => scheduleKey(a).localeCompare(scheduleKey(b)) || String(a.date).localeCompare(String(b.date)) || (a.no - b.no));
+  if (!items.length) { box.innerHTML = '<p class="empty">ไม่มีงานที่รอเข้า</p>'; return; }
+  box.innerHTML = items.map(r => {
+    const st = deriveStage(r).stage;
+    const note = String(r.note || '');
+    const extra = note.indexOf('นัด') >= 0 ? '<small>' + esc(note) + '</small>' : '';
+    return '<div class="upitem"><div><b>' + esc(fmtWork(r.workDate)) + '</b><small>รับงาน ' + esc(fmtBEPretty(r.date)) + '</small></div>' +
+      '<div><b>' + esc(String(r.customer || '').split('\n')[0]) + '</b><small>' +
+      esc(svcTypeLabel(r.type)) + (r.so ? ' · ' + r.so : '') + (r.team ? ' · ' + r.team : '') + '</small>' + extra + '</div>' +
+      '<div><span class="pill"><i style="background:' + svcColor(st) + '"></i>' + esc(st) + '</span></div></div>';
+  }).join('');
+}
+function svcMonthKey(r){
+  const s = String(r.date || '');
+  return /^\d{4}-\d{2}/.test(s) ? s.slice(0, 7) : '';
+}
+function svcMonthLabel(key){
+  if (!key) return 'ไม่ระบุเดือน';
+  const p = key.split('-');
+  return (MONTHS[+p[1]] || key) + ' ' + (+p[0] + 543);
+}
+function refreshSvcFilters(){
+  const typeEl = $('#svcType'), stageEl = $('#svcStage'), teamEl = $('#svcTeam'), monthEl = $('#svcMonth');
+  if (!typeEl) return;
+  const keep = { type: typeEl.value, stage: stageEl.value, team: teamEl.value, month: monthEl.value };
+  const types = SVC_TYPES.map(t => t.id);
+  if (svcRows.some(r => !r.type)) types.push('__none__');
+  typeEl.innerHTML = '<option value="">ทุกประเภท</option>' + types.map(id =>
+    '<option value="' + esc(id) + '">' + esc(id === '__none__' ? 'ไม่ระบุประเภท' : svcTypeLabel(id)) + '</option>').join('');
+  stageEl.innerHTML = '<option value="">ทุกขั้น</option>' + SVC_STAGES.map(s =>
+    '<option value="' + esc(s) + '">' + esc(s) + '</option>').join('');
+  const teams = [];
+  svcRows.forEach(r => {
+    const t = String(r.team || '').trim();
+    if (t && !teams.includes(t)) teams.push(t);
+  });
+  teams.sort((a, b) => a.localeCompare(b, 'th'));
+  const teamOpts = ['<option value="">ทุกทีม</option>'].concat(teams.map(t => '<option value="' + esc(t) + '">' + esc(t) + '</option>'));
+  if (svcRows.some(r => !String(r.team || '').trim())) teamOpts.push('<option value="__none__">ยังไม่ระบุทีม</option>');
+  teamEl.innerHTML = teamOpts.join('');
+  const months = [];
+  svcRows.forEach(r => {
+    const k = svcMonthKey(r);
+    if (k && !months.includes(k)) months.push(k);
+  });
+  months.sort();
+  const monthOpts = ['<option value="">ทุกเดือน</option>'].concat(months.map(k =>
+    '<option value="' + esc(k) + '">' + esc(svcMonthLabel(k)) + '</option>'));
+  if (svcRows.some(r => !svcMonthKey(r))) monthOpts.push('<option value="__none__">ไม่ระบุเดือน</option>');
+  monthEl.innerHTML = monthOpts.join('');
+  if ([...typeEl.options].some(o => o.value === keep.type)) typeEl.value = keep.type;
+  if ([...stageEl.options].some(o => o.value === keep.stage)) stageEl.value = keep.stage;
+  if ([...teamEl.options].some(o => o.value === keep.team)) teamEl.value = keep.team;
+  if ([...monthEl.options].some(o => o.value === keep.month)) monthEl.value = keep.month;
+}
+function svcFiltered(){
+  const q = ($('#svcQ').value || '').trim().toLowerCase();
+  const type = $('#svcType').value, stage = $('#svcStage').value, team = $('#svcTeam').value, month = $('#svcMonth').value;
+  let out = svcRows.filter(r => {
+    const info = deriveStage(r);
+    if (type === '__none__' && r.type) return false;
+    if (type && type !== '__none__' && r.type !== type) return false;
+    if (stage && info.stage !== stage) return false;
+    const t = String(r.team || '').trim();
+    if (team === '__none__' && t) return false;
+    if (team && team !== '__none__' && t !== team) return false;
+    const mk = svcMonthKey(r);
+    if (month === '__none__' && mk) return false;
+    if (month && month !== '__none__' && mk !== month) return false;
+    if (q) {
+      const hay = (r.customer + ' ' + r.detail + ' ' + r.so + ' ' + r.team + ' ' + r.note + ' ' + r.sales + ' ' + r.type + ' ' + info.stage).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  const stageIdx = s => { const i = SVC_STAGES.indexOf(s); return i < 0 ? 99 : i; };
+  out.sort((a, b) => {
+    if (svcSortKey === 'stage') return (stageIdx(deriveStage(a).stage) - stageIdx(deriveStage(b).stage)) * svcSortDir;
+    if (svcSortKey === 'no') return ((+a.no || 0) - (+b.no || 0)) * svcSortDir;
+    const x = String(a[svcSortKey] ?? '');
+    const y = String(b[svcSortKey] ?? '');
+    return x.localeCompare(y, 'th') * svcSortDir;
+  });
+  return out;
+}
+function renderSvcTable(){
+  const q = ($('#svcQ').value || '').trim().toLowerCase();
+  const out = svcFiltered();
+  const done = out.filter(r => deriveStage(r).stage === 'เสร็จ').length;
+  $('#svcCount').innerHTML = 'แสดง <b>' + nf(out.length) + '</b> งาน จากทั้งหมด ' + nf(svcRows.length) +
+    ' · ยังไม่เสร็จ <b>' + nf(out.length - done) + '</b> · เสร็จ <b>' + nf(done) + '</b>';
+  document.querySelectorAll('#viewService thead th').forEach(th => {
+    const s = th.querySelector('.ar'); if (!s) return;
+    s.textContent = th.dataset.sk === svcSortKey ? (svcSortDir > 0 ? '▲' : '▼') : '';
+  });
+  const editable = svcMode === 'live' || svcMode === 'local';
+  if (!out.length) {
+    $('#svcBody').innerHTML = '<tr><td colspan="8" class="empty">ไม่พบงานที่ตรงกับเงื่อนไข</td></tr>';
+    return;
+  }
+  $('#svcBody').innerHTML = out.map(r => {
+    const info = deriveStage(r);
+    const cust = String(r.customer || '').split('\n').map(line => hl(line, q)).join('<br>');
+    const detail = String(r.detail || '').replace(/\n/g, ' ');
+    const mark = svcSerious(info) ? '<div class="warnline" title="' + esc(info.issues.join(' · ')) + '">ตรวจข้อมูล</div>' : '';
+    const edit = editable ? '<button type="button" data-svc="' + r.id + '">แก้ไข</button>' : '';
+    return '<tr>' +
+      '<td class="so">' + esc(fmtBEPretty(r.date)) + '<br><span style="color:var(--muted);font-weight:400;font-size:11.5px">ลำดับ ' + esc(r.no || '—') + '</span></td>' +
+      '<td class="cust"><b>' + cust + '</b><small>' + hl(detail.slice(0, 140), q) + (detail.length > 140 ? '…' : '') + '</small>' + mark + '</td>' +
+      '<td>' + esc(svcTypeLabel(r.type)) + '</td>' +
+      '<td><span class="pill"><i style="background:' + svcColor(info.stage) + '"></i>' + esc(info.stage) + '</span></td>' +
+      '<td class="so">' + (r.so ? hl(r.so, q) : '<span style="color:var(--muted)">—</span>') + '</td>' +
+      '<td>' + (r.team ? hl(r.team, q) : '<span style="color:var(--muted)">—</span>') + '</td>' +
+      '<td>' + esc(fmtWork(r.workDate)) + '</td>' +
+      '<td class="act">' + edit + '</td></tr>';
+  }).join('');
+}
+function renderSvcHint(){
+  const el = $('#svcHint');
+  if (!el) return;
+  if (svcMode === 'live') {
+    el.innerHTML = 'ติ๊กขั้นงานในหน้าแก้ไข ระบบบันทึกให้เองด้วยรหัสเดียวกับหน้างาน Project<br>ขั้นปัจจุบันไล่จากซ้ายไปขวา: รอตรวจเช็ค → รอสรุปรายงาน → รอมัดจำ → รอของ → รอเข้างาน → กำลังดำเนินการ → เสร็จ (ข้ามขั้นที่ไม่ได้ติ๊ก)';
+  } else if (svcMode === 'local') {
+    el.innerHTML = 'การแก้ไขบันทึกอัตโนมัติในเบราว์เซอร์เครื่องนี้ · ขั้นปัจจุบันไล่จากซ้ายไปขวา ข้ามขั้นที่ไม่ได้ติ๊ก';
+  } else if (svcMode === 'readonly') {
+    el.textContent = 'ตอนนี้ดูได้อย่างเดียว ตามข้อความด้านบน';
+  } else {
+    el.textContent = '';
+  }
+}
+function renderSvcAll(){
+  if (!$('#svcKpis')) return;
+  if (svcMode === 'loading') {
+    $('#svcKpis').innerHTML = '';
+    $('#svcChartStage').innerHTML = '';
+    $('#svcChartType').innerHTML = '';
+    $('#svcUpcoming').innerHTML = '<p class="empty">กำลังโหลดข้อมูล...</p>';
+    $('#svcCount').textContent = 'กำลังโหลดข้อมูล...';
+    $('#svcBody').innerHTML = '<tr><td colspan="8" class="empty">กำลังโหลดข้อมูล...</td></tr>';
+    const hint = $('#svcHint'); if (hint) hint.textContent = '';
+    return;
+  }
+  renderSvcKpis();
+  renderSvcCharts();
+  renderSvcUpcoming();
+  refreshSvcFilters();
+  renderSvcTable();
+  renderSvcHint();
+}
+function teamSuggestions(){
+  const out = [];
+  const seen = new Set();
+  function add(name){
+    const n = String(name || '').trim();
+    if (!n || seen.has(n)) return;
+    seen.add(n);
+    out.push(n);
+  }
+  svcRows.forEach(r => {
+    const full = String(r.team || '').trim();
+    add(full);
+    full.split(/[\/,]/).forEach(part => add(part.replace(/[()]/g, '')));
+  });
+  return out;
+}
+function readSvcSteps(){
+  const o = {};
+  SVC_STEPS.forEach(s => {
+    const el = document.querySelector('input[name="svc-step-' + s.key + '"]:checked');
+    const v = el ? el.value : '';
+    o[s.wait] = v === 'wait' ? 1 : 0;
+    o[s.done] = v === 'done' ? 1 : 0;
+  });
+  return o;
+}
+function readSvcType(){
+  const el = document.querySelector('input[name="svc-type"]:checked');
+  return el ? el.value : '';
+}
+function svcDraftFromForm(base){
+  const steps = readSvcSteps();
+  const rawW = $('#svcWorkDate').value.trim();
+  const workIso = rawW ? parseSingleDate(rawW) : '';
+  return cleanSvc(Object.assign({}, base || {}, steps, {
+    date: parseSingleDate($('#svcDate').value.trim()) || String((base && base.date) || ''),
+    customer: $('#svcCustomer').value.trim(),
+    detail: $('#svcDetail').value.trim(),
+    type: readSvcType(),
+    so: $('#svcSo').value.trim(),
+    sales: $('#svcSales').value.trim(),
+    workDate: workIso || rawW,
+    team: $('#svcTeam').value.trim(),
+    note: $('#svcNote').value.trim()
+  }));
+}
+function paintSvcStageNow(){
+  const row = svcDraftFromForm(svcEditing == null ? {} : (svcRows.find(r => r.id === svcEditing) || {}));
+  const info = deriveStage(row);
+  const el = $('#svcStageNow');
+  if (el) el.innerHTML = '<i class="sw" style="background:' + svcColor(info.stage) + '"></i> ขั้นปัจจุบัน: ' + esc(info.stage);
+}
+function fillSvcForm(row){
+  const types = SVC_TYPES.slice();
+  if (row && row.type && !types.some(t => t.id === row.type)) types.push({id: row.type, label: row.type});
+  $('#svcTypes').innerHTML = types.map(t =>
+    '<label class="opt"><input type="radio" name="svc-type" value="' + esc(t.id) + '"' + (row && row.type === t.id ? ' checked' : '') + '> ' + esc(t.label) + '</label>').join('');
+  $('#svcSteps').innerHTML = SVC_STEPS.map(s => {
+    const w = row && onFlag(row[s.wait]);
+    const d = row && onFlag(row[s.done]);
+    const val = d ? 'done' : (w ? 'wait' : '');
+    const opts = [['', 'ยังไม่ถึง'], ['wait', s.waitLabel], ['done', s.doneLabel]].map(([v, lab]) =>
+      '<label class="opt"><input type="radio" name="svc-step-' + s.key + '" value="' + v + '"' + (v === val ? ' checked' : '') + '> ' + esc(lab) + '</label>').join('');
+    return '<div class="step"><div class="slab">' + esc(s.label) + '</div><div class="opts">' + opts + '</div></div>';
+  }).join('');
+  $('#svcDate').value = row && row.date ? fmtDMY(row.date) : fmtDMY(todayIso());
+  $('#svcSo').value = row ? row.so : '';
+  $('#svcCustomer').value = row ? row.customer : '';
+  $('#svcDetail').value = row ? row.detail : '';
+  $('#svcSales').value = row ? row.sales : '';
+  $('#svcWorkDate').value = row && row.workDate ? fmtDMY(row.workDate) : '';
+  $('#svcTeam').value = row ? row.team : '';
+  $('#svcNote').value = row ? row.note : '';
+  const list = $('#svcTeamList');
+  list.innerHTML = teamSuggestions().map(n => '<option value="' + esc(n) + '"></option>').join('');
+  const warn = $('#svcFormWarn');
+  if (row) {
+    const info = deriveStage(row);
+    warn.textContent = svcSerious(info) ? ('ข้อมูลเดิม: ' + info.issues.join(' · ') + ' — พอบันทึกจะใช้ช่องที่เลือกด้านบน') : '';
+  } else warn.textContent = '';
+  paintSvcStageNow();
+}
+function todayIso(){
+  const d = new Date();
+  return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+}
+function openSvcModal(id){
+  if (svcMode !== 'live' && svcMode !== 'local') {
+    alert('ตอนนี้แก้ไม่ได้ ทำตามข้อความสีเหลืองด้านบนก่อน');
+    return;
+  }
+  svcEditing = id;
+  const row = id == null ? null : svcRows.find(r => r.id === id);
+  $('#svcTitle').textContent = row ? ('แก้ไขงาน ' + (row.so || row.customer.split('\n')[0] || '')) : 'เพิ่มงาน Service';
+  $('#svcDel').style.display = row ? '' : 'none';
+  fillSvcForm(row);
+  $('#svcMask').classList.add('on');
+  setTimeout(() => $('#svcCustomer').focus(), 30);
+}
+function closeSvcModal(){
+  $('#svcMask').classList.remove('on');
+  svcEditing = null;
+}
+function saveSvcForm(){
+  const customer = $('#svcCustomer').value.trim();
+  if (!customer) { $('#svcCustomer').focus(); $('#svcCustomer').style.outline = '2px solid var(--crit)'; return; }
+  $('#svcCustomer').style.outline = '';
+  const type = readSvcType();
+  if (!SVC_TYPES.some(t => t.id === type)) { alert('เลือกประเภทงาน: ตรวจเช็ค, งานซ่อม, งานเคลม หรือ PM'); return; }
+  const rawDate = $('#svcDate').value.trim();
+  let date = '';
+  if (rawDate) {
+    date = parseSingleDate(rawDate);
+    if (!date) { alert('วันที่รับงานไม่ถูกต้อง ให้ใช้แบบ 30/06/2569'); $('#svcDate').focus(); return; }
+  }
+  const rawW = $('#svcWorkDate').value.trim();
+  const workIso = rawW ? parseSingleDate(rawW) : '';
+  const data = Object.assign({
+    customer: customer,
+    detail: $('#svcDetail').value.trim(),
+    type: type,
+    so: $('#svcSo').value.trim(),
+    sales: $('#svcSales').value.trim(),
+    date: date,
+    workDate: workIso || rawW,
+    team: $('#svcTeam').value.trim(),
+    note: $('#svcNote').value.trim()
+  }, readSvcSteps());
+  if (svcEditing == null) {
+    const id = Math.max(0, ...svcRows.map(r => +r.id || 0)) + 1;
+    const no = Math.max(0, ...svcRows.map(r => +r.no || 0)) + 1;
+    svcRows.push(cleanSvc(Object.assign({ id: id, no: no }, data)));
+  } else {
+    const cur = svcRows.find(r => r.id === svcEditing);
+    if (!cur) return closeSvcModal();
+    Object.assign(cur, cleanSvc(Object.assign({ id: cur.id, no: cur.no }, data)));
+  }
+  closeSvcModal();
+  commitSvc(true);
+}
+function svcRowsForExport(){
+  return svcRows.map(cleanSvc).sort((a, b) => (a.no - b.no) || (a.id - b.id));
+}
+async function exportServiceXlsx(){
+  const btn = $('#xlsxBtn');
+  const prev = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'กำลังเตรียมไฟล์...';
+  try {
+    await loadSheetJS(0);
+    const COLS = 26;
+    const blank = () => Array(COLS).fill('');
+    const head = [blank(), blank(), blank(), blank()];
+    head[0][0] = 'งานตรวจเช็ค/งานซ่อม/งานเคลม/PM';
+    head[1][0] = 'ลำดับ';
+    head[1][4] = 'ประเภทงาน';
+    head[1][7] = 'สถานะ';
+    head[1][24] = 'PM (บำรุงรักษา)';
+    head[1][25] = 'ขั้นปัจจุบัน';
+    head[2][7] = 'ตรวจเช็ค';
+    head[2][9] = 'สรุปรายงาน';
+    head[2][11] = 'ส่งต่อเซลล์';
+    head[2][12] = 'SO';
+    head[2][13] = 'การชำระเงิน';
+    head[2][15] = 'เบิกของ';
+    head[2][17] = 'เข้างาน';
+    head[2][19] = 'ดำเนินการวันที่';
+    head[2][20] = 'การดำเนินการ';
+    head[2][22] = 'ทีมช่าง';
+    head[2][23] = 'หมายเหตุ';
+    head[3][1] = 'วันที่';
+    head[3][2] = 'ชื่องาน/ข้อมูลที่ลูกค้าแจ้ง';
+    head[3][3] = 'รายละเอียดงาน';
+    head[3][4] = 'ตรวจเช็ค';
+    head[3][5] = 'งานซ่อม';
+    head[3][6] = 'งานเคลม';
+    head[3][7] = 'รอดำเนินการ';
+    head[3][8] = 'ดำเนินการแล้ว';
+    head[3][9] = 'รอดำเนินการ';
+    head[3][10] = 'ดำเนินการแล้ว';
+    head[3][13] = 'รอมัดจำ';
+    head[3][14] = 'มัดจำแล้ว';
+    head[3][15] = 'รอของ';
+    head[3][16] = 'ของครบ';
+    head[3][17] = 'รอเข้างาน';
+    head[3][18] = 'ดำเนินการแล้ว';
+    head[3][20] = 'ไม่เสร็จ';
+    head[3][21] = 'เสร็จ';
+    const body = svcRowsForExport().map(r => {
+      const info = deriveStage(r);
+      return [
+        r.no || '', fmtDMY(r.date), r.customer, r.detail,
+        r.type === 'ตรวจเช็ค', r.type === 'งานซ่อม', r.type === 'งานเคลม',
+        !!r.chkWait, !!r.chkDone, !!r.rptWait, !!r.rptDone,
+        r.sales || '', r.so || '',
+        !!r.depWait, !!r.depDone, !!r.partsWait, !!r.partsDone, !!r.enterWait, !!r.enterDone,
+        fmtDMY(r.workDate), !!r.workOpen, !!r.workDone,
+        r.team || '', r.note || '',
+        r.type === 'PM', info.stage
+      ];
+    });
+    const aoa = head.concat(body);
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    const mg = (r1, c1, r2, c2) => ({ s: { r: r1, c: c1 }, e: { r: r2, c: c2 } });
+    ws['!merges'] = [
+      mg(0,0,0,23), mg(1,0,3,0), mg(1,4,2,6), mg(1,7,1,23),
+      mg(2,7,2,8), mg(2,9,2,10), mg(2,11,3,11), mg(2,12,3,12),
+      mg(2,13,2,14), mg(2,15,2,16), mg(2,17,2,18), mg(2,19,3,19),
+      mg(2,20,2,21), mg(2,22,3,22), mg(2,23,3,23), mg(1,24,3,24), mg(1,25,3,25)
+    ];
+    ws['!cols'] = [8,14,42,36,12,12,12,14,14,14,14,16,18,12,12,12,12,14,14,18,12,10,22,28,16,18].map(w => ({ wch: w }));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Service');
+    XLSX.writeFile(wb, 'PE_Service_' + new Date().toISOString().slice(0, 10) + '.xlsx');
+  } catch(err) {
+    alert('ส่งออก Excel ไม่ได้ในตอนนี้');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = prev;
+  }
+}
+function applyView(){
+  const svc = location.hash === '#service';
+  document.body.setAttribute('data-view', svc ? 'service' : 'project');
+  document.documentElement.removeAttribute('data-boot');
+  const tp = $('#tabProject'), ts = $('#tabService');
+  if (tp) tp.classList.toggle('on', !svc);
+  if (ts) ts.classList.toggle('on', svc);
+  const h1 = document.querySelector('header.top h1');
+  const lead = $('#subLead');
+  if (h1) h1.textContent = svc ? 'Service & PM — ตารางงาน' : 'Project Engineer — ตารางงาน';
+  document.title = h1 ? h1.textContent : document.title;
+  if (lead) lead.textContent = svc ? 'ประเภทงาน · ขั้นปัจจุบัน · ทีมช่าง' : 'ผู้รับผิดชอบ · เลข SO · สถานะงาน';
+  if (!svc) {
+    paintSave(projectSave.txt, projectSave.warn);
+    updateSaveBtn();
+    return;
+  }
+  if (!svcBooted) loadService();
+  else { renderSvcAll(); updateSaveBtn(); }
+}
+function bindSvcEvents(){
+  $('#svcMask').addEventListener('click', e => { if (e.target.id === 'svcMask') closeSvcModal(); });
+  $('#svcCancel').addEventListener('click', closeSvcModal);
+  $('#svcSave').addEventListener('click', saveSvcForm);
+  $('#svcDel').addEventListener('click', () => {
+    const r = svcRows.find(x => x.id === svcEditing);
+    if (!r) return closeSvcModal();
+    const name = (r.customer || r.so || 'งานนี้').split('\n')[0];
+    if (!confirm('ลบงาน "' + name + '" ออกจากตาราง Service?')) return;
+    svcRows = svcRows.filter(x => x.id !== r.id);
+    closeSvcModal();
+    commitSvc(true);
+  });
+  $('#svcMask').addEventListener('change', paintSvcStageNow);
+  $('#svcMask').addEventListener('input', paintSvcStageNow);
+  $('#svcQ').addEventListener('input', () => { renderSvcTable(); });
+  ['#svcType','#svcStage','#svcTeam','#svcMonth'].forEach(sel => {
+    $(sel).addEventListener('change', () => { renderSvcKpis(); renderSvcTable(); });
+  });
+  $('#svcClear').addEventListener('click', () => {
+    $('#svcQ').value = '';
+    $('#svcType').value = '';
+    $('#svcStage').value = '';
+    $('#svcTeam').value = '';
+    $('#svcMonth').value = '';
+    renderSvcKpis();
+    renderSvcTable();
+  });
+  $('#svcKpis').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-stage]');
+    if (!btn) return;
+    $('#svcStage').value = btn.dataset.stage || '';
+    renderSvcKpis();
+    renderSvcTable();
+  });
+  document.querySelectorAll('#viewService thead th[data-sk]').forEach(th => th.addEventListener('click', () => {
+    const k = th.dataset.sk;
+    if (svcSortKey === k) svcSortDir = -svcSortDir; else { svcSortKey = k; svcSortDir = 1; }
+    renderSvcTable();
+  }));
+  $('#svcBody').addEventListener('click', e => {
+    const b = e.target.closest('button[data-svc]');
+    if (b) openSvcModal(+b.dataset.svc);
+  });
+}
+
+bindSvcEvents();
+applyView();
+window.addEventListener('hashchange', applyView);
 if (SHARED) {
   $('#saveBtn').hidden = false;
   $('#reloadBtn').hidden = false;
