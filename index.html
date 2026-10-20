@@ -145,6 +145,18 @@ textarea{min-height:64px;resize:vertical}
   border:1px solid var(--border);background:var(--surface);color:var(--ink2);font-size:12.5px;text-decoration:none}
 .nav a:hover{color:var(--ink)}
 .nav a.on{border-color:var(--ink2);color:var(--ink);font-weight:600;background:var(--chip)}
+button.textbtn{background:transparent;border:none;color:var(--accent);padding:2px 0;font-size:12.5px;text-align:left;width:auto}
+button.textbtn:hover{text-decoration:underline;color:var(--accent)}
+.rlist{display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:var(--page)}
+.rrow .nm{font-weight:600;flex:1;min-width:120px;word-break:break-word}
+.rrow .cnt{color:var(--muted);font-size:12.5px;white-space:nowrap}
+.rrow .ops,.rblock .ops{display:flex;gap:6px;flex:none;flex-wrap:wrap}
+.rblock{border:1px solid var(--border);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--page)}
+.radd{display:flex;gap:8px;align-items:center}
+.radd input{flex:1}
+#rosterMsg{margin:10px 0 0;color:var(--ink2);font-size:13px}
+#rosterMsg:empty{display:none}
 
 
 @media(max-width:900px){ .charts{grid-template-columns:1fr} }
@@ -174,6 +186,7 @@ textarea{min-height:64px;resize:vertical}
       <button class="save" id="saveBtn" type="button" hidden>บันทึก</button>
       <button id="reloadBtn" type="button" hidden>โหลดใหม่</button>
       <button class="primary" id="addBtn" type="button">+ เพิ่มงาน</button>
+      <button id="rosterBtn" type="button">จัดการผู้รับผิดชอบ</button>
       <button id="expBtn" type="button">บันทึกเป็น CSV</button>
       <button id="xlsxBtn" type="button">ส่งออก Excel</button>
       <button id="impBtn" type="button">นำเข้า CSV</button>
@@ -242,7 +255,7 @@ textarea{min-height:64px;resize:vertical}
     <h3 id="mTitle">เพิ่มงาน</h3>
     <div class="fgrid">
       <div class="f"><label for="fSo">เลข SO / OE *</label><input type="text" id="fSo" placeholder="SO2601-001"></div>
-      <div class="f"><label for="fEngI">ผู้รับผิดชอบ</label><input type="text" id="fEngI" list="engList" placeholder="ยังไม่ระบุ"><datalist id="engList"></datalist></div>
+      <div class="f"><label for="fEngI">ผู้รับผิดชอบ</label><select id="fEngI"></select><button type="button" class="textbtn" id="engManage">จัดการผู้รับผิดชอบ</button></div>
       <div class="f"><label for="fComp">ชื่อบริษัท</label><input type="text" id="fComp"></div>
       <div class="f"><label for="fProj">โครงการ</label><input type="text" id="fProj"></div>
       <div class="f full"><label for="fWork">ประเภทงาน / รายละเอียด</label><textarea id="fWork"></textarea></div>
@@ -257,6 +270,25 @@ textarea{min-height:64px;resize:vertical}
       <button class="danger left" id="mDel" type="button">ลบงานนี้</button>
       <button id="mCancel" type="button">ยกเลิก</button>
       <button class="primary" id="mSave" type="button">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div class="mask" id="rosterMask">
+  <div class="modal">
+    <h3>จัดการผู้รับผิดชอบ</h3>
+    <p class="desc">เพิ่มชื่อ เปลี่ยนชื่อ หรือเอาชื่อออก แล้วกดปุ่มเขียว <b>บันทึก</b> เพื่อให้ทุกคนเห็นรายชื่อเดียวกัน<br>ยังไม่ระบุ ใช้กับงานที่ยังไม่มีคนดูแล ไม่ต้องใส่ในรายชื่อ</p>
+    <div class="rlist" id="rosterList"></div>
+    <div class="f" style="margin-top:14px">
+      <label for="rosterNew">เพิ่มชื่อใหม่</label>
+      <div class="radd">
+        <input type="text" id="rosterNew" placeholder="ชื่อ นามสกุล" autocomplete="off">
+        <button class="primary" id="rosterAdd" type="button">เพิ่มชื่อ</button>
+      </div>
+    </div>
+    <p id="rosterMsg"></p>
+    <div class="mact">
+      <button id="rosterClose" type="button">ปิด</button>
     </div>
   </div>
 </div>
@@ -318,6 +350,121 @@ function storeSet(obj){
 }
 function storeClear(){ try { localStorage.removeItem(STORE_KEY); } catch(e){} }
 
+const DEFAULT_ENG = ['วรวิทย์ เกษร์แก้ว','วุฒิชัย ยอดสุรางค์','สรายุทธ ช่วยครุฑ','ตาร์มีซี ยะโก๊ะ','สุรินทร์ อินทนู'];
+const ROSTER_ID = -1;
+const ROSTER_SRC = '__roster__';
+const ROSTER_SO = '__ผู้รับผิดชอบ__';
+const ROSTER_COMP = 'รายชื่อผู้รับผิดชอบ (ระบบใช้ ห้ามลบแถวนี้)';
+let rosterNames = DEFAULT_ENG.slice();
+let baseRosterSig = null;
+let rosterUi = null;
+
+function cleanRow(r){
+  return {
+    id: +r.id || 0,
+    src: String(r.src || ''),
+    so: String(r.so || ''),
+    comp: String(r.comp || ''),
+    proj: String(r.proj || ''),
+    work: String(r.work || ''),
+    pay: String(r.pay || ''),
+    prog: String(r.prog || ''),
+    st: STATUSES.includes(r.st) ? r.st : 'ไม่ระบุ',
+    note: String(r.note || ''),
+    eng: String(r.eng || '') || NO_ENG,
+    m: Math.min(12, Math.max(0, parseInt(r.m, 10) || 0)),
+    y: parseInt(r.y, 10) || 0
+  };
+}
+function isRosterRow(r){
+  if (!r || typeof r !== 'object') return false;
+  if (Number(r.id) === ROSTER_ID) return true;
+  if (String(r.src || '') === ROSTER_SRC) return true;
+  if (String(r.so || '') === ROSTER_SO && String(r.comp || '') === ROSTER_COMP) return true;
+  return false;
+}
+function normEngName(s){
+  return String(s || '').replace(/\s+/g, ' ').trim();
+}
+function parseRosterNote(note){
+  try {
+    const arr = JSON.parse(String(note || ''));
+    if (!Array.isArray(arr)) return null;
+    return mergeNames(arr, []);
+  } catch(e){ return null; }
+}
+function mergeNames(base, extra){
+  const out = [];
+  const seen = new Set();
+  [].concat(base || [], extra || []).forEach(x => {
+    const n = normEngName(x);
+    if (!n || n === NO_ENG || seen.has(n)) return;
+    seen.add(n);
+    out.push(n);
+  });
+  return out;
+}
+function namesFromJobs(list){
+  const out = [];
+  (list || []).forEach(r => {
+    if (!r || isRosterRow(r)) return;
+    const n = normEngName(r.eng);
+    if (!n || n === NO_ENG || out.includes(n)) return;
+    out.push(n);
+  });
+  return out;
+}
+function seedRoster(jobList){
+  return mergeNames(DEFAULT_ENG, namesFromJobs(jobList));
+}
+function jobRows(){ return rows.filter(r => !isRosterRow(r)); }
+function rosterSig(){ return JSON.stringify(rosterNames); }
+function rosterRow(){
+  return {
+    id: ROSTER_ID,
+    src: ROSTER_SRC,
+    so: ROSTER_SO,
+    comp: ROSTER_COMP,
+    proj: '',
+    work: '',
+    pay: '',
+    prog: '',
+    st: 'ไม่ระบุ',
+    note: JSON.stringify(rosterNames),
+    eng: NO_ENG,
+    m: 0,
+    y: 0
+  };
+}
+function adoptRoster(allRows){
+  const jobs = [];
+  let found = false;
+  let parsed = null;
+  (allRows || []).forEach(r => {
+    if (isRosterRow(r)) {
+      if (!found) {
+        found = true;
+        parsed = parseRosterNote(r.note);
+      }
+      return;
+    }
+    jobs.push(cleanRow(r));
+  });
+  if (!found || parsed == null) {
+    return { jobs: jobs, names: seedRoster(jobs), hadRoster: found, baseSig: null };
+  }
+  return { jobs: jobs, names: mergeNames(parsed, namesFromJobs(jobs)), hadRoster: true, baseSig: JSON.stringify(parsed) };
+}
+function sheetPayload(){
+  return jobRows().map(cleanRow).concat([cleanRow(rosterRow())]);
+}
+function sigOf(list){ return list.map(rowSig).join('\n'); }
+function applyRosterPack(pack){
+  rows = pack.jobs;
+  rosterNames = pack.names;
+  baseRosterSig = pack.baseSig;
+}
+
 let rows, nextId;
 let baseRows = [];
 let loadedRev = '';
@@ -336,18 +483,24 @@ if (!SHARED) {
 (function loadRows(){
   const base = () => ROWS.map(r => ({...r}));
   const saved = storeGet();
+  let source;
   if (saved && Array.isArray(saved.rows) && saved.rows.length){
-    if (saved.v === DATA_VERSION) rows = saved.rows;
+    const nSaved = saved.rows.filter(r => !isRosterRow(r)).length;
+    if (saved.v === DATA_VERSION) source = saved.rows;
     else {
       const useNew = confirm(
         'ไฟล์นี้มีข้อมูลชุดใหม่จากต้นทาง (' + DATA_VERSION + ')\n' +
-        'แต่ในเครื่องนี้มีข้อมูลที่คุณเคยแก้ไว้ ' + saved.rows.length + ' งาน (บันทึกเมื่อ ' + (saved.at || '-') + ')\n\n' +
+        'แต่ในเครื่องนี้มีข้อมูลที่คุณเคยแก้ไว้ ' + nSaved + ' งาน (บันทึกเมื่อ ' + (saved.at || '-') + ')\n\n' +
         'กด "ตกลง" = ใช้ข้อมูลชุดใหม่ (ข้อมูลที่แก้ไว้จะถูกแทนที่)\n' +
         'กด "ยกเลิก" = ใช้ข้อมูลที่คุณแก้ไว้ต่อ');
-      rows = useNew ? base() : saved.rows;
+      source = useNew ? base() : saved.rows;
       if (useNew) storeClear();
     }
-  } else rows = base();
+  } else source = base();
+  const pack = adoptRoster(source);
+  rows = pack.jobs;
+  rosterNames = pack.names;
+  baseRosterSig = rosterSig();
   nextId = Math.max(0, ...rows.map(r => +r.id || 0)) + 1;
 })();
 } else {
@@ -374,7 +527,8 @@ function setSaveState(txt, warn){
   $('#saveState').classList.toggle('warn', !!warn);
 }
 function save(){
-  const ok = storeSet({v: DATA_VERSION, at: new Date().toLocaleString('th-TH'), rows});
+  const payload = jobRows().map(r => ({...r})).concat([rosterRow()]);
+  const ok = storeSet({v: DATA_VERSION, at: new Date().toLocaleString('th-TH'), rows: payload});
   if (ok) setSaveState('บันทึกอัตโนมัติแล้ว ' + nowHHMM(), false);
   else setSaveState('เบราว์เซอร์นี้บันทึกอัตโนมัติไม่ได้ — กรุณากด "บันทึกเป็น CSV"', true);
 }
@@ -386,23 +540,6 @@ function initSaveState(){
 }
 
 /* ---------- ข้อมูลร่วมบน Google Sheet ---------- */
-function cleanRow(r){
-  return {
-    id: +r.id || 0,
-    src: String(r.src || ''),
-    so: String(r.so || ''),
-    comp: String(r.comp || ''),
-    proj: String(r.proj || ''),
-    work: String(r.work || ''),
-    pay: String(r.pay || ''),
-    prog: String(r.prog || ''),
-    st: STATUSES.includes(r.st) ? r.st : 'ไม่ระบุ',
-    note: String(r.note || ''),
-    eng: String(r.eng || '') || NO_ENG,
-    m: Math.min(12, Math.max(0, parseInt(r.m, 10) || 0)),
-    y: parseInt(r.y, 10) || 0
-  };
-}
 function rowSig(r){
   const c = cleanRow(r);
   return JSON.stringify([c.id,c.src,c.so,c.comp,c.proj,c.work,c.pay,c.prog,c.st,c.note,c.eng,c.m,c.y]);
@@ -413,6 +550,7 @@ function dirtyCount(){
   let n = 0;
   cur.forEach((sig, id) => { if (base.get(id) !== sig) n++; });
   base.forEach((_, id) => { if (!cur.has(id)) n++; });
+  if (rosterSig() !== baseRosterSig) n++;
   return n;
 }
 function showBanner(text, bad){
@@ -542,7 +680,8 @@ async function apiPost(payload){
   catch(e){ throw new Error('json'); }
 }
 function applyServer(data){
-  rows = (data.rows || []).map(cleanRow);
+  const pack = adoptRoster(data.rows || []);
+  applyRosterPack(pack);
   baseRows = cloneRows(rows);
   loadedRev = data.lastSaved || data.updatedAt || '';
   sheetReady = true;
@@ -550,6 +689,7 @@ function applyServer(data){
   booting = false;
   bumpNext();
   if (!rows.length) showBanner('ชีตยังว่าง เปิด Google Sheet แล้วเลือกเมนู PE Jobs > ตั้งค่าเริ่มต้น จากนั้นกด โหลดใหม่', true);
+  else if (pack.baseSig == null) showBanner('เตรียมรายชื่อผู้รับผิดชอบไว้แล้ว กดปุ่มเขียว บันทึก ครั้งหนึ่ง เพื่อเก็บรายชื่อนี้', false);
   else showBanner('');
   setSaveState(loadedRev ? ('บันทึกล่าสุด ' + fmtTime(loadedRev)) : 'โหลดจากชีตแล้ว', false);
   updateSaveBtn();
@@ -568,8 +708,11 @@ async function loadFromSheet(){
     if (!data || data.ok !== true || !Array.isArray(data.rows)) throw new Error('bad');
     applyServer(data);
   } catch(e){
-    rows = cloneRows(ROWS);
+    const pack = adoptRoster(ROWS);
+    rows = pack.jobs;
+    rosterNames = pack.names;
     baseRows = cloneRows(rows);
+    baseRosterSig = rosterSig();
     sheetReady = false;
     loadedRev = '';
     booting = false;
@@ -617,7 +760,7 @@ async function saveToSheet(force, interactive, allowRetry){
     }
     saving = true;
     updateSaveBtn();
-    const payloadRows = rows.map(cleanRow);
+    const payloadRows = sheetPayload();
     const payload = {
       key: key,
       lastSaved: loadedRev,
@@ -647,18 +790,23 @@ async function saveToSheet(force, interactive, allowRetry){
       showBanner((data && data.error) || 'ยังบันทึกไม่สำเร็จ กดปุ่ม บันทึก อีกครั้ง', true);
       setSaveState('ยังไม่ได้บันทึก', true);
     } else {
-    const sent = payloadRows.map(rowSig).join('\n');
-    const nowSig = rows.map(rowSig).join('\n');
+    const sent = sigOf(payloadRows);
+    const nowSig = sigOf(sheetPayload());
     loadedRev = data.lastSaved || data.updatedAt || loadedRev;
     sheetReady = true;
     holdAuto = false;
+    const sentJobs = payloadRows.filter(r => !isRosterRow(r)).map(r => ({...r}));
     if (sent === nowSig) {
-      rows = payloadRows.map(r => ({...r}));
+      rows = sentJobs;
       baseRows = cloneRows(rows);
+      baseRosterSig = rosterSig();
       showBanner('');
       setSaveState('บันทึกล่าสุด ' + fmtTime(loadedRev), false);
     } else {
-      baseRows = payloadRows.map(r => ({...r}));
+      baseRows = sentJobs;
+      const sentRoster = payloadRows.find(isRosterRow);
+      const sentParsed = sentRoster ? parseRosterNote(sentRoster.note) : null;
+      baseRosterSig = sentParsed ? JSON.stringify(sentParsed) : null;
       saveQueued = true;
       setSaveState('บันทึกแล้วบางส่วน กำลังส่งที่เหลือ', false);
     }
@@ -691,7 +839,7 @@ themeBtn.addEventListener('click', () => {
 });
 
 /* ---------- derived ---------- */
-const uniq = k => [...new Set(rows.map(r => r[k]).filter(Boolean))];
+const uniq = k => [...new Set(jobRows().map(r => r[k]).filter(Boolean))];
 function statusCounts(list){
   const c = {}; STATUSES.forEach(s => c[s] = 0);
   list.forEach(r => { c[r.st] = (c[r.st] || 0) + 1; });
@@ -700,11 +848,12 @@ function statusCounts(list){
 
 /* ---------- KPI ---------- */
 function renderKpis(){
-  const total = rows.length;
-  const done = rows.filter(r => r.st === 'เสร็จแล้ว').length;
+  const list = jobRows();
+  const total = list.length;
+  const done = list.filter(r => r.st === 'เสร็จแล้ว').length;
   const open = total - done;
-  const noEng = rows.filter(r => !r.eng || r.eng === NO_ENG).length;
-  const running = rows.filter(r => r.st === 'กำลังดำเนินการ').length;
+  const noEng = list.filter(r => !r.eng || r.eng === NO_ENG).length;
+  const running = list.filter(r => r.st === 'กำลังดำเนินการ').length;
   const openPct = total ? Math.round(open / total * 100) : 0;
   const donePct = total ? Math.round(done / total * 100) : 0;
   const tiles = [
@@ -727,7 +876,8 @@ function barRow(name, segs, total, max, sub){
     '<div class="btip" style="left:'+(total/max*100)+'%">'+nf(total)+'</div></div></div></div>';
 }
 function renderCharts(){
-  const c = statusCounts(rows);
+  const list = jobRows();
+  const c = statusCounts(list);
   const stMax = Math.max(1, ...STATUSES.map(s => c[s]));
   $('#chartStatus').innerHTML = STATUSES.filter(s => c[s] > 0)
     .map(s => barRow(s, [{k:s, v:c[s], c:stColor(s)}], c[s], stMax)).join('');
@@ -736,8 +886,16 @@ function renderCharts(){
     '<span class="k"><i class="sw" style="background:'+stColor(s)+'"></i>'+s+'</span>').join('');
 
   const byEng = {};
-  rows.forEach(r => { (byEng[r.eng] = byEng[r.eng] || []).push(r); });
-  const engs = Object.keys(byEng).sort((a,b) => byEng[b].length - byEng[a].length);
+  const order = [];
+  engOptions().forEach(n => { if (!byEng[n]) { byEng[n] = []; order.push(n); } });
+  list.forEach(r => {
+    const key = r.eng || NO_ENG;
+    if (!byEng[key]) { byEng[key] = []; order.push(key); }
+    byEng[key].push(r);
+  });
+  const rank = new Map(order.map((n,i) => [n, i]));
+  const engs = order.filter(n => n !== NO_ENG || (byEng[n] && byEng[n].length));
+  engs.sort((a,b) => (byEng[b].length - byEng[a].length) || ((rank.get(a) || 0) - (rank.get(b) || 0)));
   const engMax = Math.max(1, ...engs.map(e => byEng[e].length));
   $('#chartEng').innerHTML = engs.map(e => {
     const cc = statusCounts(byEng[e]);
@@ -751,20 +909,38 @@ function fillSelect(el, items, allLabel){
   el.innerHTML = '<option value="">' + allLabel + '</option>' +
     items.map(v => '<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
 }
+function engOptions(){
+  return mergeNames(rosterNames, namesFromJobs(jobRows()));
+}
+function fillEngSelect(current){
+  const el = $('#fEngI');
+  if (!el) return;
+  const cur = current != null ? current : el.value;
+  const names = engOptions();
+  const extra = cur && cur !== NO_ENG && !names.includes(cur) ? [cur] : [];
+  const opts = [NO_ENG].concat(names, extra);
+  el.innerHTML = opts.map(v => '<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
+  el.value = opts.includes(cur) ? cur : NO_ENG;
+}
 function refreshFilters(){
   const keepSt = $('#fSt').value, keepEng = $('#fEng').value, keepSrc = $('#fSrc').value;
-  fillSelect($('#fSt'), STATUSES.filter(s => rows.some(r => r.st === s)), 'ทุกสถานะ');
-  fillSelect($('#fEng'), uniq('eng').sort((a,b) => a === NO_ENG ? 1 : b === NO_ENG ? -1 : a.localeCompare(b,'th')), 'ทุกคน');
+  const keepStI = $('#fStI').value, keepSrcI = $('#fSrcI').value;
+  const people = engOptions();
+  const engFilter = jobRows().some(r => !r.eng || r.eng === NO_ENG) ? people.concat([NO_ENG]) : people.slice();
+  fillSelect($('#fSt'), STATUSES.filter(s => jobRows().some(r => r.st === s)), 'ทุกสถานะ');
+  fillSelect($('#fEng'), engFilter, 'ทุกคน');
   fillSelect($('#fSrc'), uniq('src'), 'ทุกกลุ่มงาน');
   $('#fSt').value = keepSt; $('#fEng').value = keepEng; $('#fSrc').value = keepSrc;
-  $('#engList').innerHTML = uniq('eng').filter(e => e !== NO_ENG).map(e => '<option value="'+esc(e)+'">').join('');
+  fillEngSelect();
   fillSelect($('#fStI'), STATUSES, 'ไม่ระบุ');
   fillSelect($('#fSrcI'), uniq('src'), 'ปี 2026');
+  if (keepStI) $('#fStI').value = keepStI;
+  if (keepSrcI) $('#fSrcI').value = keepSrcI;
 }
 function filtered(){
   const q = $('#q').value.trim().toLowerCase();
   const st = $('#fSt').value, eng = $('#fEng').value, src = $('#fSrc').value;
-  let out = rows.filter(r => {
+  let out = jobRows().filter(r => {
     if (st && r.st !== st) return false;
     if (eng && r.eng !== eng) return false;
     if (src && r.src !== src) return false;
@@ -796,7 +972,7 @@ function renderTable(){
   const q = $('#q').value.trim().toLowerCase();
   const out = filtered();
   const done = out.filter(r => r.st === 'เสร็จแล้ว').length;
-  $('#count').innerHTML = 'แสดง <b>' + nf(out.length) + '</b> งาน จากทั้งหมด ' + nf(rows.length) +
+  $('#count').innerHTML = 'แสดง <b>' + nf(out.length) + '</b> งาน จากทั้งหมด ' + nf(jobRows().length) +
     ' · ยังไม่เสร็จ <b>' + nf(out.length - done) + '</b> · เสร็จแล้ว <b>' + nf(done) + '</b>';
   document.querySelectorAll('thead th').forEach(th => {
     const s = th.querySelector('.ar'); if (!s) return;
@@ -814,7 +990,7 @@ function renderTable(){
       '<td class="act"><button type="button" data-edit="' + r.id + '">แก้ไข</button></td>' +
     '</tr>').join('');
 }
-function renderAll(){ renderKpis(); renderCharts(); refreshFilters(); renderTable(); }
+function renderAll(){ renderKpis(); renderCharts(); refreshFilters(); renderTable(); if ($('#rosterMask').classList.contains('on')) renderRoster(); }
 
 ['#q','#fSt','#fEng','#fSrc'].forEach(s => {
   $(s).addEventListener('input', renderTable);
@@ -846,11 +1022,10 @@ $('#tbody').addEventListener('change', e => {
 const mask = $('#mask');
 function openModal(id){
   editingId = id;
-  const r = id == null ? null : rows.find(x => x.id === id);
+  const r = id == null ? null : jobRows().find(x => x.id === id);
   $('#mTitle').textContent = r ? 'แก้ไขงาน ' + r.so : 'เพิ่มงานใหม่';
   $('#mDel').style.display = r ? '' : 'none';
   $('#fSo').value = r ? r.so : '';
-  $('#fEngI').value = r && r.eng !== NO_ENG ? r.eng : '';
   $('#fComp').value = r ? r.comp : '';
   $('#fProj').value = r ? r.proj : '';
   $('#fWork').value = r ? r.work : '';
@@ -860,14 +1035,15 @@ function openModal(id){
   $('#fM').value = r && r.m ? r.m : (new Date().getMonth() + 1);
   $('#fPay').value = r ? r.pay : '';
   $('#fNote').value = r ? r.note : '';
-  if (!r) {
+  let engVal = NO_ENG;
+  if (r) engVal = r.eng || NO_ENG;
+  else {
     if (!$('#fStI').options.length) fillSelect($('#fStI'), STATUSES, 'ไม่ระบุ');
     $('#fStI').value = 'รอมัดจำ';
     if ([...$('#fSrcI').options].some(o => o.value === 'ปี 2026')) $('#fSrcI').value = 'ปี 2026';
-    let lastEng = '';
-    try { lastEng = localStorage.getItem(LAST_ENG_KEY) || ''; } catch(e){}
-    if (lastEng) $('#fEngI').value = lastEng;
+    try { engVal = localStorage.getItem(LAST_ENG_KEY) || NO_ENG; } catch(e){}
   }
+  fillEngSelect(engVal);
   mask.classList.add('on');
   setTimeout(() => $('#fSo').focus(), 30);
 }
@@ -875,7 +1051,11 @@ function closeModal(){ mask.classList.remove('on'); editingId = null; }
 $('#addBtn').addEventListener('click', () => openModal(null));
 $('#mCancel').addEventListener('click', closeModal);
 mask.addEventListener('click', e => { if (e.target === mask) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && mask.classList.contains('on')) closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if ($('#rosterMask').classList.contains('on')) { closeRoster(); return; }
+  if (mask.classList.contains('on')) closeModal();
+});
 
 $('#mSave').addEventListener('click', () => {
   const so = $('#fSo').value.trim();
@@ -909,7 +1089,7 @@ const COLS = ['so','comp','proj','work','st','eng','src','y','m','pay','note'];
 const HEAD  = ['เลขSO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ'];
 const csvCell = v => '"' + String(v ?? '').replace(/"/g,'""') + '"';
 $('#expBtn').addEventListener('click', () => {
-  const body = rows.map(r => COLS.map(k => csvCell(r[k])).join(',')).join('\r\n');
+  const body = jobRows().map(r => COLS.map(k => csvCell(r[k])).join(',')).join('\r\n');
   const csv = '﻿' + HEAD.map(csvCell).join(',') + '\r\n' + body;
   const a = document.createElement('a');
   const url = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
@@ -954,7 +1134,9 @@ $('#impFile').addEventListener('change', e => {
         o.prog = o.note || o.st;
         return o;
       });
-      rows = next; nextId = rows.length + 1;
+      rows = next.filter(r => !isRosterRow(r));
+      rosterNames = mergeNames(rosterNames, namesFromJobs(rows));
+      nextId = rows.length + 1;
       if (SHARED) {
         showBanner('นำเข้า CSV แล้ว กดปุ่มเขียว บันทึก เพื่อส่งให้ทุกคนเห็น', false);
         setSaveState('นำเข้าแล้ว ยังไม่ส่งขึ้นชีต', true);
@@ -979,13 +1161,15 @@ $('#resetBtn').addEventListener('click', () => {
   if (!confirm(msg)) return;
   if (!SHARED) {
     storeClear();
-    rows = ROWS.map(r => ({...r}));
+    rows = ROWS.map(r => ({...r})).filter(r => !isRosterRow(r));
+    rosterNames = seedRoster(rows);
     nextId = Math.max(0, ...rows.map(r => +r.id || 0)) + 1;
     setSaveState('คืนค่าต้นฉบับแล้ว', false);
     renderAll();
     return;
   }
-  rows = cloneRows(ROWS);
+  rows = cloneRows(ROWS).filter(r => !isRosterRow(r));
+  rosterNames = seedRoster(rows);
   bumpNext();
   setSaveState('ใช้ข้อมูลในไฟล์เว็บแล้ว ยังไม่ส่งขึ้นชีต', true);
   updateSaveBtn();
@@ -1016,7 +1200,7 @@ $('#xlsxBtn').addEventListener('click', async () => {
     await loadSheetJS(0);
     const headers = ['เลข SO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ'];
     const keys = ['so','comp','proj','work','st','eng','src','y','m','pay','note'];
-    const aoa = [headers].concat(rows.map(r => keys.map(k => r[k] ?? '')));
+    const aoa = [headers].concat(jobRows().map(r => keys.map(k => r[k] ?? '')));
     const ws = XLSX.utils.aoa_to_sheet(aoa);
     ws['!cols'] = [14,36,36,40,16,22,16,8,8,28,40].map(w => ({wch:w}));
     const wb = XLSX.utils.book_new();
@@ -1027,6 +1211,148 @@ $('#xlsxBtn').addEventListener('click', async () => {
   } finally {
     btn.disabled = false;
     btn.textContent = prev;
+  }
+});
+
+/* ---------- รายชื่อผู้รับผิดชอบ ---------- */
+function rosterMsg(t){ const el = $('#rosterMsg'); if (el) el.textContent = t || ''; }
+function jobsOfPerson(name){
+  return jobRows().filter(r => normEngName(r.eng) === name);
+}
+function retargetOpenForm(oldName, newName){
+  const el = $('#fEngI');
+  if (!el || !$('#mask').classList.contains('on')) return;
+  if (el.value === oldName) fillEngSelect(newName || NO_ENG);
+}
+function rememberEng(oldName, newName){
+  try {
+    if (localStorage.getItem(LAST_ENG_KEY) !== oldName) return;
+    if (newName && newName !== NO_ENG) localStorage.setItem(LAST_ENG_KEY, newName);
+    else localStorage.removeItem(LAST_ENG_KEY);
+  } catch(e){}
+}
+function renderRoster(){
+  const box = $('#rosterList');
+  if (!box) return;
+  if (!rosterNames.length) { box.innerHTML = '<p class="empty">ยังไม่มีชื่อ</p>'; return; }
+  box.innerHTML = rosterNames.map((name, i) => {
+    const n = jobsOfPerson(name).length;
+    if (rosterUi && rosterUi.i === i && rosterUi.mode === 'rename') {
+      return '<div class="rrow"><input type="text" id="rosterRename" value="' + esc(name) + '" aria-label="ชื่อใหม่">' +
+        '<div class="ops"><button type="button" class="primary" data-act="save-rename" data-i="' + i + '">บันทึกชื่อ</button>' +
+        '<button type="button" data-act="cancel">ยกเลิก</button></div></div>';
+    }
+    if (rosterUi && rosterUi.i === i && rosterUi.mode === 'remove') {
+      if (n > 0) {
+        const targets = [NO_ENG].concat(rosterNames.filter(x => x !== name));
+        return '<div class="rblock"><div class="rrow"><span class="nm">' + esc(name) + '</span><span class="cnt">' + n + ' งาน</span></div>' +
+          '<p class="desc" style="margin:0">คนนี้มีงานอยู่ ' + n + ' งาน จะย้ายไปให้ใคร</p>' +
+          '<div class="f"><label for="rosterMove">ย้ายงานไปให้</label><select id="rosterMove">' +
+          targets.map(t => '<option value="' + esc(t) + '">' + esc(t) + '</option>').join('') +
+          '</select></div><div class="ops">' +
+          '<button type="button" class="danger" data-act="do-move" data-i="' + i + '">ย้ายแล้วนำออก</button>' +
+          '<button type="button" data-act="cancel">ยกเลิก</button></div></div>';
+      }
+      return '<div class="rblock"><p class="desc" style="margin:0">เอาชื่อ ' + esc(name) + ' ออกจากรายชื่อ?</p><div class="ops">' +
+        '<button type="button" class="danger" data-act="do-remove" data-i="' + i + '">เอาออก</button>' +
+        '<button type="button" data-act="cancel">ยกเลิก</button></div></div>';
+    }
+    return '<div class="rrow"><span class="nm">' + esc(name) + '</span><span class="cnt">' + (n ? (n + ' งาน') : 'ยังไม่มีงาน') + '</span>' +
+      '<div class="ops"><button type="button" data-act="rename" data-i="' + i + '">เปลี่ยนชื่อ</button>' +
+      '<button type="button" data-act="remove" data-i="' + i + '">เอาออก</button></div></div>';
+  }).join('');
+  const inp = $('#rosterRename');
+  if (inp) { inp.focus(); inp.select(); }
+}
+function openRoster(){
+  rosterUi = null;
+  rosterMsg('');
+  $('#rosterNew').value = '';
+  $('#rosterMask').classList.add('on');
+  renderRoster();
+  setTimeout(() => { const el = $('#rosterNew'); if (el) el.focus(); }, 30);
+}
+function closeRoster(){
+  rosterUi = null;
+  $('#rosterMask').classList.remove('on');
+}
+function finishRosterEdit(oldName, newName){
+  const filtering = $('#fEng').value === oldName;
+  retargetOpenForm(oldName, newName);
+  commitChange(true);
+  if (filtering && newName) {
+    $('#fEng').value = newName;
+    renderTable();
+  }
+}
+function renamePerson(i){
+  const oldName = rosterNames[i];
+  const inp = $('#rosterRename');
+  const newName = normEngName(inp ? inp.value : '');
+  if (!oldName) return;
+  if (!newName) { rosterMsg('กรุณาพิมพ์ชื่อ'); if (inp) inp.focus(); return; }
+  if (newName === NO_ENG) { rosterMsg('ชื่อนี้ใช้สำหรับงานที่ยังไม่มีคนดูแล'); return; }
+  if (newName !== oldName && rosterNames.includes(newName)) { rosterMsg('มีชื่อนี้อยู่แล้ว'); return; }
+  if (newName === oldName) { rosterUi = null; rosterMsg(''); renderRoster(); return; }
+  const n = jobsOfPerson(oldName).length;
+  rosterNames[i] = newName;
+  jobsOfPerson(oldName).forEach(r => { r.eng = newName; });
+  rememberEng(oldName, newName);
+  rosterUi = null;
+  rosterMsg(n ? ('เปลี่ยนชื่อแล้ว ' + n + ' งาน') : 'เปลี่ยนชื่อแล้ว');
+  finishRosterEdit(oldName, newName);
+}
+function removePerson(i, moveTo){
+  const name = rosterNames[i];
+  if (!name) return;
+  const target = !moveTo || moveTo === name ? NO_ENG : moveTo;
+  const n = jobsOfPerson(name).length;
+  jobsOfPerson(name).forEach(r => { r.eng = target; });
+  rosterNames = rosterNames.filter(x => x !== name);
+  rememberEng(name, target);
+  rosterUi = null;
+  rosterMsg(n ? ('ย้าย ' + n + ' งาน แล้วนำชื่อออกแล้ว') : 'เอาชื่อออกแล้ว');
+  finishRosterEdit(name, target);
+}
+$('#rosterBtn').addEventListener('click', openRoster);
+$('#engManage').addEventListener('click', openRoster);
+$('#rosterClose').addEventListener('click', closeRoster);
+$('#rosterMask').addEventListener('click', e => { if (e.target.id === 'rosterMask') closeRoster(); });
+$('#rosterAdd').addEventListener('click', () => {
+  const name = normEngName($('#rosterNew').value);
+  if (!name) { rosterMsg('กรุณาพิมพ์ชื่อ'); $('#rosterNew').focus(); return; }
+  if (name === NO_ENG) { rosterMsg('ชื่อนี้ใช้สำหรับงานที่ยังไม่มีคนดูแล'); return; }
+  if (rosterNames.includes(name)) { rosterMsg('มีชื่อนี้อยู่แล้ว'); $('#rosterNew').focus(); return; }
+  rosterNames.push(name);
+  $('#rosterNew').value = '';
+  rosterUi = null;
+  rosterMsg('เพิ่มชื่อแล้ว');
+  commitChange(true);
+});
+$('#rosterNew').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); $('#rosterAdd').click(); }
+});
+$('#rosterList').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  const act = btn.dataset.act;
+  const i = +btn.dataset.i;
+  if (act === 'cancel') { rosterUi = null; rosterMsg(''); renderRoster(); return; }
+  if (act === 'rename') { rosterUi = {mode:'rename', i:i}; rosterMsg(''); renderRoster(); return; }
+  if (act === 'remove') { rosterUi = {mode:'remove', i:i}; rosterMsg(''); renderRoster(); return; }
+  if (act === 'save-rename') { renamePerson(i); return; }
+  if (act === 'do-remove') { removePerson(i, NO_ENG); return; }
+  if (act === 'do-move') {
+    const sel = $('#rosterMove');
+    removePerson(i, sel ? sel.value : NO_ENG);
+  }
+});
+$('#rosterList').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.id === 'rosterRename') {
+    e.preventDefault();
+    const row = e.target.closest('.rrow');
+    const btn = row && row.querySelector('[data-act="save-rename"]');
+    if (btn) btn.click();
   }
 });
 
