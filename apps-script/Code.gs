@@ -16,11 +16,11 @@
 var ADMIN_KEY = '';
 
 var SHEET_NAME = 'jobs';
-var HEADERS = ['id', 'src', 'so', 'comp', 'proj', 'work', 'pay', 'prog', 'st', 'note', 'eng', 'm', 'y', 'updatedAt'];
+var HEADERS = ['id', 'src', 'so', 'comp', 'proj', 'work', 'pay', 'prog', 'st', 'note', 'eng', 'm', 'y', 'loc', 'lat', 'lng', 'locHow', 'locSrc', 'updatedAt'];
 var STATUSES = ['รอมัดจำ', 'มัดจำแล้ว', 'พร้อมเข้างาน', 'กำลังดำเนินการ', 'รอส่งมอบงาน', 'เสร็จแล้ว', 'ไม่ระบุ'];
 var SEED_CSV_URL = 'https://raw.githubusercontent.com/PattarakornJP/pe-jobs/main/seed/jobs.csv';
 var SERVICE_SHEET_NAME = 'service';
-var SERVICE_HEADERS = ['id', 'no', 'date', 'customer', 'detail', 'type', 'chkWait', 'chkDone', 'rptWait', 'rptDone', 'sales', 'so', 'depWait', 'depDone', 'partsWait', 'partsDone', 'enterWait', 'enterDone', 'workDate', 'workOpen', 'workDone', 'team', 'note', 'updatedAt'];
+var SERVICE_HEADERS = ['id', 'no', 'date', 'customer', 'detail', 'type', 'chkWait', 'chkDone', 'rptWait', 'rptDone', 'sales', 'so', 'depWait', 'depDone', 'partsWait', 'partsDone', 'enterWait', 'enterDone', 'workDate', 'workOpen', 'workDone', 'team', 'note', 'loc', 'lat', 'lng', 'locHow', 'locSrc', 'updatedAt'];
 var SERVICE_FLAGS = ['chkWait', 'chkDone', 'rptWait', 'rptDone', 'depWait', 'depDone', 'partsWait', 'partsDone', 'enterWait', 'enterDone', 'workOpen', 'workDone'];
 var SERVICE_SEED_CSV_URL = 'https://raw.githubusercontent.com/PattarakornJP/pe-jobs/main/seed/service.csv';
 var MAX_ROWS = 5000;
@@ -407,7 +407,12 @@ function normalizeServiceRow_(r) {
     so: serviceText_(r.so),
     workDate: workIso || workRaw,
     team: serviceText_(r.team),
-    note: serviceText_(r.note)
+    note: serviceText_(r.note),
+    loc: serviceText_(r.loc),
+    lat: coord_(r.lat),
+    lng: coord_(r.lng),
+    locHow: locHow_(r.locHow),
+    locSrc: serviceText_(r.locSrc)
   };
   for (var i = 0; i < SERVICE_FLAGS.length; i++) {
     out[SERVICE_FLAGS[i]] = flag_(r[SERVICE_FLAGS[i]]);
@@ -599,8 +604,27 @@ function normalizeRow_(r) {
     note: stringify_(r.note),
     eng: eng,
     m: clampMonth_(r.m),
-    y: Number(r.y) || 0
+    y: Number(r.y) || 0,
+    loc: stringify_(r.loc),
+    lat: coord_(r.lat),
+    lng: coord_(r.lng),
+    locHow: locHow_(r.locHow),
+    locSrc: stringify_(r.locSrc)
   };
+}
+
+function coord_(v) {
+  if (v == null || v === '') return '';
+  var n = Number(v);
+  if (!isFinite(n)) return '';
+  return String(n);
+}
+
+function locHow_(v) {
+  var s = stringify_(v);
+  if (s === 'exact') return 'exact';
+  if (s === 'approximate' || s === 'fuzzy') return 'approximate';
+  return '';
 }
 
 function stringify_(v) {
