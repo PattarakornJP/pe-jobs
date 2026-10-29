@@ -1077,7 +1077,7 @@ function refreshFilters(){
   const keepStI = $('#fStI').value, keepSrcI = $('#fSrcI').value;
   const people = engOptions();
   const engFilter = jobRows().some(r => !r.eng || r.eng === NO_ENG) ? people.concat([NO_ENG]) : people.slice();
-  fillSelect($('#fSt'), STATUSES.filter(s => jobRows().some(r => r.st === s)), 'ทุกสถานะ');
+  fillSelect($('#fSt'), STATUSES, 'ทุกสถานะ');
   fillSelect($('#fEng'), engFilter, 'ทุกคน');
   fillSelect($('#fSrc'), uniq('src'), 'ทุกกลุ่มงาน');
   $('#fSt').value = keepSt; $('#fEng').value = keepEng; $('#fSrc').value = keepSrc;
