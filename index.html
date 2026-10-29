@@ -1054,6 +1054,10 @@ function locKept(prev, loc){
   }
   return { lat: '', lng: '', locHow: '', locSrc: '' };
 }
+function retiredPin(r){
+  const lat = Number(r && r.lat), lng = Number(r && r.lng);
+  return Math.abs(lat - 8.1661545) < 1e-5 && Math.abs(lng - 98.2952039) < 1e-5;
+}
 function applyKnownLoc(list, table){
   const items = locFile && locFile[table];
   if (!items || !list) return;
@@ -1065,7 +1069,8 @@ function applyKnownLoc(list, table){
     bySo.get(k).push(it);
   });
   list.forEach(r => {
-    if (!r || (table === 'project' && isRosterRow(r)) || hasLoc(r)) return;
+    if (!r || (table === 'project' && isRosterRow(r))) return;
+    if (hasLoc(r) && !retiredPin(r)) return;
     const k = String(r.so || '').trim();
     let hit = null;
     if (k && bySo.has(k)) {
