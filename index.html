@@ -11,7 +11,7 @@
   --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
   --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
   --chip:rgba(11,11,11,0.04);
-  --st1:#86b6ef; --st2:#5598e7; --st3:#2a78d6; --st4:#1c5cab; --st5:#104281; --st0:#c3c2b7;
+  --st1:#86b6ef; --st2:#5598e7; --st3:#2a78d6; --st4:#1c5cab; --st5:#104281; --st6:#0f9d8f; --st0:#c3c2b7;
   --accent:#2a78d6; --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
   --shadow:0 10px 34px rgba(0,0,0,.16);
 }
@@ -21,7 +21,7 @@
   --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
   --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
   --chip:rgba(255,255,255,0.06);
-  --st1:#cde2fb; --st2:#9ec5f4; --st3:#6da7ec; --st4:#3987e5; --st5:#184f95; --st0:#4a4a46;
+  --st1:#cde2fb; --st2:#9ec5f4; --st3:#6da7ec; --st4:#3987e5; --st5:#184f95; --st6:#2cc3b1; --st0:#4a4a46;
   --accent:#3987e5; --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
   --shadow:0 10px 34px rgba(0,0,0,.5);
 }
@@ -32,7 +32,7 @@
     --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
     --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
     --chip:rgba(255,255,255,0.06);
-    --st1:#cde2fb; --st2:#9ec5f4; --st3:#6da7ec; --st4:#3987e5; --st5:#184f95; --st0:#4a4a46;
+    --st1:#cde2fb; --st2:#9ec5f4; --st3:#6da7ec; --st4:#3987e5; --st5:#184f95; --st6:#2cc3b1; --st0:#4a4a46;
     --accent:#3987e5;
     --shadow:0 10px 34px rgba(0,0,0,.5);
   }
@@ -260,7 +260,7 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
     </section>
     <section class="card">
       <h2>งานต่อผู้รับผิดชอบ</h2>
-      <p class="desc">แถบแบ่งสีตามสถานะ · เข้มขึ้น = ใกล้เสร็จมากขึ้น</p>
+      <p class="desc">แถบแบ่งสีตามสถานะ · เข้มขึ้น = ใกล้เสร็จมากขึ้น · สีเขียวอมฟ้า = รอส่งมอบงาน</p>
       <div class="legend" id="legendStatus"></div>
       <div class="chart" id="chartEng"></div>
     </section>
@@ -455,8 +455,8 @@ const ROWS=[{"id":1,"src":"ปี 2026","so":"SO2601-001","comp":"บริษ�
 
 const $ = s => document.querySelector(s);
 const nf = n => n.toLocaleString('th-TH');
-const STATUSES = ['รอมัดจำ','มัดจำแล้ว','พร้อมเข้างาน','กำลังดำเนินการ','เสร็จแล้ว','ไม่ระบุ'];
-const ST_VAR = {'รอมัดจำ':'--st1','มัดจำแล้ว':'--st2','พร้อมเข้างาน':'--st3','กำลังดำเนินการ':'--st4','เสร็จแล้ว':'--st5','ไม่ระบุ':'--st0'};
+const STATUSES = ['รอมัดจำ','มัดจำแล้ว','พร้อมเข้างาน','กำลังดำเนินการ','รอส่งมอบงาน','เสร็จแล้ว','ไม่ระบุ'];
+const ST_VAR = {'รอมัดจำ':'--st1','มัดจำแล้ว':'--st2','พร้อมเข้างาน':'--st3','กำลังดำเนินการ':'--st4','รอส่งมอบงาน':'--st6','เสร็จแล้ว':'--st5','ไม่ระบุ':'--st0'};
 const stColor = s => 'var(' + (ST_VAR[s] || '--st0') + ')';
 const NO_ENG = 'ยังไม่ระบุ';
 const MONTHS = ['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
@@ -1002,12 +1002,14 @@ function renderKpis(){
   const open = total - done;
   const noEng = list.filter(r => !r.eng || r.eng === NO_ENG).length;
   const running = list.filter(r => r.st === 'กำลังดำเนินการ').length;
+  const handover = list.filter(r => r.st === 'รอส่งมอบงาน').length;
   const openPct = total ? Math.round(open / total * 100) : 0;
   const donePct = total ? Math.round(done / total * 100) : 0;
   const tiles = [
     ['งานทั้งหมด', nf(total), 'ปี 2026 + งานค้างปี 2025', ''],
     ['ยังไม่เสร็จ', nf(open), openPct + '% ของงานทั้งหมด', ''],
     ['กำลังดำเนินการ', nf(running), 'อยู่ระหว่างหน้างาน', ''],
+    ['รอส่งมอบงาน', nf(handover), 'งานเสร็จ รอส่งมอบลูกค้า', ''],
     ['เสร็จแล้ว', nf(done), donePct + '% ของงานทั้งหมด', ''],
     ['ยังไม่ระบุผู้รับผิดชอบ', nf(noEng), 'ควรกรอกชื่อผู้ควบคุมงาน', 'flag']
   ];
