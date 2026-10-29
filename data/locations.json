@@ -1185,11 +1185,11 @@
     {
       "id": 15,
       "so": "PSE - PHK6909-001",
-      "loc": "JW Marriott Phuket Resort & Spa",
-      "lat": 8.1661545,
-      "lng": 98.2952039,
+      "loc": "Phuket Marriott Resort and Spa, Nai Yang Beach",
+      "lat": 8.0812868,
+      "lng": 98.2886169,
       "how": "exact",
-      "src": "user (hotel name), geocoded"
+      "src": "user"
     },
     {
       "id": 19,
