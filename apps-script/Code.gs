@@ -16,11 +16,11 @@
 var ADMIN_KEY = '';
 
 var SHEET_NAME = 'jobs';
-var HEADERS = ['id', 'src', 'so', 'comp', 'proj', 'work', 'pay', 'prog', 'st', 'note', 'eng', 'm', 'y', 'loc', 'lat', 'lng', 'locHow', 'updatedAt'];
+var HEADERS = ['id', 'src', 'so', 'comp', 'proj', 'work', 'pay', 'prog', 'st', 'note', 'eng', 'm', 'y', 'loc', 'lat', 'lng', 'locHow', 'locSrc', 'updatedAt'];
 var STATUSES = ['รอมัดจำ', 'มัดจำแล้ว', 'พร้อมเข้างาน', 'กำลังดำเนินการ', 'รอส่งมอบงาน', 'เสร็จแล้ว', 'ไม่ระบุ'];
 var SEED_CSV_URL = 'https://raw.githubusercontent.com/PattarakornJP/pe-jobs/main/seed/jobs.csv';
 var SERVICE_SHEET_NAME = 'service';
-var SERVICE_HEADERS = ['id', 'no', 'date', 'customer', 'detail', 'type', 'chkWait', 'chkDone', 'rptWait', 'rptDone', 'sales', 'so', 'depWait', 'depDone', 'partsWait', 'partsDone', 'enterWait', 'enterDone', 'workDate', 'workOpen', 'workDone', 'team', 'note', 'loc', 'lat', 'lng', 'locHow', 'updatedAt'];
+var SERVICE_HEADERS = ['id', 'no', 'date', 'customer', 'detail', 'type', 'chkWait', 'chkDone', 'rptWait', 'rptDone', 'sales', 'so', 'depWait', 'depDone', 'partsWait', 'partsDone', 'enterWait', 'enterDone', 'workDate', 'workOpen', 'workDone', 'team', 'note', 'loc', 'lat', 'lng', 'locHow', 'locSrc', 'updatedAt'];
 var SERVICE_FLAGS = ['chkWait', 'chkDone', 'rptWait', 'rptDone', 'depWait', 'depDone', 'partsWait', 'partsDone', 'enterWait', 'enterDone', 'workOpen', 'workDone'];
 var SERVICE_SEED_CSV_URL = 'https://raw.githubusercontent.com/PattarakornJP/pe-jobs/main/seed/service.csv';
 var MAX_ROWS = 5000;
@@ -411,7 +411,8 @@ function normalizeServiceRow_(r) {
     loc: serviceText_(r.loc),
     lat: coord_(r.lat),
     lng: coord_(r.lng),
-    locHow: locHow_(r.locHow)
+    locHow: locHow_(r.locHow),
+    locSrc: serviceText_(r.locSrc)
   };
   for (var i = 0; i < SERVICE_FLAGS.length; i++) {
     out[SERVICE_FLAGS[i]] = flag_(r[SERVICE_FLAGS[i]]);
@@ -607,7 +608,8 @@ function normalizeRow_(r) {
     loc: stringify_(r.loc),
     lat: coord_(r.lat),
     lng: coord_(r.lng),
-    locHow: locHow_(r.locHow)
+    locHow: locHow_(r.locHow),
+    locSrc: stringify_(r.locSrc)
   };
 }
 
@@ -620,7 +622,8 @@ function coord_(v) {
 
 function locHow_(v) {
   var s = stringify_(v);
-  if (s === 'exact' || s === 'fuzzy') return s;
+  if (s === 'exact') return 'exact';
+  if (s === 'approximate' || s === 'fuzzy') return 'approximate';
   return '';
 }
 

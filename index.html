@@ -517,8 +517,17 @@ function cleanRow(r){
     loc: String(r.loc || '').trim(),
     lat: coordOrBlank(r.lat),
     lng: coordOrBlank(r.lng),
-    locHow: r.locHow === 'exact' || r.locHow === 'fuzzy' ? r.locHow : ''
+    locHow: normHow(r.locHow),
+    locSrc: locSrcOf(r.locSrc)
   };
+}
+function normHow(v){
+  if (v === 'exact') return 'exact';
+  if (v === 'approximate' || v === 'fuzzy') return 'approximate';
+  return '';
+}
+function locSrcOf(v){
+  return String(v == null ? '' : v).replace(/\s+/g, ' ').trim();
 }
 function coordOrBlank(v){
   if (v == null || v === '') return '';
@@ -701,7 +710,7 @@ function initSaveState(){
 /* ---------- ข้อมูลร่วมบน Google Sheet ---------- */
 function rowSig(r){
   const c = cleanRow(r);
-  return JSON.stringify([c.id,c.src,c.so,c.comp,c.proj,c.work,c.pay,c.prog,c.st,c.note,c.eng,c.m,c.y,c.loc,c.lat,c.lng,c.locHow]);
+  return JSON.stringify([c.id,c.src,c.so,c.comp,c.proj,c.work,c.pay,c.prog,c.st,c.note,c.eng,c.m,c.y,c.loc,c.lat,c.lng,c.locHow,c.locSrc]);
 }
 function dirtyCount(){
   const base = new Map(baseRows.map(r => [String(r.id), rowSig(r)]));
@@ -1030,8 +1039,8 @@ function mapHref(r){
   return 'https://www.google.com/maps?q=' + lat + ',' + lng;
 }
 function howLabel(how){
-  if (how === 'exact') return 'ตรงกับแผนที่ลูกค้า';
-  if (how === 'fuzzy') return 'ใกล้เคียงแผนที่ลูกค้า';
+  if (how === 'exact') return 'ปักตรงจุด';
+  if (how === 'approximate' || how === 'fuzzy') return 'จุดโดยประมาณ';
   return '';
 }
 function locKept(prev, loc){
@@ -1039,10 +1048,11 @@ function locKept(prev, loc){
     return {
       lat: coordOrBlank(prev.lat),
       lng: coordOrBlank(prev.lng),
-      locHow: prev.locHow === 'exact' || prev.locHow === 'fuzzy' ? prev.locHow : ''
+      locHow: normHow(prev.locHow),
+      locSrc: locSrcOf(prev.locSrc)
     };
   }
-  return { lat: '', lng: '', locHow: '' };
+  return { lat: '', lng: '', locHow: '', locSrc: '' };
 }
 function applyKnownLoc(list, table){
   const items = locFile && locFile[table];
@@ -1068,23 +1078,28 @@ function applyKnownLoc(list, table){
     r.loc = String(hit.loc);
     r.lat = coordOrBlank(hit.lat);
     r.lng = coordOrBlank(hit.lng);
-    r.locHow = hit.how === 'exact' || hit.how === 'fuzzy' ? hit.how : '';
+    r.locHow = normHow(hit.how);
+    r.locSrc = locSrcOf(hit.src);
   });
 }
 function locCell(r, q){
   if (!hasLoc(r)) return '<span class="locmiss">ยังไม่มี</span>';
   const how = howLabel(r.locHow);
+  const src = locSrcOf(r.locSrc);
   const href = mapHref(r);
+  const srcShort = src.length > 48 ? src.slice(0, 48) + '…' : src;
   return hl(r.loc, q) +
     (how ? '<span class="lochow">' + esc(how) + '</span>' : '') +
+    (src ? '<span class="lochow" title="' + esc(src) + '">' + esc(srcShort) + '</span>' : '') +
     (href ? '<a class="maplink" href="' + esc(href) + '" target="_blank" rel="noopener">เปิดแผนที่</a>' : '');
 }
 function locHintHtml(r){
-  if (!r || !hasLoc(r)) return 'ยังไม่มีในแผนที่ลูกค้า พิมพ์สถานที่หน้างานได้เลย';
+  if (!r || !hasLoc(r)) return 'ยังไม่มีพิกัด พิมพ์สถานที่หน้างานได้เลย';
   const how = howLabel(r.locHow);
+  const src = locSrcOf(r.locSrc);
   const href = mapHref(r);
   const link = href ? ' · <a class="maplink" href="' + esc(href) + '" target="_blank" rel="noopener">เปิดแผนที่</a>' : '';
-  return (how || 'สถานที่หน้างาน') + link;
+  return (how || 'สถานที่หน้างาน') + (src ? ' · ' + esc(src) : '') + link;
 }
 function paintNoLocBtn(){
   const n = jobRows().filter(r => !hasLoc(r)).length;
@@ -1372,8 +1387,8 @@ $('#mDel').addEventListener('click', () => {
 });
 
 /* ---------- CSV export / import ---------- */
-const COLS = ['so','comp','proj','work','st','eng','src','y','m','pay','note','loc','lat','lng','locHow'];
-const HEAD  = ['เลขSO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ','สถานที่','ละติจูด','ลองจิจูด','ที่มาสถานที่'];
+const COLS = ['so','comp','proj','work','st','eng','src','y','m','pay','note','loc','lat','lng','locHow','locSrc'];
+const HEAD  = ['เลขSO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ','สถานที่','ละติจูด','ลองจิจูด','ความแม่นยำ','แหล่งพิกัด'];
 const csvCell = v => '"' + String(v ?? '').replace(/"/g,'""') + '"';
 $('#expBtn').addEventListener('click', () => {
   const body = jobRows().map(r => COLS.map(k => csvCell(r[k])).join(',')).join('\r\n');
@@ -1489,13 +1504,13 @@ $('#xlsxBtn').addEventListener('click', async () => {
   btn.textContent = 'กำลังเตรียมไฟล์...';
   try {
     await loadSheetJS(0);
-    const headers = ['เลข SO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ','สถานที่','แผนที่','ที่มาสถานที่'];
+    const headers = ['เลข SO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ','สถานที่','แผนที่','ความแม่นยำ','แหล่งพิกัด'];
     const keys = ['so','comp','proj','work','st','eng','src','y','m','pay','note'];
     const aoa = [headers].concat(jobRows().map(r => keys.map(k => r[k] ?? '').concat([
-      r.loc || '', mapHref(r), howLabel(r.locHow)
+      r.loc || '', mapHref(r), howLabel(r.locHow), r.locSrc || ''
     ])));
     const ws = XLSX.utils.aoa_to_sheet(aoa);
-    ws['!cols'] = [14,36,36,40,16,22,16,8,8,28,40,28,36,22].map(w => ({wch:w}));
+    ws['!cols'] = [14,36,36,40,16,22,16,8,8,28,40,28,36,16,42].map(w => ({wch:w}));
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'งาน');
     XLSX.writeFile(wb, 'PE_Jobs_' + new Date().toISOString().slice(0,10) + '.xlsx');
@@ -1811,7 +1826,8 @@ function cleanSvc(r){
     loc: String(r.loc || '').trim(),
     lat: coordOrBlank(r.lat),
     lng: coordOrBlank(r.lng),
-    locHow: r.locHow === 'exact' || r.locHow === 'fuzzy' ? r.locHow : ''
+    locHow: normHow(r.locHow),
+    locSrc: locSrcOf(r.locSrc)
   };
   if (o.type === 'PM (บำรุงรักษา)') o.type = 'PM';
   SVC_FLAGS.forEach(k => { o[k] = onFlag(r[k]) ? 1 : 0; });
@@ -2515,6 +2531,8 @@ async function exportServiceXlsx(){
     head[3][21] = 'เสร็จ';
     head[3][26] = 'สถานที่';
     head[3][27] = 'แผนที่';
+    head[3][28] = 'ความแม่นยำ';
+    head[3][29] = 'แหล่งพิกัด';
     const body = svcRowsForExport().map(r => {
       const info = deriveStage(r);
       return [
@@ -2526,7 +2544,7 @@ async function exportServiceXlsx(){
         fmtDMY(r.workDate), !!r.workOpen, !!r.workDone,
         r.team || '', r.note || '',
         r.type === 'PM', info.stage,
-        r.loc || '', mapHref(r)
+        r.loc || '', mapHref(r), howLabel(r.locHow), r.locSrc || ''
       ];
     });
     const aoa = head.concat(body);
@@ -2538,7 +2556,7 @@ async function exportServiceXlsx(){
       mg(2,13,2,14), mg(2,15,2,16), mg(2,17,2,18), mg(2,19,3,19),
       mg(2,20,2,21), mg(2,22,3,22), mg(2,23,3,23), mg(1,24,3,24), mg(1,25,3,25)
     ];
-    ws['!cols'] = [8,14,42,36,12,12,12,14,14,14,14,16,18,12,12,12,12,14,14,18,12,10,22,28,16,18,28,36].map(w => ({ wch: w }));
+    ws['!cols'] = [8,14,42,36,12,12,12,14,14,14,14,16,18,12,12,12,12,14,14,18,12,10,22,28,16,18,28,36,16,42].map(w => ({ wch: w }));
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Service');
     XLSX.writeFile(wb, 'PE_Service_' + new Date().toISOString().slice(0, 10) + '.xlsx');

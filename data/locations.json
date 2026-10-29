@@ -1,823 +1,1339 @@
 {
-  "source": "https://github.com/PattarakornJP/sales-map",
+  "source": "Supplied pins in pe_job_locations.csv, including sales-map zone centers",
   "project": [
     {
       "id": 1,
       "so": "SO2601-001",
-      "loc": "Avani Koh Lanta · เกาะลันตา, กระบี่",
+      "loc": "Avani+Koh Lanta (The Peak building)",
       "lat": 7.62,
       "lng": 99.04,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 15,
       "so": "SO2601-086",
-      "loc": "โรงเรียนนานาชาติบริติช · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "โรงเรียนนานาชาติบริติช",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 20,
       "so": "SO2601-119",
-      "loc": "Paresa · กมลา, ภูเก็ต",
+      "loc": "Paresa Kamala (ตึก อาคารสำนักงาน)",
       "lat": 7.955,
       "lng": 98.281,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 21,
       "so": "SO2602-014",
-      "loc": "Westin Siray · เกาะสิเหร่, ภูเก็ต",
+      "loc": "The Westin (zone Lobby)",
       "lat": 7.883,
       "lng": 98.43,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 23,
       "so": "SO2602-021",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat BUIDING A",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 24,
       "so": "SO2602-022",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat BUIDING B",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 25,
       "so": "SO2602-023",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat BUIDING C",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 28,
       "so": "SO2602-035",
-      "loc": "Amatara Wellness · ป่าตอง, ภูเก็ต",
+      "loc": "Amatara Resort & Wellness (Guestroom No.16)",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 29,
       "so": "SO2602-042",
-      "loc": "Hemingway Silk · ป่าตอง, ภูเก็ต",
+      "loc": "Hemingway Silk",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 34,
       "so": "SO2602-089",
-      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "BANYAN TREE (Villa 925)",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 35,
       "so": "SO2602-090",
-      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "BANYAN TREE (Villa 903)",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 37,
       "so": "SO2602-112",
-      "loc": "Melia Samui · เกาะสมุย, สุราษฎร์ธานี",
+      "loc": "Melia Samui (Kitchen Zone)",
       "lat": 9.512,
       "lng": 100.0136,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 45,
       "so": "SO2603-094",
-      "loc": "The Shore at Katathani Resort · กะตะ-กะรน, ภูเก็ต",
+      "loc": "The Shore at Katathani Resort (ห้อง 8832+8842)",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 55,
       "so": "SO2604-017",
-      "loc": "Anantara Mai Khao Phuket Villas (APKV) · ไม้ขาว-ในยาง, ภูเก็ต",
+      "loc": "Anantara Mai Khao Phuket Villas (APKV)",
       "lat": 8.13,
       "lng": 98.3,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 60,
       "so": "SO2604-025",
-      "loc": "Paresa · กมลา, ภูเก็ต",
+      "loc": "Paresa Kamala (Grand Villa 1)",
       "lat": 7.955,
       "lng": 98.281,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 77,
       "so": "SO2605-062",
-      "loc": "BaumanCasa Beach Resort · กะตะ-กะรน, ภูเก็ต",
+      "loc": "BaumanCasa Beach Hotel, ดาดฟ้า Building 4",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 82,
       "so": "SO2605-104",
-      "loc": "Aonang Buri · อ่าวนาง, กระบี่",
+      "loc": "Aonang Buri",
       "lat": 8.032,
       "lng": 98.82,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 83,
       "so": "SO2605-103",
-      "loc": "Bluesotel · อ่าวนาง, กระบี่",
+      "loc": "Bluesotel",
       "lat": 8.032,
       "lng": 98.82,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 84,
       "so": "SO2606-004",
-      "loc": "Anantara Layan · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Anantara Residence 104",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 88,
       "so": "SO2606-016",
-      "loc": "The Shore at Katathani Resort · กะตะ-กะรน, ภูเก็ต",
+      "loc": "The Shore at Katathani Resort (ห้อง 8803)",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 89,
       "so": "SO2606-019",
-      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "loc": "Aleenta Villa711-712, 715-716,727-728",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 90,
       "so": "SO2606-020",
-      "loc": "Grand Mercure Khao Lak Bangsak · เขาหลัก-พังงา",
+      "loc": "Grand Mercure Khao Lak Bangsak Patio (Kitchen Zone)",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 94,
       "so": "SO2606-057",
-      "loc": "The Lunar Patong · ป่าตอง, ภูเก็ต",
+      "loc": "THE LUNAR RESIDENCE",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 97,
       "so": "SO2606-061",
-      "loc": "Grand Mercure Khao Lak Bangsak · เขาหลัก-พังงา",
+      "loc": "Grand Mercure Khao Lak Bangsak",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 98,
       "so": "SO2606-075",
-      "loc": "Phuket Island View · กะตะ-กะรน, ภูเก็ต",
+      "loc": "Phuket Island View Bl.A",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 99,
       "so": "SO2606-083",
-      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "BANYAN TREE Villa 914",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 101,
+      "so": "SO2606-090",
+      "loc": "รร.ครามอันดา",
+      "lat": 7.949931,
+      "lng": 98.2827611,
+      "how": "approximate",
+      "src": "ลูกค้า Kram Anda อยู่กมลาบนแผนที่ลูกค้า ปักที่ตำบลกมลาเพราะยังไม่พบพิกัดอาคาร"
     },
     {
       "id": 102,
       "so": "SO2606-091",
-      "loc": "Thaiga Sauna · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Thaiga Sauna & Spa Bang tao",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 105,
       "so": "SO2606-104",
-      "loc": "BaumanCasa Beach Resort · กะตะ-กะรน, ภูเก็ต",
+      "loc": "BaumanCasa Beach Hotel,ดาดฟ้า Building 4",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 107,
       "so": "SO2607-010",
-      "loc": "BaumanCasa Beach Resort · กะตะ-กะรน, ภูเก็ต",
+      "loc": "Baumancasa Building 4 (ทดแทนเครื่องเก่าที่เสีย)",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 108,
       "so": "SO2607-028",
-      "loc": "Paresa · กมลา, ภูเก็ต",
+      "loc": "Paresa Kamala (Spa)",
       "lat": 7.955,
       "lng": 98.281,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 112,
       "so": "SO2607-039",
-      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "BANYAN TREE Kitchen Zone 9",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 115,
       "so": "SO2607-053",
-      "loc": "The Residence Prime · ถลาง, ภูเก็ต",
+      "loc": "The Residence Prime",
       "lat": 8.033,
       "lng": 98.34,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 117,
       "so": "SO2607-061",
-      "loc": "Pakasai · อ่าวนาง, กระบี่",
+      "loc": "Pakasai Resort Ao Nang ตึก 15",
       "lat": 8.032,
       "lng": 98.82,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 118,
       "so": "SO2607-062",
-      "loc": "Pakasai · อ่าวนาง, กระบี่",
+      "loc": "Pakasai Resort Ao Nang ตึก 2",
       "lat": 8.032,
       "lng": 98.82,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 122,
       "so": "SO2607-102",
-      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "LayanGreen Park (BL. F )",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 125,
       "so": "SO2608-016",
-      "loc": "Centara Karon · กะตะ-กะรน, ภูเก็ต",
+      "loc": "Centara Karon (Tropical Building)",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 127,
       "so": "SO2608-028",
-      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "BANYAN TREE Villa 909",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 133,
       "so": "SO2608-059",
-      "loc": "ภูเล เบย์ อะ ริทซ์-คาร์ลตัน รีเซิร์ฟ · กระบี่",
+      "loc": "ภูเล เบย์อะ ริทซ์-คาร์ลตัน รีเซิร์ฟ",
       "lat": 8.0863,
       "lng": 98.9063,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 135,
+      "so": "SO2608-081",
+      "loc": "KATA THANI (ตึกอันดามัน)",
+      "lat": 7.8077241,
+      "lng": 98.2993202,
+      "how": "exact",
+      "src": "OpenStreetMap way 1178717517 Katathani Phuket Beach Resort"
     },
     {
       "id": 136,
       "so": "SO2608-084",
-      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Layan Verde Bl.A5",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 137,
       "so": "SO2608-085",
-      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Layan Verde Bl.A4",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 138,
       "so": "SO2608-087",
-      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Banyantree Villa 881-888",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 141,
       "so": "SO2608-106",
-      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "BANYAN TREE Villa 911",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 142,
       "so": "SO2608-104",
-      "loc": "The Shore at Katathani Resort · กะตะ-กะรน, ภูเก็ต",
+      "loc": "The Shore at Katathani Resort",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 143,
+      "so": "SO2608-111",
+      "loc": "Anantara Vacation Club Mai Khao",
+      "lat": 8.1662015,
+      "lng": 98.2973735,
+      "how": "exact",
+      "src": "OpenStreetMap node 9425341398"
     },
     {
       "id": 144,
       "so": "SO2608-117",
-      "loc": "Hyatt Regency Samui · เกาะสมุย, สุราษฎร์ธานี",
+      "loc": "Hyatt Regency Samui Villa 2-7",
       "lat": 9.512,
       "lng": 100.0136,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 145,
       "so": "SO2608-118",
-      "loc": "Hyatt Regency Samui · เกาะสมุย, สุราษฎร์ธานี",
+      "loc": "Hyatt Regency Samui Villa.1",
       "lat": 9.512,
       "lng": 100.0136,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 147,
       "so": "SO2608-123",
-      "loc": "โรงเรียนนานาชาติบริติช · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "โรงเรียนนานาชาติบริติช ภูเก็ต",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 149,
+      "so": "SO2608-150",
+      "loc": "Alpha Health Club",
+      "lat": 7.90071,
+      "lng": 98.3688,
+      "how": "exact",
+      "src": "พิกัด Alpha Health Club 9/56 วิชิต"
     },
     {
       "id": 151,
       "so": "SO2608-153",
-      "loc": "Staybridge Suite Bangtao · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Staybridge Suite Phuket Bangtao",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 152,
       "so": "SO2609-001",
-      "loc": "Staybridge Suite Bangtao · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Staybridge Suite Phuket Bangtao",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 153,
+      "so": "SO2609-007",
+      "loc": "Phulay Bay, a Ritz-Carlton Reserve",
+      "lat": 8.08563,
+      "lng": 98.74406,
+      "how": "exact",
+      "src": "Wikidata Q111403609"
     },
     {
       "id": 156,
       "so": "SO2609-005",
-      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "loc": "Aleenta",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 157,
       "so": "SO2609-006",
-      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "loc": "Aleenta",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 162,
       "so": "SO2609-095",
-      "loc": "Thaiga Sauna · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Thaiga Sauna & Spa",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 165,
       "so": "SO2609-117",
-      "loc": "OUTRIGGER Khao Lak Beach Resort · เขาหลัก-พังงา",
+      "loc": "Outrigger Kholak (ค่าสินค้า)",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 166,
       "so": "SO2609-118",
-      "loc": "OUTRIGGER Khao Lak Beach Resort · เขาหลัก-พังงา",
+      "loc": "Outrigger Kholak (ค่าติดตั้ง)",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 167,
       "so": "SO2609-121",
-      "loc": "Tiva Centara · เขาขาด-พันวา, ภูเก็ต",
+      "loc": "TIVA_ Building Villa",
       "lat": 7.8,
       "lng": 98.405,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 168,
       "so": "SO2609-122",
-      "loc": "Tiva Centara · เขาขาด-พันวา, ภูเก็ต",
+      "loc": "TIVA_ Building Villa A",
       "lat": 7.8,
       "lng": 98.405,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 169,
       "so": "SO2609-123",
-      "loc": "Tiva Centara · เขาขาด-พันวา, ภูเก็ต",
+      "loc": "TIVA_ Building Villa B",
       "lat": 7.8,
       "lng": 98.405,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 170,
       "so": "SO2609-124",
-      "loc": "Tiva Centara · เขาขาด-พันวา, ภูเก็ต",
+      "loc": "TIVA_ Building Villa C",
       "lat": 7.8,
       "lng": 98.405,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 171,
+      "so": "SO2609-130",
+      "loc": "รอยัล ภูเก็ต มารีน่า",
+      "lat": 7.9632772,
+      "lng": 98.3868038,
+      "how": "exact",
+      "src": "OpenStreetMap node 717838423"
+    },
+    {
+      "id": 172,
+      "so": "SO2609-131",
+      "loc": "รอยัล ภูเก็ต มารีน่า",
+      "lat": 7.9632772,
+      "lng": 98.3868038,
+      "how": "exact",
+      "src": "OpenStreetMap node 717838423"
     },
     {
       "id": 173,
       "so": "SO2610-004",
-      "loc": "Sugar Marina Hotel · กะตะ-กะรน, ภูเก็ต",
+      "loc": "Sugar Marina Art",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 175,
+      "so": "SO2610-026",
+      "loc": "Anantara Layan V.106",
+      "lat": 8.035583,
+      "lng": 98.284319,
+      "how": "exact",
+      "src": "GPS บนหน้าติดต่อ Anantara Layan"
     },
     {
       "id": 177,
       "so": "SO2610-044",
-      "loc": "The Nature Patong · ป่าตอง, ภูเก็ต",
+      "loc": "The Nature ตึก9",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 178,
       "so": "SO2610-045",
-      "loc": "The Nature Patong · ป่าตอง, ภูเก็ต",
+      "loc": "The Nature ตึก9",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 179,
       "so": "SO2610-073",
-      "loc": "Avani Koh Lanta · เกาะลันตา, กระบี่",
+      "loc": "Avani+Koh Lanta (โซนครัว ร้านอาหาร)",
       "lat": 7.62,
       "lng": 99.04,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 181,
       "so": "OE2503-137",
-      "loc": "The Shore at Katathani Resort · กะตะ-กะรน, ภูเก็ต",
+      "loc": "Katathani ตึกกะตะบุรี",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 183,
       "so": "SO2507-006",
-      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Layan Green Park(BL.H)",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 184,
       "so": "SO2507-007",
-      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Layan Green Park(BL.G)",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 185,
       "so": "SO2507-108",
-      "loc": "Khao Lak Paradise · เขาหลัก-พังงา",
+      "loc": "Khaolak Paradise",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 186,
       "so": "SO2508-046",
-      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "LayanGreen Park (BL. K )",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 188,
       "so": "SO2510-006",
-      "loc": "Hyatt Regency Phuket Resort · กมลา, ภูเก็ต",
+      "loc": "HYATT REGENCY PHUKET RESORT KITCHEN",
       "lat": 7.955,
       "lng": 98.281,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 190,
       "so": "SO2511-005",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat Onsen(Female)",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 191,
       "so": "SO2511-006",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat Onsen(Male)",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 192,
       "so": "SO2511-007",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat (ONSEN Nano Male & Famale)",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 193,
       "so": "SO2511-008",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat (Onsen Soda Male & Female)",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 194,
       "so": "SO2511-009",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat Cold Bath(Female)",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 195,
       "so": "SO2511-010",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat Cold Bath(Male )",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 196,
       "so": "SO2511-011",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat (Sauna Room Male & Female)",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 197,
       "so": "SO2511-012",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat (Steam Generator Male & Female)",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 198,
       "so": "SO2511-013",
-      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "loc": "Kleage Wellness Retreat (Steam Generator Male & Female)",
       "lat": 7.98,
       "lng": 98.41,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 199,
+      "so": "SO2511-038",
+      "loc": "รร.ครามอันดา",
+      "lat": 7.949931,
+      "lng": 98.2827611,
+      "how": "approximate",
+      "src": "ลูกค้า Kram Anda อยู่กมลาบนแผนที่ลูกค้า ปักที่ตำบลกมลาเพราะยังไม่พบพิกัดอาคาร"
     },
     {
       "id": 200,
       "so": "SO2511-168",
-      "loc": "The Nature Patong · ป่าตอง, ภูเก็ต",
+      "loc": "The Nature",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 201,
       "so": "SO2511-169",
-      "loc": "The Nature Patong · ป่าตอง, ภูเก็ต",
+      "loc": "The Nature",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 204,
       "so": "SO2512-107",
-      "loc": "The Kee Resort & Spa Patong · ป่าตอง, ภูเก็ต",
+      "loc": "บริษัท ศรีสมนาม จำกัด / The KEE",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 205,
       "so": "SO2512-111",
-      "loc": "Angsana Laguna Phuket · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "Angsana Laguna",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 209,
       "so": "SO2610-094",
-      "loc": "Paresa · กมลา, ภูเก็ต",
+      "loc": "Paresa Kamala (Grand Villa 2)",
       "lat": 7.955,
       "lng": 98.281,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 3,
+      "so": "SO2601-027",
+      "loc": "Avadina Res.8",
+      "lat": 8.035583,
+      "lng": 98.284319,
+      "how": "approximate",
+      "src": "ที่อยู่ Avadina Hills 59/7 หมู่ 6 ซอยหาดลายัน 4 ใช้ GPS ของ Anantara Layan ซึ่งอยู่ซอยเดียวกัน เป็นจุดโดยประมาณ ไม่ใช่แปลงวิลล่าเลข 8"
+    },
+    {
+      "id": 4,
+      "so": "SO2601-026",
+      "loc": "Zenithy Pool Villa S27",
+      "lat": 8.0042802,
+      "lng": 98.3092812,
+      "how": "approximate",
+      "src": "ที่อยู่โครงการ 79/2 หมู่ 4 ซอยป่าสัก 8 เชิงทะเล ปักใกล้ซอยป่าสักบน OpenStreetMap way 136439735"
+    },
+    {
+      "id": 19,
+      "so": "SO2601-123",
+      "loc": "Baan Nam Yen Khun Wi",
+      "lat": 7.8949476,
+      "lng": 98.2988023,
+      "how": "approximate",
+      "src": "โครงการ Baan Nam Yen Villas อยู่ป่าตอง (รายการ FazWaz) ยังไม่มีพิกัดอาคาร จึงปักที่ตัวเมืองป่าตอง OpenStreetMap node 313345814"
+    },
+    {
+      "id": 36,
+      "so": "SO2602-088",
+      "loc": "Samui Hospital",
+      "lat": 9.5219221,
+      "lng": 99.9355204,
+      "how": "exact",
+      "src": "OpenStreetMap node 1528148436 Koh Samui Hospital"
+    },
+    {
+      "id": 47,
+      "so": "SO2603-114",
+      "loc": "Dinnano Khlong Thom",
+      "lat": 7.8085177,
+      "lng": 99.2013743,
+      "how": "approximate",
+      "src": "ที่อยู่ 89/9 หมู่ 2 คลองพน คลองท่อม ปักที่ตัวเมืองคลองพน OpenStreetMap node 9806056483"
+    },
+    {
+      "id": 48,
+      "so": "SO2603-116 สินค้า",
+      "loc": "หน้างานอ่าวนาง (ในปั้มPTT ไสไทย)",
+      "lat": 8.0796771,
+      "lng": 98.8565771,
+      "how": "exact",
+      "src": "OpenStreetMap node 633029476 สถานีน้ำมัน PTT บนถนน 4034 ช่วงไสไทย–อ่าวนาง"
+    },
+    {
+      "id": 49,
+      "so": "SO2603-117 ค่าติดตั้ง",
+      "loc": "หน้างานอ่าวนาง (ในปั้มPTT ไสไทย)",
+      "lat": 8.0796771,
+      "lng": 98.8565771,
+      "how": "exact",
+      "src": "OpenStreetMap node 633029476 สถานีน้ำมัน PTT บนถนน 4034 ช่วงไสไทย–อ่าวนาง"
+    },
+    {
+      "id": 52,
+      "so": "SO2603-123",
+      "loc": "Raintree Villa Phuket",
+      "lat": 7.8009536,
+      "lng": 98.3257538,
+      "how": "approximate",
+      "src": "ที่อยู่ซอยสามัคคี 1 ราไวย์ จากเว็บโครงการ ปักบนถนน OpenStreetMap way 90576681"
+    },
+    {
+      "id": 53,
+      "so": "SO2603-125",
+      "loc": "Madeit Chalong",
+      "lat": 7.8465199,
+      "lng": 98.3344152,
+      "how": "approximate",
+      "src": "OpenStreetMap node 31040694 ตัวเมืองฉลอง ใช้เมื่อรู้แค่พื้นที่ฉลอง"
+    },
+    {
+      "id": 57,
+      "so": "SO2604-033",
+      "loc": "CAPE YAMU PAVILLION",
+      "lat": 7.9848393948,
+      "lng": 98.4211484309,
+      "how": "exact",
+      "src": "Wikidata Q111403094 COMO Point Yamu (Cape Yamu ชื่อเดิม)"
+    },
+    {
+      "id": 70,
+      "so": "SO2605-017",
+      "loc": "บ้านส่วนตัวคุณติ๊ก (ป่าตอง)",
+      "lat": 7.8949476,
+      "lng": 98.2988023,
+      "how": "approximate",
+      "src": "OpenStreetMap node 313345814 ตัวเมืองป่าตอง ใช้เมื่อรู้แค่พื้นที่"
+    },
+    {
+      "id": 74,
+      "so": "SO2605-043",
+      "loc": "Amanpuri (Pavilion room)",
+      "lat": 7.9862081,
+      "lng": 98.2728216,
+      "how": "exact",
+      "src": "OpenStreetMap relation 13958460 Amanpuri Resort"
+    },
+    {
+      "id": 76,
+      "so": "SO2605-054",
+      "loc": "บ้านคุณโจ้",
+      "lat": 7.8341229,
+      "lng": 98.3305933,
+      "how": "exact",
+      "src": "user"
+    },
+    {
+      "id": 81,
+      "so": "SO2605-090",
+      "loc": "Zenmaya Oceanfront Phuket ตึก B2",
+      "lat": 7.922666022,
+      "lng": 98.27901492,
+      "how": "exact",
+      "src": "พิกัดบนหน้าเว็บโรงแรม zenmayaphuket.com"
+    },
+    {
+      "id": 100,
+      "so": "SO2606-087",
+      "loc": "Avani+ Mai Khoa building E1, E2",
+      "lat": 8.168667,
+      "lng": 98.295566,
+      "how": "exact",
+      "src": "พิกัดสองแหล่งตรงกันที่อยู่ 887 หมู่ 3 ไม้ขาว (8.168755,98.295444 และ 8.168579,98.295689)"
+    },
+    {
+      "id": 131,
+      "so": "SO2608-054",
+      "loc": "Marina House",
+      "lat": 7.8465199,
+      "lng": 98.3344152,
+      "how": "approximate",
+      "src": "OpenStreetMap node 31040694 ตัวเมืองฉลอง ใช้เมื่อรู้แค่พื้นที่ฉลอง"
+    },
+    {
+      "id": 158,
+      "so": "SO2609-029",
+      "loc": "R-MAR RESORT AND SPA",
+      "lat": 7.8953388,
+      "lng": 98.298252,
+      "how": "exact",
+      "src": "OpenStreetMap way 1043792165 ตรงที่อยู่ 33 ซอยราษฎร์อุทิศ 200 ปี"
+    },
+    {
+      "id": 160,
+      "so": "SO2609-068",
+      "loc": "Baan Paa Talee Estate ห้องชั้นล่าง + ห้องทางเดิน",
+      "lat": 7.928808,
+      "lng": 98.262529,
+      "how": "exact",
+      "src": "พิกัดที่เผยแพร่ของ Baan Paa Talee Estate 28/19 หมู่ 6 Cape Amarin กมลา"
+    },
+    {
+      "id": 174,
+      "so": "SO2610-005",
+      "loc": "The Explorar Samui",
+      "lat": 9.5625638962,
+      "lng": 99.9744567871,
+      "how": "exact",
+      "src": "พิกัด HotelPlanner ของ Explorar Koh Samui ตรงที่อยู่ 44/133 หมู่ 1 หาดแม่น้ำ"
+    },
+    {
+      "id": 176,
+      "so": "SO2610-033",
+      "loc": "Courtyard by Marriott Phuket Town",
+      "lat": 7.8808182,
+      "lng": 98.393037,
+      "how": "exact",
+      "src": "OpenStreetMap way 475819205"
+    },
+    {
+      "id": 180,
+      "so": "OE2501-020",
+      "loc": "Samui Hospital",
+      "lat": 9.5219221,
+      "lng": 99.9355204,
+      "how": "exact",
+      "src": "OpenStreetMap node 1528148436 Koh Samui Hospital"
+    },
+    {
+      "id": 187,
+      "so": "SO2509-020",
+      "loc": "บ้านพักส่วนตัวคุณวิษณุ แก้วศิริ",
+      "lat": 8.44747,
+      "lng": 98.523113,
+      "how": "exact",
+      "src": "user"
+    },
+    {
+      "id": 189,
+      "so": "SO2510-096",
+      "loc": "Vana Belle, a Luxury Collection Resort",
+      "lat": 9.50738,
+      "lng": 100.05567,
+      "how": "exact",
+      "src": "Wikidata Q111403540"
+    },
+    {
+      "id": 207,
+      "so": "SO2512-118",
+      "loc": "คุณวรเทพ ราชเมืองขวาง หน้างานกมลา",
+      "lat": 7.949931,
+      "lng": 98.2827611,
+      "how": "approximate",
+      "src": "OpenStreetMap relation 14031380 ตำบลกมลา"
+    },
+    {
+      "id": 208,
+      "so": "SO2610-086",
+      "loc": "Hotel Tide",
+      "lat": 7.87443,
+      "lng": 98.42888,
+      "how": "exact",
+      "src": "Wikidata Q111996551 Hotel Tide Phuket ตรวจกับที่อยู่ 168/3 หมู่ 1 รัษฎา"
+    },
+    {
+      "id": 0,
+      "so": "SO2604-065",
+      "loc": "บ้านคุณโจ้ (เฉพาะสินค้า)",
+      "lat": 7.8341229,
+      "lng": 98.3305933,
+      "how": "exact",
+      "src": "user"
     }
   ],
   "service": [
     {
       "id": 1,
       "so": "SO2606-106",
-      "loc": "Centara Grand Beach Resort · เกาะสมุย, สุราษฎร์ธานี",
+      "loc": "บริษัท เซ็นทรัลสมุยบีชรีสอร์ท จำกัด Centara Grand Bl.1.7",
       "lat": 9.512,
       "lng": 100.0136,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 2,
       "so": "SO2608-007",
-      "loc": "The Kee Resort & Spa Patong · ป่าตอง, ภูเก็ต",
+      "loc": "บริษัท ศรีสมนาม จำกัด The Kee Patong",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 3,
       "so": "SO2608-014",
-      "loc": "The Lunar Patong · ป่าตอง, ภูเก็ต",
+      "loc": "บริษัท วายูดูท รีสอร์ท(ไทยแลนด์) จำกัด THE LUNAR RESIDENCE",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 4,
       "so": "SO2608-031",
-      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "loc": "Aleenta Heat pump 27 Kw. (Bl. OVL)",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 6,
       "so": "SO2609-003",
-      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "loc": "ALEENTA RESORT PHANG-NGA CO., LTD. (RDA)",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 7,
       "so": "SO2609-004",
-      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "loc": "ALEENTA RESORT PHANG-NGA CO., LTD.",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 8,
       "so": "SO2609-041",
-      "loc": "The Kee Resort & Spa Patong · ป่าตอง, ภูเก็ต",
+      "loc": "บริษัท ศรีสมนาม จำกัด The Kee Patong",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 10,
       "so": "PSE - PHK6904-002",
-      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "loc": "คอมเพรสเซอร์ 27kW",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 11,
+      "so": "PSE - PHK6908-003",
+      "loc": "คอมเพรสเซอร์ 60kW",
+      "lat": 7.895018,
+      "lng": 98.296936,
+      "how": "exact",
+      "src": "GPS บนหน้าติดต่อ The Kee Resort"
     },
     {
       "id": 12,
       "so": "PSE - PHK6908-006",
-      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "loc": "ALEENTA RESORT PHANG-NGA CO., LTD",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 13,
       "so": "PSE - PHK6908-007",
-      "loc": "Anantara Mai Khao Phuket Villas (APKV) · ไม้ขาว-ในยาง, ภูเก็ต",
+      "loc": "Circulate Pump",
       "lat": 8.13,
       "lng": 98.3,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 14,
       "so": "PSE - PHK6908-009",
-      "loc": "Angsana Laguna Phuket · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "ฝาปั๊ม ของ ปั้มน้า Grundfos CM10-2/380 V.",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 18,
       "so": "OE2211-083",
-      "loc": "Andara · กมลา, ภูเก็ต",
+      "loc": "บริษัท อาร์ เอส อี โซลูชั่น จำกัด Project : Andara VP-19",
       "lat": 7.955,
       "lng": 98.281,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 19,
       "so": "PSE - PHK6909-007",
-      "loc": "Arinara Beach Resort · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "loc": "เคลม Heat exchanger",
       "lat": 8.0,
       "lng": 98.296,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 20,
       "so": "SO2510-095",
-      "loc": "Red Ginger · อ่าวนาง, กระบี่",
+      "loc": "บริษัท ขิงแดง จำกัด Project: Red Ginger",
       "lat": 8.032,
       "lng": 98.82,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 21,
       "so": "SO2603-088 rev.1",
-      "loc": "Anantara Mai Khao Phuket Villas (APKV) · ไม้ขาว-ในยาง, ภูเก็ต",
+      "loc": "Project : Anantara Mai Kho Phuket Villas คัตเตอร์ 13",
       "lat": 8.13,
       "lng": 98.3,
-      "how": "exact"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 22,
       "so": "SO2607-028",
-      "loc": "Paresa · กมลา, ภูเก็ต",
+      "loc": "บริษัท ภารีสา คอร์ปอเรชั่น จำกัด Project : Paresa Kamala (Spa)",
       "lat": 7.955,
       "lng": 98.281,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 23,
+      "so": "SO2609-125",
+      "loc": "KATA THANI CO., LTD. ตึกแปซิฟิค",
+      "lat": 7.8077241,
+      "lng": 98.2993202,
+      "how": "exact",
+      "src": "OpenStreetMap way 1178717517 Katathani Phuket Beach Resort"
     },
     {
       "id": 24,
       "so": "SO2609-132",
-      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "loc": "ALEENTA RESORT PHANG-NGA CO., LTD. (Aleenta CWS)",
       "lat": 8.64,
       "lng": 98.24,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 25,
       "so": "SO2610-012",
-      "loc": "The Shore at Katathani Resort · กะตะ-กะรน, ภูเก็ต",
+      "loc": "The Shore at Katathani Resort (ห้อง 8905)",
       "lat": 7.818,
       "lng": 98.298,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 26,
       "so": "SO2610-011",
-      "loc": "Holiday Inn Samui Bophut · เกาะสมุย, สุราษฎร์ธานี",
+      "loc": "บริษัท เดอะ แพลทินัม สมุย จำกัด HOLIDAY INN SAMUI ตึก L",
       "lat": 9.512,
       "lng": 100.0136,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 28,
+      "so": "SO2610-052",
+      "loc": "Patong Beach Hotel",
+      "lat": 7.8923613,
+      "lng": 98.2957103,
+      "how": "exact",
+      "src": "OpenStreetMap node 1110152464 Patong Beach Hotel"
+    },
+    {
+      "id": 29,
+      "so": "Presale",
+      "loc": "THREE DOLPHINS RESORT CO., LTD. โรงแรมตรีสรา รีสอร์ท",
+      "lat": 8.0349106,
+      "lng": 98.2772827,
+      "how": "exact",
+      "src": "OpenStreetMap way 534911049 Trisara"
     },
     {
       "id": 30,
       "so": "OE2311-093",
-      "loc": "Ocean & Ole · ป่าตอง, ภูเก็ต",
+      "loc": "น้ำไม่ร้อน",
       "lat": 7.8967,
       "lng": 98.2966,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
       "id": 32,
       "so": "",
-      "loc": "Krabi Resort · อ่าวนาง, กระบี่",
+      "loc": "บริษัท กระบี่รีสอร์ท จำกัด Project : Krabi Resort Zone Villa",
       "lat": 8.032,
       "lng": 98.82,
-      "how": "fuzzy"
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
+    },
+    {
+      "id": 5,
+      "so": "SO2608-101",
+      "loc": "Centara Grand Beach Resort Phuket Building 1.4",
+      "lat": 7.8577398,
+      "lng": 98.2906613,
+      "how": "exact",
+      "src": "OpenStreetMap node 6109432923 ที่ 683 ถนนป่าตัก กะรน"
+    },
+    {
+      "id": 9,
+      "so": "SO2609-103",
+      "loc": "Centara Grand Beach Resort Phuket Building 1.4",
+      "lat": 7.8577398,
+      "lng": 98.2906613,
+      "how": "exact",
+      "src": "OpenStreetMap node 6109432923 ที่ 683 ถนนป่าตัก กะรน"
+    },
+    {
+      "id": 16,
+      "so": "PSE - PHK6909-006",
+      "loc": "Display Controller",
+      "lat": 7.8949476,
+      "lng": 98.2988023,
+      "how": "approximate",
+      "src": "โครงการ Baan Nam Yen Villas อยู่ป่าตอง (รายการ FazWaz) ยังไม่มีพิกัดอาคาร จึงปักที่ตัวเมืองป่าตอง OpenStreetMap node 313345814"
+    },
+    {
+      "id": 17,
+      "so": "SO2609-116",
+      "loc": "บริษัท พริสร จำกัด Wyndham Grand Phuket Kalim ตึก F",
+      "lat": 7.923185,
+      "lng": 98.279247,
+      "how": "exact",
+      "src": "พิกัดแผนที่ของ Wyndham Grand Phuket Kalim Bay ที่อยู่ 8/18-19 หมู่ 6 กมลา"
+    },
+    {
+      "id": 27,
+      "so": "SO2610-047",
+      "loc": "บริษัท พริสร จำกัด Wyndham Grand Phuket Kalim",
+      "lat": 7.923185,
+      "lng": 98.279247,
+      "how": "exact",
+      "src": "พิกัดแผนที่ของ Wyndham Grand Phuket Kalim Bay ที่อยู่ 8/18-19 หมู่ 6 กมลา"
+    },
+    {
+      "id": 31,
+      "so": "",
+      "loc": "ปาล์มเมตโต้ ปาร์ค คอนโดมิเนียม ห้อง 404",
+      "lat": 7.835509,
+      "lng": 98.3009553,
+      "how": "exact",
+      "src": "OpenStreetMap way 1124974393 Palmetto Park Condominium"
+    },
+    {
+      "id": 33,
+      "so": "",
+      "loc": "บริษัท ชัยนริศภูเก็ต เอ็นจิเนียริ่ง จำกัด Project : บ้านคุณหมอเลอศักดิ์ แลนด์ แอนด์ เฮ้าส์",
+      "lat": 7.9518028,
+      "lng": 98.3752445,
+      "how": "approximate",
+      "src": "OpenStreetMap relation 17100968 ตำบลเกาะแก้ว บ้านเลขที่ 88/118 ยังไม่พบจุดอาคาร"
     }
   ]
 }
