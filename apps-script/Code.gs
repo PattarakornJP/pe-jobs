@@ -17,7 +17,7 @@ var ADMIN_KEY = '';
 
 var SHEET_NAME = 'jobs';
 var HEADERS = ['id', 'src', 'so', 'comp', 'proj', 'work', 'pay', 'prog', 'st', 'note', 'eng', 'm', 'y', 'updatedAt'];
-var STATUSES = ['รอมัดจำ', 'มัดจำแล้ว', 'พร้อมเข้างาน', 'กำลังดำเนินการ', 'เสร็จแล้ว', 'ไม่ระบุ'];
+var STATUSES = ['รอมัดจำ', 'มัดจำแล้ว', 'พร้อมเข้างาน', 'กำลังดำเนินการ', 'รอส่งมอบงาน', 'เสร็จแล้ว', 'ไม่ระบุ'];
 var SEED_CSV_URL = 'https://raw.githubusercontent.com/PattarakornJP/pe-jobs/main/seed/jobs.csv';
 var SERVICE_SHEET_NAME = 'service';
 var SERVICE_HEADERS = ['id', 'no', 'date', 'customer', 'detail', 'type', 'chkWait', 'chkDone', 'rptWait', 'rptDone', 'sales', 'so', 'depWait', 'depDone', 'partsWait', 'partsDone', 'enterWait', 'enterDone', 'workDate', 'workOpen', 'workDone', 'team', 'note', 'updatedAt'];
