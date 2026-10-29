@@ -1183,6 +1183,15 @@
       "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า"
     },
     {
+      "id": 15,
+      "so": "PSE - PHK6909-001",
+      "loc": "JW Marriott Phuket Resort & Spa",
+      "lat": 8.1661545,
+      "lng": 98.2952039,
+      "how": "exact",
+      "src": "user (hotel name), geocoded"
+    },
+    {
       "id": 19,
       "so": "PSE - PHK6909-007",
       "loc": "เคลม Heat exchanger",
