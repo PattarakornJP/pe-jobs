@@ -875,6 +875,24 @@
       "src": "OpenStreetMap node 633029476 สถานีน้ำมัน PTT บนถนน 4034 ช่วงไสไทย–อ่าวนาง"
     },
     {
+      "id": 50,
+      "so": "SO2603-118 สินค้า",
+      "loc": "Alisea Pool Villas, Ao Nang, Krabi",
+      "lat": 8.0579406,
+      "lng": 98.7941873,
+      "how": "exact",
+      "src": "user"
+    },
+    {
+      "id": 51,
+      "so": "SO2603-119 ค่าติดตั้ง",
+      "loc": "Alisea Pool Villas, Ao Nang, Krabi",
+      "lat": 8.0579406,
+      "lng": 98.7941873,
+      "how": "exact",
+      "src": "user"
+    },
+    {
       "id": 52,
       "so": "SO2603-123",
       "loc": "Raintree Villa Phuket",
