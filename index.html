@@ -62,6 +62,13 @@ button.danger{color:var(--crit);border-color:var(--crit)}
 .kpi .sm{color:var(--muted);font-size:11.5px}
 .kpi.flag{border-color:var(--warn)}
 .kpi.flag .val{color:var(--ink)}
+button.on{border-color:var(--accent);color:var(--ink);box-shadow:inset 0 0 0 1px var(--accent)}
+.loccell{font-size:12.5px;line-height:1.35;min-width:132px}
+.loccell .lochow,.loccell .maplink{display:block}
+.lochow{color:var(--muted);font-size:11px}
+.maplink{color:var(--accent);font-size:12px;text-decoration:none}
+.maplink:hover{text-decoration:underline}
+.locmiss{color:var(--muted)}
 
 .charts{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .chart{display:flex;flex-direction:column;gap:12px}
@@ -79,7 +86,7 @@ button.danger{color:var(--crit);border-color:var(--crit)}
 .legend span.k{display:inline-flex;align-items:center;gap:6px}
 .sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
 
-.toolbar{display:grid;grid-template-columns:1fr auto auto auto auto;gap:9px;margin-bottom:12px}
+.toolbar{display:grid;grid-template-columns:1fr auto auto auto auto auto;gap:9px;margin-bottom:12px}
 input[type=search],input[type=text],select,textarea{
   background:var(--page);color:var(--ink);border:1px solid var(--border);border-radius:10px;
   padding:10px 12px;font:inherit;font-size:13.5px;width:100%}
@@ -268,12 +275,13 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
 
   <section class="card">
     <h2>รายการงานทั้งหมด</h2>
-    <p class="desc">ค้นหาด้วยเลข SO ชื่อบริษัท โครงการ หรือชื่อผู้รับผิดชอบ · กดหัวคอลัมน์เพื่อเรียง · กดแก้ไขเพื่อปรับข้อมูล</p>
+    <p class="desc">ค้นหาด้วยเลข SO ชื่อบริษัท โครงการ สถานที่ หรือชื่อผู้รับผิดชอบ · กดหัวคอลัมน์เพื่อเรียง · กดแก้ไขเพื่อปรับข้อมูล</p>
     <div class="toolbar">
-      <input class="full" type="search" id="q" placeholder="ค้นหา…  เช่น  SO2601  /  Banyan  /  วรวิทย์" autocomplete="off">
+      <input class="full" type="search" id="q" placeholder="ค้นหา…  เช่น  SO2601  /  Banyan  /  กมลา" autocomplete="off">
       <select id="fSt"></select>
       <select id="fEng"></select>
       <select id="fSrc"></select>
+      <button id="noLocBtn" type="button" aria-pressed="false">ยังไม่มีสถานที่</button>
       <button id="clearBtn" type="button">ล้างตัวกรอง</button>
     </div>
     <p class="count" id="count"></p>
@@ -285,6 +293,7 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
           <th class="workh" data-k="work">ประเภทงาน <span class="ar"></span></th>
           <th data-k="st">สถานะ <span class="ar"></span></th>
           <th data-k="eng">ผู้รับผิดชอบ <span class="ar"></span></th>
+          <th data-k="loc">สถานที่ <span class="ar"></span></th>
           <th></th>
         </tr></thead>
         <tbody id="tbody"></tbody>
@@ -319,11 +328,12 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
     <h2>รายการงาน Service &amp; PM</h2>
     <p class="desc">ค้นหาชื่อลูกค้า เลข SO หรือทีมช่าง · กดแก้ไขเพื่อติ๊กขั้นงาน</p>
     <div class="toolbar svc">
-      <input class="full" type="search" id="svcQ" placeholder="ค้นหา…  เช่น  Centara  /  SO2609  /  พี่ตี๋" autocomplete="off">
+      <input class="full" type="search" id="svcQ" placeholder="ค้นหา…  เช่น  Centara  /  SO2609  /  กมลา" autocomplete="off">
       <select id="svcType" aria-label="ประเภท"></select>
       <select id="svcStage" aria-label="ขั้นงาน"></select>
       <select id="svcTeam" aria-label="ทีมช่าง"></select>
       <select id="svcMonth" aria-label="เดือน"></select>
+      <button id="svcNoLoc" type="button" aria-pressed="false">ยังไม่มีสถานที่</button>
       <button id="svcClear" type="button">ล้างตัวกรอง</button>
     </div>
     <p class="count" id="svcCount"></p>
@@ -337,6 +347,7 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
           <th data-sk="so">SO <span class="ar"></span></th>
           <th data-sk="team">ทีมช่าง <span class="ar"></span></th>
           <th data-sk="workDate">นัดเข้า <span class="ar"></span></th>
+          <th data-sk="loc">สถานที่ <span class="ar"></span></th>
           <th></th>
         </tr></thead>
         <tbody id="svcBody"></tbody>
@@ -356,6 +367,7 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
       <div class="f"><label for="fEngI">ผู้รับผิดชอบ</label><select id="fEngI"></select><button type="button" class="textbtn" id="engManage">จัดการผู้รับผิดชอบ</button></div>
       <div class="f"><label for="fComp">ชื่อบริษัท</label><input type="text" id="fComp"></div>
       <div class="f"><label for="fProj">โครงการ</label><input type="text" id="fProj"></div>
+      <div class="f full"><label for="fLoc">สถานที่หน้างาน</label><input type="text" id="fLoc" placeholder="เช่น กมลา, ภูเก็ต" autocomplete="off"><p class="hint" id="fLocHint" style="margin:6px 0 0"></p></div>
       <div class="f full"><label for="fWork">ประเภทงาน / รายละเอียด</label><textarea id="fWork"></textarea></div>
       <div class="f"><label for="fStI">สถานะ</label><select id="fStI"></select></div>
       <div class="f"><label for="fSrcI">กลุ่มงาน</label><select id="fSrcI"></select></div>
@@ -400,6 +412,7 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
       <div class="f"><label for="svcSo">เลข SO</label><input type="text" id="svcSo" placeholder="SO2610-001, PSE-PHK…, Presale หรือเว้นว่าง" autocomplete="off"></div>
       <div class="f full"><label>ประเภทงาน</label><div class="opts" id="svcTypes"></div></div>
       <div class="f full"><label for="svcCustomer">ชื่องาน / ลูกค้า *</label><textarea id="svcCustomer"></textarea></div>
+      <div class="f full"><label for="svcLoc">สถานที่หน้างาน</label><input type="text" id="svcLoc" placeholder="เช่น ป่าตอง, ภูเก็ต" autocomplete="off"><p class="hint" id="svcLocHint" style="margin:6px 0 0"></p></div>
       <div class="f full"><label for="svcDetail">รายละเอียดงาน</label><textarea id="svcDetail"></textarea></div>
       <div class="f full">
         <label>ขั้นงาน</label>
@@ -500,8 +513,17 @@ function cleanRow(r){
     note: String(r.note || ''),
     eng: String(r.eng || '') || NO_ENG,
     m: Math.min(12, Math.max(0, parseInt(r.m, 10) || 0)),
-    y: parseInt(r.y, 10) || 0
+    y: parseInt(r.y, 10) || 0,
+    loc: String(r.loc || '').trim(),
+    lat: coordOrBlank(r.lat),
+    lng: coordOrBlank(r.lng),
+    locHow: r.locHow === 'exact' || r.locHow === 'fuzzy' ? r.locHow : ''
   };
+}
+function coordOrBlank(v){
+  if (v == null || v === '') return '';
+  const n = Number(v);
+  return Number.isFinite(n) ? String(n) : '';
 }
 function isRosterRow(r){
   if (!r || typeof r !== 'object') return false;
@@ -635,6 +657,8 @@ if (!SHARED) {
   nextId = 1;
 }
 let sortKey = 'so', sortDir = 1;
+let onlyNoLoc = false;
+let locFile = null;
 let editingId = null;
 
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -677,7 +701,7 @@ function initSaveState(){
 /* ---------- ข้อมูลร่วมบน Google Sheet ---------- */
 function rowSig(r){
   const c = cleanRow(r);
-  return JSON.stringify([c.id,c.src,c.so,c.comp,c.proj,c.work,c.pay,c.prog,c.st,c.note,c.eng,c.m,c.y]);
+  return JSON.stringify([c.id,c.src,c.so,c.comp,c.proj,c.work,c.pay,c.prog,c.st,c.note,c.eng,c.m,c.y,c.loc,c.lat,c.lng,c.locHow]);
 }
 function dirtyCount(){
   const base = new Map(baseRows.map(r => [String(r.id), rowSig(r)]));
@@ -830,6 +854,9 @@ function applyServer(data){
   const pack = adoptRoster(data.rows || []);
   applyRosterPack(pack);
   baseRows = cloneRows(rows);
+  const locBefore = rows.filter(hasLoc).length;
+  applyKnownLoc(rows, 'project');
+  const locAdded = rows.filter(hasLoc).length - locBefore;
   loadedRev = data.lastSaved || data.updatedAt || '';
   sheetReady = true;
   holdAuto = false;
@@ -837,6 +864,7 @@ function applyServer(data){
   bumpNext();
   if (!rows.length) showBanner('ชีตยังว่าง เปิด Google Sheet แล้วเลือกเมนู PE Jobs > ตั้งค่าเริ่มต้น จากนั้นกด โหลดใหม่', true);
   else if (pack.baseSig == null) showBanner('เตรียมรายชื่อผู้รับผิดชอบไว้แล้ว กดปุ่มเขียว บันทึก ครั้งหนึ่ง เพื่อเก็บรายชื่อนี้', false);
+  else if (locAdded) showBanner('เติมสถานที่จากแผนที่ลูกค้าแล้ว ' + locAdded + ' งาน กดปุ่มเขียว บันทึก ครั้งหนึ่ง เพื่อเก็บลงชีต', false);
   else showBanner('');
   setSaveState(loadedRev ? ('บันทึกล่าสุด ' + fmtTime(loadedRev)) : 'โหลดจากชีตแล้ว', false);
   updateSaveBtn();
@@ -858,6 +886,7 @@ async function loadFromSheet(){
     const pack = adoptRoster(ROWS);
     rows = pack.jobs;
     rosterNames = pack.names;
+    applyKnownLoc(rows, 'project');
     baseRows = cloneRows(rows);
     baseRosterSig = rosterSig();
     sheetReady = false;
@@ -994,6 +1023,98 @@ function statusCounts(list){
   return c;
 }
 
+function hasLoc(r){ return !!(r && String(r.loc || '').trim()); }
+function mapHref(r){
+  const lat = Number(r && r.lat), lng = Number(r && r.lng);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng) || (lat === 0 && lng === 0)) return '';
+  return 'https://www.google.com/maps?q=' + lat + ',' + lng;
+}
+function howLabel(how){
+  if (how === 'exact') return 'ตรงกับแผนที่ลูกค้า';
+  if (how === 'fuzzy') return 'ใกล้เคียงแผนที่ลูกค้า';
+  return '';
+}
+function locKept(prev, loc){
+  if (prev && loc && loc === String(prev.loc || '').trim()) {
+    return {
+      lat: coordOrBlank(prev.lat),
+      lng: coordOrBlank(prev.lng),
+      locHow: prev.locHow === 'exact' || prev.locHow === 'fuzzy' ? prev.locHow : ''
+    };
+  }
+  return { lat: '', lng: '', locHow: '' };
+}
+function applyKnownLoc(list, table){
+  const items = locFile && locFile[table];
+  if (!items || !list) return;
+  const bySo = new Map();
+  items.forEach(it => {
+    const k = String(it.so || '').trim();
+    if (!k) return;
+    if (!bySo.has(k)) bySo.set(k, []);
+    bySo.get(k).push(it);
+  });
+  list.forEach(r => {
+    if (!r || (table === 'project' && isRosterRow(r)) || hasLoc(r)) return;
+    const k = String(r.so || '').trim();
+    let hit = null;
+    if (k && bySo.has(k)) {
+      const pool = bySo.get(k);
+      hit = pool.find(it => String(it.id) === String(r.id)) || (pool.length === 1 ? pool[0] : null);
+    } else if (!k) {
+      hit = items.find(it => String(it.id) === String(r.id) && !String(it.so || '').trim());
+    }
+    if (!hit || !hit.loc) return;
+    r.loc = String(hit.loc);
+    r.lat = coordOrBlank(hit.lat);
+    r.lng = coordOrBlank(hit.lng);
+    r.locHow = hit.how === 'exact' || hit.how === 'fuzzy' ? hit.how : '';
+  });
+}
+function locCell(r, q){
+  if (!hasLoc(r)) return '<span class="locmiss">ยังไม่มี</span>';
+  const how = howLabel(r.locHow);
+  const href = mapHref(r);
+  return hl(r.loc, q) +
+    (how ? '<span class="lochow">' + esc(how) + '</span>' : '') +
+    (href ? '<a class="maplink" href="' + esc(href) + '" target="_blank" rel="noopener">เปิดแผนที่</a>' : '');
+}
+function locHintHtml(r){
+  if (!r || !hasLoc(r)) return 'ยังไม่มีในแผนที่ลูกค้า พิมพ์สถานที่หน้างานได้เลย';
+  const how = howLabel(r.locHow);
+  const href = mapHref(r);
+  const link = href ? ' · <a class="maplink" href="' + esc(href) + '" target="_blank" rel="noopener">เปิดแผนที่</a>' : '';
+  return (how || 'สถานที่หน้างาน') + link;
+}
+function paintNoLocBtn(){
+  const n = jobRows().filter(r => !hasLoc(r)).length;
+  const b = $('#noLocBtn');
+  if (!b) return;
+  b.textContent = 'ยังไม่มีสถานที่ (' + nf(n) + ')';
+  b.classList.toggle('on', onlyNoLoc);
+  b.setAttribute('aria-pressed', onlyNoLoc ? 'true' : 'false');
+}
+async function loadLocFile(){
+  try {
+    const res = await fetch('data/locations.json', {cache:'no-cache'});
+    if (!res.ok) return;
+    locFile = await res.json();
+  } catch(e) { return; }
+  if (rows && rows.length) {
+    const locBefore = rows.filter(hasLoc).length;
+    applyKnownLoc(rows, 'project');
+    const locAdded = rows.filter(hasLoc).length - locBefore;
+    if (locAdded && sheetReady) showBanner('เติมสถานที่จากแผนที่ลูกค้าแล้ว ' + locAdded + ' งาน กดปุ่มเขียว บันทึก ครั้งหนึ่ง เพื่อเก็บลงชีต', false);
+    updateSaveBtn();
+    renderAll();
+  }
+  if (typeof svcRows !== 'undefined' && svcRows && svcRows.length) {
+    applyKnownLoc(svcRows, 'service');
+    if (view() === 'service') renderSvcAll();
+    updateSaveBtn();
+  }
+}
+
 /* ---------- KPI ---------- */
 function renderKpis(){
   const list = jobRows();
@@ -1094,8 +1215,9 @@ function filtered(){
     if (st && r.st !== st) return false;
     if (eng && r.eng !== eng) return false;
     if (src && r.src !== src) return false;
+    if (onlyNoLoc && hasLoc(r)) return false;
     if (q){
-      const hay = (r.so+' '+r.comp+' '+r.proj+' '+r.work+' '+r.eng+' '+r.st+' '+r.note).toLowerCase();
+      const hay = (r.so+' '+r.comp+' '+r.proj+' '+r.work+' '+r.eng+' '+r.st+' '+r.note+' '+r.loc).toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -1128,7 +1250,8 @@ function renderTable(){
     const s = th.querySelector('.ar'); if (!s) return;
     s.textContent = th.dataset.k === sortKey ? (sortDir > 0 ? '▲' : '▼') : '';
   });
-  if (!out.length){ $('#tbody').innerHTML = '<tr><td colspan="6" class="empty">ไม่พบงานที่ตรงกับเงื่อนไข</td></tr>'; return; }
+  paintNoLocBtn();
+  if (!out.length){ $('#tbody').innerHTML = '<tr><td colspan="7" class="empty">ไม่พบงานที่ตรงกับเงื่อนไข</td></tr>'; return; }
   $('#tbody').innerHTML = out.map(r =>
     '<tr>' +
       '<td class="so">' + hl(r.so, q) + '<br><span style="color:var(--muted);font-weight:400;font-size:11.5px">' +
@@ -1137,6 +1260,7 @@ function renderTable(){
       '<td class="work">' + hl((r.work || '').slice(0,150), q) + ((r.work||'').length > 150 ? '…' : '') + '</td>' +
       '<td>' + statusCell(r) + '</td>' +
       '<td><span class="engtag ' + (r.eng === NO_ENG ? 'none' : '') + '">' + hl(r.eng, q) + '</span></td>' +
+      '<td class="loccell">' + locCell(r, q) + '</td>' +
       '<td class="act"><button type="button" data-edit="' + r.id + '">แก้ไข</button></td>' +
     '</tr>').join('');
 }
@@ -1146,8 +1270,13 @@ function renderAll(){ renderKpis(); renderCharts(); refreshFilters(); renderTabl
   $(s).addEventListener('input', renderTable);
   $(s).addEventListener('change', renderTable);
 });
+$('#noLocBtn').addEventListener('click', () => {
+  onlyNoLoc = !onlyNoLoc;
+  renderTable();
+});
 $('#clearBtn').addEventListener('click', () => {
   $('#q').value = ''; $('#fSt').value = ''; $('#fEng').value = ''; $('#fSrc').value = '';
+  onlyNoLoc = false;
   renderTable();
 });
 document.querySelectorAll('#viewProject thead th[data-k]').forEach(th => th.addEventListener('click', () => {
@@ -1185,6 +1314,8 @@ function openModal(id){
   $('#fM').value = r && r.m ? r.m : (new Date().getMonth() + 1);
   $('#fPay').value = r ? r.pay : '';
   $('#fNote').value = r ? r.note : '';
+  $('#fLoc').value = r ? (r.loc || '') : '';
+  $('#fLocHint').innerHTML = locHintHtml(r);
   let engVal = NO_ENG;
   if (r) engVal = r.eng || NO_ENG;
   else {
@@ -1220,6 +1351,8 @@ $('#mSave').addEventListener('click', () => {
     pay: $('#fPay').value.trim(), note: $('#fNote').value.trim(),
     st: $('#fStI').value || 'ไม่ระบุ', src: $('#fSrcI').value || 'ปี 2026',
     eng: $('#fEngI').value.trim() || NO_ENG,
+    loc: $('#fLoc').value.trim(),
+    ...locKept(editingId == null ? null : rows.find(x => x.id === editingId), $('#fLoc').value.trim()),
     y: parseInt($('#fY').value, 10) || 0, m: Math.min(12, Math.max(0, parseInt($('#fM').value, 10) || 0))
   };
   data.prog = data.note || data.st;
@@ -1239,8 +1372,8 @@ $('#mDel').addEventListener('click', () => {
 });
 
 /* ---------- CSV export / import ---------- */
-const COLS = ['so','comp','proj','work','st','eng','src','y','m','pay','note'];
-const HEAD  = ['เลขSO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ'];
+const COLS = ['so','comp','proj','work','st','eng','src','y','m','pay','note','loc','lat','lng','locHow'];
+const HEAD  = ['เลขSO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ','สถานที่','ละติจูด','ลองจิจูด','ที่มาสถานที่'];
 const csvCell = v => '"' + String(v ?? '').replace(/"/g,'""') + '"';
 $('#expBtn').addEventListener('click', () => {
   const body = jobRows().map(r => COLS.map(k => csvCell(r[k])).join(',')).join('\r\n');
@@ -1289,6 +1422,7 @@ $('#impFile').addEventListener('change', e => {
         return o;
       });
       rows = next.filter(r => !isRosterRow(r));
+      applyKnownLoc(rows, 'project');
       rosterNames = mergeNames(rosterNames, namesFromJobs(rows));
       nextId = rows.length + 1;
       if (SHARED) {
@@ -1316,6 +1450,7 @@ $('#resetBtn').addEventListener('click', () => {
   if (!SHARED) {
     storeClear();
     rows = ROWS.map(r => ({...r})).filter(r => !isRosterRow(r));
+    applyKnownLoc(rows, 'project');
     rosterNames = seedRoster(rows);
     nextId = Math.max(0, ...rows.map(r => +r.id || 0)) + 1;
     setSaveState('คืนค่าต้นฉบับแล้ว', false);
@@ -1323,6 +1458,7 @@ $('#resetBtn').addEventListener('click', () => {
     return;
   }
   rows = cloneRows(ROWS).filter(r => !isRosterRow(r));
+  applyKnownLoc(rows, 'project');
   rosterNames = seedRoster(rows);
   bumpNext();
   setSaveState('ใช้ข้อมูลในไฟล์เว็บแล้ว ยังไม่ส่งขึ้นชีต', true);
@@ -1353,11 +1489,13 @@ $('#xlsxBtn').addEventListener('click', async () => {
   btn.textContent = 'กำลังเตรียมไฟล์...';
   try {
     await loadSheetJS(0);
-    const headers = ['เลข SO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ'];
+    const headers = ['เลข SO','บริษัท','โครงการ','ประเภทงาน','สถานะ','ผู้รับผิดชอบ','กลุ่มงาน','ปี','เดือน','การชำระเงิน','หมายเหตุ','สถานที่','แผนที่','ที่มาสถานที่'];
     const keys = ['so','comp','proj','work','st','eng','src','y','m','pay','note'];
-    const aoa = [headers].concat(jobRows().map(r => keys.map(k => r[k] ?? '')));
+    const aoa = [headers].concat(jobRows().map(r => keys.map(k => r[k] ?? '').concat([
+      r.loc || '', mapHref(r), howLabel(r.locHow)
+    ])));
     const ws = XLSX.utils.aoa_to_sheet(aoa);
-    ws['!cols'] = [14,36,36,40,16,22,16,8,8,28,40].map(w => ({wch:w}));
+    ws['!cols'] = [14,36,36,40,16,22,16,8,8,28,40,28,36,22].map(w => ({wch:w}));
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'งาน');
     XLSX.writeFile(wb, 'PE_Jobs_' + new Date().toISOString().slice(0,10) + '.xlsx');
@@ -1602,6 +1740,15 @@ let svcHold = false;
 let svcTimer = null;
 let svcEditing = null;
 let svcSortKey = 'no';
+let svcOnlyNoLoc = false;
+function paintSvcNoLoc(){
+  const n = svcRows.filter(r => !hasLoc(r)).length;
+  const b = $('#svcNoLoc');
+  if (!b) return;
+  b.textContent = 'ยังไม่มีสถานที่ (' + nf(n) + ')';
+  b.classList.toggle('on', svcOnlyNoLoc);
+  b.setAttribute('aria-pressed', svcOnlyNoLoc ? 'true' : 'false');
+}
 let svcSortDir = 1;
 let conflictTarget = 'jobs';
 
@@ -1660,7 +1807,11 @@ function cleanSvc(r){
     so: String(r.so || ''),
     workDate: String(r.workDate || ''),
     team: String(r.team || ''),
-    note: String(r.note || '')
+    note: String(r.note || ''),
+    loc: String(r.loc || '').trim(),
+    lat: coordOrBlank(r.lat),
+    lng: coordOrBlank(r.lng),
+    locHow: r.locHow === 'exact' || r.locHow === 'fuzzy' ? r.locHow : ''
   };
   if (o.type === 'PM (บำรุงรักษา)') o.type = 'PM';
   SVC_FLAGS.forEach(k => { o[k] = onFlag(r[k]) ? 1 : 0; });
@@ -1750,6 +1901,7 @@ function svcStoreSet(){
 }
 function svcUseSeed(kind){
   svcRows = SERVICE_ROWS.map(cleanSvc);
+  applyKnownLoc(svcRows, 'service');
   svcBase = svcRows.map(r => ({...r}));
   svcRev = '';
   svcMode = 'readonly';
@@ -1770,11 +1922,14 @@ function svcResponseKind(data){
 function applySvcServer(data){
   svcRows = (data.rows || []).map(cleanSvc);
   svcBase = svcRows.map(r => ({...r}));
+  const locBefore = svcRows.filter(hasLoc).length;
+  applyKnownLoc(svcRows, 'service');
+  const locAdded = svcRows.filter(hasLoc).length - locBefore;
   svcRev = data.lastSaved || '';
   svcMode = 'live';
   svcHold = false;
   document.body.classList.remove('svc-readonly');
-  showSvcBanner('');
+  showSvcBanner(locAdded ? ('เติมสถานที่จากแผนที่ลูกค้าแล้ว ' + locAdded + ' งาน กดปุ่มเขียว บันทึก เพื่อเก็บลงชีต') : '');
   paintSave(svcRev ? ('บันทึกล่าสุด ' + fmtTime(svcRev)) : 'โหลดจากชีตแล้ว', false);
 }
 function loadSvcLocal(){
@@ -1792,6 +1947,7 @@ function loadSvcLocal(){
     }
   }
   svcRows = source.map(cleanSvc);
+  applyKnownLoc(svcRows, 'service');
   svcBase = svcRows.map(r => ({...r}));
   svcRev = '';
   svcMode = 'local';
@@ -2082,8 +2238,9 @@ function svcFiltered(){
     const mk = svcMonthKey(r);
     if (month === '__none__' && mk) return false;
     if (month && month !== '__none__' && mk !== month) return false;
+    if (svcOnlyNoLoc && hasLoc(r)) return false;
     if (q) {
-      const hay = (r.customer + ' ' + r.detail + ' ' + r.so + ' ' + r.team + ' ' + r.note + ' ' + r.sales + ' ' + r.type + ' ' + info.stage).toLowerCase();
+      const hay = (r.customer + ' ' + r.detail + ' ' + r.so + ' ' + r.team + ' ' + r.note + ' ' + r.sales + ' ' + r.type + ' ' + info.stage + ' ' + r.loc).toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -2109,8 +2266,9 @@ function renderSvcTable(){
     s.textContent = th.dataset.sk === svcSortKey ? (svcSortDir > 0 ? '▲' : '▼') : '';
   });
   const editable = svcMode === 'live' || svcMode === 'local';
+  paintSvcNoLoc();
   if (!out.length) {
-    $('#svcBody').innerHTML = '<tr><td colspan="8" class="empty">ไม่พบงานที่ตรงกับเงื่อนไข</td></tr>';
+    $('#svcBody').innerHTML = '<tr><td colspan="9" class="empty">ไม่พบงานที่ตรงกับเงื่อนไข</td></tr>';
     return;
   }
   $('#svcBody').innerHTML = out.map(r => {
@@ -2127,6 +2285,7 @@ function renderSvcTable(){
       '<td class="so">' + (r.so ? hl(r.so, q) : '<span style="color:var(--muted)">—</span>') + '</td>' +
       '<td>' + (r.team ? hl(r.team, q) : '<span style="color:var(--muted)">—</span>') + '</td>' +
       '<td>' + esc(fmtWork(r.workDate)) + '</td>' +
+      '<td class="loccell">' + locCell(r, q) + '</td>' +
       '<td class="act">' + edit + '</td></tr>';
   }).join('');
 }
@@ -2235,6 +2394,8 @@ function fillSvcForm(row){
   $('#svcWorkDate').value = row && row.workDate ? fmtDMY(row.workDate) : '';
   $('#svcTeam').value = row ? row.team : '';
   $('#svcNote').value = row ? row.note : '';
+  $('#svcLoc').value = row ? (row.loc || '') : '';
+  $('#svcLocHint').innerHTML = locHintHtml(row);
   const list = $('#svcTeamList');
   list.innerHTML = teamSuggestions().map(n => '<option value="' + esc(n) + '"></option>').join('');
   const warn = $('#svcFormWarn');
@@ -2288,7 +2449,9 @@ function saveSvcForm(){
     date: date,
     workDate: workIso || rawW,
     team: $('#svcTeam').value.trim(),
-    note: $('#svcNote').value.trim()
+    note: $('#svcNote').value.trim(),
+    loc: $('#svcLoc').value.trim(),
+    ...locKept(svcEditing == null ? null : svcRows.find(r => r.id === svcEditing), $('#svcLoc').value.trim())
   }, readSvcSteps());
   if (svcEditing == null) {
     const id = Math.max(0, ...svcRows.map(r => +r.id || 0)) + 1;
@@ -2350,6 +2513,8 @@ async function exportServiceXlsx(){
     head[3][18] = 'ดำเนินการแล้ว';
     head[3][20] = 'ไม่เสร็จ';
     head[3][21] = 'เสร็จ';
+    head[3][26] = 'สถานที่';
+    head[3][27] = 'แผนที่';
     const body = svcRowsForExport().map(r => {
       const info = deriveStage(r);
       return [
@@ -2360,7 +2525,8 @@ async function exportServiceXlsx(){
         !!r.depWait, !!r.depDone, !!r.partsWait, !!r.partsDone, !!r.enterWait, !!r.enterDone,
         fmtDMY(r.workDate), !!r.workOpen, !!r.workDone,
         r.team || '', r.note || '',
-        r.type === 'PM', info.stage
+        r.type === 'PM', info.stage,
+        r.loc || '', mapHref(r)
       ];
     });
     const aoa = head.concat(body);
@@ -2372,7 +2538,7 @@ async function exportServiceXlsx(){
       mg(2,13,2,14), mg(2,15,2,16), mg(2,17,2,18), mg(2,19,3,19),
       mg(2,20,2,21), mg(2,22,3,22), mg(2,23,3,23), mg(1,24,3,24), mg(1,25,3,25)
     ];
-    ws['!cols'] = [8,14,42,36,12,12,12,14,14,14,14,16,18,12,12,12,12,14,14,18,12,10,22,28,16,18].map(w => ({ wch: w }));
+    ws['!cols'] = [8,14,42,36,12,12,12,14,14,14,14,16,18,12,12,12,12,14,14,18,12,10,22,28,16,18,28,36].map(w => ({ wch: w }));
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Service');
     XLSX.writeFile(wb, 'PE_Service_' + new Date().toISOString().slice(0, 10) + '.xlsx');
@@ -2422,12 +2588,17 @@ function bindSvcEvents(){
   ['#svcType','#svcStage','#svcTeam','#svcMonth'].forEach(sel => {
     $(sel).addEventListener('change', () => { renderSvcKpis(); renderSvcTable(); });
   });
+  $('#svcNoLoc').addEventListener('click', () => {
+    svcOnlyNoLoc = !svcOnlyNoLoc;
+    renderSvcTable();
+  });
   $('#svcClear').addEventListener('click', () => {
     $('#svcQ').value = '';
     $('#svcType').value = '';
     $('#svcStage').value = '';
     $('#svcTeam').value = '';
     $('#svcMonth').value = '';
+    svcOnlyNoLoc = false;
     renderSvcKpis();
     renderSvcTable();
   });
@@ -2458,7 +2629,9 @@ if (SHARED) {
   $('#footHint').innerHTML = 'เปลี่ยนสถานะได้จากช่องในตาราง · กดปุ่มเขียว <b>บันทึก</b> เพื่อให้ทุกคนเห็นข้อมูลเดียวกัน · พอเครื่องนี้จำรหัสแล้ว ระบบจะบันทึกให้เองหลังแก้';
   updateSaveBtn();
   loadFromSheet();
+  loadLocFile();
 } else {
+  loadLocFile();
   initSaveState();
   renderAll();
 }

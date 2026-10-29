@@ -1,0 +1,823 @@
+{
+  "source": "https://github.com/PattarakornJP/sales-map",
+  "project": [
+    {
+      "id": 1,
+      "so": "SO2601-001",
+      "loc": "Avani Koh Lanta · เกาะลันตา, กระบี่",
+      "lat": 7.62,
+      "lng": 99.04,
+      "how": "exact"
+    },
+    {
+      "id": 15,
+      "so": "SO2601-086",
+      "loc": "โรงเรียนนานาชาติบริติช · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "exact"
+    },
+    {
+      "id": 20,
+      "so": "SO2601-119",
+      "loc": "Paresa · กมลา, ภูเก็ต",
+      "lat": 7.955,
+      "lng": 98.281,
+      "how": "exact"
+    },
+    {
+      "id": 21,
+      "so": "SO2602-014",
+      "loc": "Westin Siray · เกาะสิเหร่, ภูเก็ต",
+      "lat": 7.883,
+      "lng": 98.43,
+      "how": "exact"
+    },
+    {
+      "id": 23,
+      "so": "SO2602-021",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 24,
+      "so": "SO2602-022",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 25,
+      "so": "SO2602-023",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 28,
+      "so": "SO2602-035",
+      "loc": "Amatara Wellness · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "exact"
+    },
+    {
+      "id": 29,
+      "so": "SO2602-042",
+      "loc": "Hemingway Silk · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "exact"
+    },
+    {
+      "id": 34,
+      "so": "SO2602-089",
+      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 35,
+      "so": "SO2602-090",
+      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 37,
+      "so": "SO2602-112",
+      "loc": "Melia Samui · เกาะสมุย, สุราษฎร์ธานี",
+      "lat": 9.512,
+      "lng": 100.0136,
+      "how": "exact"
+    },
+    {
+      "id": 45,
+      "so": "SO2603-094",
+      "loc": "The Shore at Katathani Resort · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "exact"
+    },
+    {
+      "id": 55,
+      "so": "SO2604-017",
+      "loc": "Anantara Mai Khao Phuket Villas (APKV) · ไม้ขาว-ในยาง, ภูเก็ต",
+      "lat": 8.13,
+      "lng": 98.3,
+      "how": "exact"
+    },
+    {
+      "id": 60,
+      "so": "SO2604-025",
+      "loc": "Paresa · กมลา, ภูเก็ต",
+      "lat": 7.955,
+      "lng": 98.281,
+      "how": "exact"
+    },
+    {
+      "id": 77,
+      "so": "SO2605-062",
+      "loc": "BaumanCasa Beach Resort · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "exact"
+    },
+    {
+      "id": 82,
+      "so": "SO2605-104",
+      "loc": "Aonang Buri · อ่าวนาง, กระบี่",
+      "lat": 8.032,
+      "lng": 98.82,
+      "how": "exact"
+    },
+    {
+      "id": 83,
+      "so": "SO2605-103",
+      "loc": "Bluesotel · อ่าวนาง, กระบี่",
+      "lat": 8.032,
+      "lng": 98.82,
+      "how": "exact"
+    },
+    {
+      "id": 84,
+      "so": "SO2606-004",
+      "loc": "Anantara Layan · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 88,
+      "so": "SO2606-016",
+      "loc": "The Shore at Katathani Resort · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "exact"
+    },
+    {
+      "id": 89,
+      "so": "SO2606-019",
+      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "exact"
+    },
+    {
+      "id": 90,
+      "so": "SO2606-020",
+      "loc": "Grand Mercure Khao Lak Bangsak · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "exact"
+    },
+    {
+      "id": 94,
+      "so": "SO2606-057",
+      "loc": "The Lunar Patong · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "exact"
+    },
+    {
+      "id": 97,
+      "so": "SO2606-061",
+      "loc": "Grand Mercure Khao Lak Bangsak · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "exact"
+    },
+    {
+      "id": 98,
+      "so": "SO2606-075",
+      "loc": "Phuket Island View · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "exact"
+    },
+    {
+      "id": 99,
+      "so": "SO2606-083",
+      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 102,
+      "so": "SO2606-091",
+      "loc": "Thaiga Sauna · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 105,
+      "so": "SO2606-104",
+      "loc": "BaumanCasa Beach Resort · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "exact"
+    },
+    {
+      "id": 107,
+      "so": "SO2607-010",
+      "loc": "BaumanCasa Beach Resort · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "exact"
+    },
+    {
+      "id": 108,
+      "so": "SO2607-028",
+      "loc": "Paresa · กมลา, ภูเก็ต",
+      "lat": 7.955,
+      "lng": 98.281,
+      "how": "exact"
+    },
+    {
+      "id": 112,
+      "so": "SO2607-039",
+      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 115,
+      "so": "SO2607-053",
+      "loc": "The Residence Prime · ถลาง, ภูเก็ต",
+      "lat": 8.033,
+      "lng": 98.34,
+      "how": "exact"
+    },
+    {
+      "id": 117,
+      "so": "SO2607-061",
+      "loc": "Pakasai · อ่าวนาง, กระบี่",
+      "lat": 8.032,
+      "lng": 98.82,
+      "how": "exact"
+    },
+    {
+      "id": 118,
+      "so": "SO2607-062",
+      "loc": "Pakasai · อ่าวนาง, กระบี่",
+      "lat": 8.032,
+      "lng": 98.82,
+      "how": "exact"
+    },
+    {
+      "id": 122,
+      "so": "SO2607-102",
+      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 125,
+      "so": "SO2608-016",
+      "loc": "Centara Karon · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "exact"
+    },
+    {
+      "id": 127,
+      "so": "SO2608-028",
+      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 133,
+      "so": "SO2608-059",
+      "loc": "ภูเล เบย์ อะ ริทซ์-คาร์ลตัน รีเซิร์ฟ · กระบี่",
+      "lat": 8.0863,
+      "lng": 98.9063,
+      "how": "exact"
+    },
+    {
+      "id": 136,
+      "so": "SO2608-084",
+      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 137,
+      "so": "SO2608-085",
+      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 138,
+      "so": "SO2608-087",
+      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 141,
+      "so": "SO2608-106",
+      "loc": "Banyan Tree · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 142,
+      "so": "SO2608-104",
+      "loc": "The Shore at Katathani Resort · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "exact"
+    },
+    {
+      "id": 144,
+      "so": "SO2608-117",
+      "loc": "Hyatt Regency Samui · เกาะสมุย, สุราษฎร์ธานี",
+      "lat": 9.512,
+      "lng": 100.0136,
+      "how": "exact"
+    },
+    {
+      "id": 145,
+      "so": "SO2608-118",
+      "loc": "Hyatt Regency Samui · เกาะสมุย, สุราษฎร์ธานี",
+      "lat": 9.512,
+      "lng": 100.0136,
+      "how": "exact"
+    },
+    {
+      "id": 147,
+      "so": "SO2608-123",
+      "loc": "โรงเรียนนานาชาติบริติช · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "exact"
+    },
+    {
+      "id": 151,
+      "so": "SO2608-153",
+      "loc": "Staybridge Suite Bangtao · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 152,
+      "so": "SO2609-001",
+      "loc": "Staybridge Suite Bangtao · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 156,
+      "so": "SO2609-005",
+      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "exact"
+    },
+    {
+      "id": 157,
+      "so": "SO2609-006",
+      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "exact"
+    },
+    {
+      "id": 162,
+      "so": "SO2609-095",
+      "loc": "Thaiga Sauna · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 165,
+      "so": "SO2609-117",
+      "loc": "OUTRIGGER Khao Lak Beach Resort · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "exact"
+    },
+    {
+      "id": 166,
+      "so": "SO2609-118",
+      "loc": "OUTRIGGER Khao Lak Beach Resort · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "exact"
+    },
+    {
+      "id": 167,
+      "so": "SO2609-121",
+      "loc": "Tiva Centara · เขาขาด-พันวา, ภูเก็ต",
+      "lat": 7.8,
+      "lng": 98.405,
+      "how": "exact"
+    },
+    {
+      "id": 168,
+      "so": "SO2609-122",
+      "loc": "Tiva Centara · เขาขาด-พันวา, ภูเก็ต",
+      "lat": 7.8,
+      "lng": 98.405,
+      "how": "exact"
+    },
+    {
+      "id": 169,
+      "so": "SO2609-123",
+      "loc": "Tiva Centara · เขาขาด-พันวา, ภูเก็ต",
+      "lat": 7.8,
+      "lng": 98.405,
+      "how": "exact"
+    },
+    {
+      "id": 170,
+      "so": "SO2609-124",
+      "loc": "Tiva Centara · เขาขาด-พันวา, ภูเก็ต",
+      "lat": 7.8,
+      "lng": 98.405,
+      "how": "exact"
+    },
+    {
+      "id": 173,
+      "so": "SO2610-004",
+      "loc": "Sugar Marina Hotel · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "fuzzy"
+    },
+    {
+      "id": 177,
+      "so": "SO2610-044",
+      "loc": "The Nature Patong · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "exact"
+    },
+    {
+      "id": 178,
+      "so": "SO2610-045",
+      "loc": "The Nature Patong · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "exact"
+    },
+    {
+      "id": 179,
+      "so": "SO2610-073",
+      "loc": "Avani Koh Lanta · เกาะลันตา, กระบี่",
+      "lat": 7.62,
+      "lng": 99.04,
+      "how": "exact"
+    },
+    {
+      "id": 181,
+      "so": "OE2503-137",
+      "loc": "The Shore at Katathani Resort · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "exact"
+    },
+    {
+      "id": 183,
+      "so": "SO2507-006",
+      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 184,
+      "so": "SO2507-007",
+      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 185,
+      "so": "SO2507-108",
+      "loc": "Khao Lak Paradise · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "exact"
+    },
+    {
+      "id": 186,
+      "so": "SO2508-046",
+      "loc": "Layan Green Park · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 188,
+      "so": "SO2510-006",
+      "loc": "Hyatt Regency Phuket Resort · กมลา, ภูเก็ต",
+      "lat": 7.955,
+      "lng": 98.281,
+      "how": "exact"
+    },
+    {
+      "id": 190,
+      "so": "SO2511-005",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 191,
+      "so": "SO2511-006",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 192,
+      "so": "SO2511-007",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 193,
+      "so": "SO2511-008",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 194,
+      "so": "SO2511-009",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 195,
+      "so": "SO2511-010",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 196,
+      "so": "SO2511-011",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 197,
+      "so": "SO2511-012",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 198,
+      "so": "SO2511-013",
+      "loc": "Kleage Wellness Retreat · เกาะแก้ว-อ่าวปอ, ภูเก็ต",
+      "lat": 7.98,
+      "lng": 98.41,
+      "how": "fuzzy"
+    },
+    {
+      "id": 200,
+      "so": "SO2511-168",
+      "loc": "The Nature Patong · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "exact"
+    },
+    {
+      "id": 201,
+      "so": "SO2511-169",
+      "loc": "The Nature Patong · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "exact"
+    },
+    {
+      "id": 204,
+      "so": "SO2512-107",
+      "loc": "The Kee Resort & Spa Patong · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "exact"
+    },
+    {
+      "id": 205,
+      "so": "SO2512-111",
+      "loc": "Angsana Laguna Phuket · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 209,
+      "so": "SO2610-094",
+      "loc": "Paresa · กมลา, ภูเก็ต",
+      "lat": 7.955,
+      "lng": 98.281,
+      "how": "exact"
+    }
+  ],
+  "service": [
+    {
+      "id": 1,
+      "so": "SO2606-106",
+      "loc": "Centara Grand Beach Resort · เกาะสมุย, สุราษฎร์ธานี",
+      "lat": 9.512,
+      "lng": 100.0136,
+      "how": "fuzzy"
+    },
+    {
+      "id": 2,
+      "so": "SO2608-007",
+      "loc": "The Kee Resort & Spa Patong · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "fuzzy"
+    },
+    {
+      "id": 3,
+      "so": "SO2608-014",
+      "loc": "The Lunar Patong · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "fuzzy"
+    },
+    {
+      "id": 4,
+      "so": "SO2608-031",
+      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "fuzzy"
+    },
+    {
+      "id": 6,
+      "so": "SO2609-003",
+      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "fuzzy"
+    },
+    {
+      "id": 7,
+      "so": "SO2609-004",
+      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "exact"
+    },
+    {
+      "id": 8,
+      "so": "SO2609-041",
+      "loc": "The Kee Resort & Spa Patong · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "fuzzy"
+    },
+    {
+      "id": 10,
+      "so": "PSE - PHK6904-002",
+      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "fuzzy"
+    },
+    {
+      "id": 12,
+      "so": "PSE - PHK6908-006",
+      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "exact"
+    },
+    {
+      "id": 13,
+      "so": "PSE - PHK6908-007",
+      "loc": "Anantara Mai Khao Phuket Villas (APKV) · ไม้ขาว-ในยาง, ภูเก็ต",
+      "lat": 8.13,
+      "lng": 98.3,
+      "how": "exact"
+    },
+    {
+      "id": 14,
+      "so": "PSE - PHK6908-009",
+      "loc": "Angsana Laguna Phuket · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "exact"
+    },
+    {
+      "id": 18,
+      "so": "OE2211-083",
+      "loc": "Andara · กมลา, ภูเก็ต",
+      "lat": 7.955,
+      "lng": 98.281,
+      "how": "fuzzy"
+    },
+    {
+      "id": 19,
+      "so": "PSE - PHK6909-007",
+      "loc": "Arinara Beach Resort · บางเทา-ลากูน่า-เชิงทะเล, ภูเก็ต",
+      "lat": 8.0,
+      "lng": 98.296,
+      "how": "fuzzy"
+    },
+    {
+      "id": 20,
+      "so": "SO2510-095",
+      "loc": "Red Ginger · อ่าวนาง, กระบี่",
+      "lat": 8.032,
+      "lng": 98.82,
+      "how": "fuzzy"
+    },
+    {
+      "id": 21,
+      "so": "SO2603-088 rev.1",
+      "loc": "Anantara Mai Khao Phuket Villas (APKV) · ไม้ขาว-ในยาง, ภูเก็ต",
+      "lat": 8.13,
+      "lng": 98.3,
+      "how": "exact"
+    },
+    {
+      "id": 22,
+      "so": "SO2607-028",
+      "loc": "Paresa · กมลา, ภูเก็ต",
+      "lat": 7.955,
+      "lng": 98.281,
+      "how": "fuzzy"
+    },
+    {
+      "id": 24,
+      "so": "SO2609-132",
+      "loc": "ALEENTA RESORT PHANG-NGA · เขาหลัก-พังงา",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "fuzzy"
+    },
+    {
+      "id": 25,
+      "so": "SO2610-012",
+      "loc": "The Shore at Katathani Resort · กะตะ-กะรน, ภูเก็ต",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "fuzzy"
+    },
+    {
+      "id": 26,
+      "so": "SO2610-011",
+      "loc": "Holiday Inn Samui Bophut · เกาะสมุย, สุราษฎร์ธานี",
+      "lat": 9.512,
+      "lng": 100.0136,
+      "how": "fuzzy"
+    },
+    {
+      "id": 30,
+      "so": "OE2311-093",
+      "loc": "Ocean & Ole · ป่าตอง, ภูเก็ต",
+      "lat": 7.8967,
+      "lng": 98.2966,
+      "how": "fuzzy"
+    },
+    {
+      "id": 32,
+      "so": "",
+      "loc": "Krabi Resort · อ่าวนาง, กระบี่",
+      "lat": 8.032,
+      "lng": 98.82,
+      "how": "fuzzy"
+    }
+  ]
+}
