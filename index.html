@@ -933,6 +933,8 @@ async function saveToSheet(force, interactive, allowRetry){
   saveLock = true;
   let retryAuth = false;
   try {
+    await ensureLocFile();
+    applyKnownLoc(rows, 'project');
     if (sheetReady && !force && dirtyCount() === 0) return;
     if (!sheetReady && interactive && !force) {
       const go = confirm('ยังโหลดข้อมูลจากชีตไม่สำเร็จ\nถ้าบันทึกตอนนี้ จะส่งข้อมูลบนหน้านี้ขึ้นไปทับของเดิม\nต้องการบันทึกทับหรือไม่?');
@@ -1114,12 +1116,21 @@ function paintNoLocBtn(){
   b.classList.toggle('on', onlyNoLoc);
   b.setAttribute('aria-pressed', onlyNoLoc ? 'true' : 'false');
 }
-async function loadLocFile(){
+let locFilePromise = null;
+function ensureLocFile(){
+  if (locFile) return Promise.resolve(locFile);
+  if (!locFilePromise) locFilePromise = fetchLocFile();
+  return locFilePromise;
+}
+async function fetchLocFile(){
   try {
     const res = await fetch('data/locations.json', {cache:'no-cache'});
-    if (!res.ok) return;
-    locFile = await res.json();
-  } catch(e) { return; }
+    if (res.ok) locFile = await res.json();
+  } catch(e) {}
+  return locFile;
+}
+async function loadLocFile(){
+  await ensureLocFile();
   if (rows && rows.length) {
     const locBefore = rows.filter(hasLoc).length;
     applyKnownLoc(rows, 'project');
@@ -1284,7 +1295,11 @@ function renderTable(){
       '<td class="act"><button type="button" data-edit="' + r.id + '">แก้ไข</button></td>' +
     '</tr>').join('');
 }
-function renderAll(){ renderKpis(); renderCharts(); refreshFilters(); renderTable(); if ($('#rosterMask').classList.contains('on')) renderRoster(); }
+function renderAll(){
+  if (locFile) applyKnownLoc(rows, 'project');
+  renderKpis(); renderCharts(); refreshFilters(); renderTable();
+  if ($('#rosterMask').classList.contains('on')) renderRoster();
+}
 
 ['#q','#fSt','#fEng','#fSrc'].forEach(s => {
   $(s).addEventListener('input', renderTable);
@@ -1378,6 +1393,7 @@ $('#mSave').addEventListener('click', () => {
   data.prog = data.note || data.st;
   if (editingId == null) rows.push({id: nextId++, ...data});
   else Object.assign(rows.find(r => r.id === editingId), data);
+  applyKnownLoc(rows, 'project');
   try { if (data.eng && data.eng !== NO_ENG) localStorage.setItem(LAST_ENG_KEY, data.eng); } catch(e){}
   closeModal();
   commitChange(true);
@@ -2053,6 +2069,8 @@ async function saveService(force, interactive, allowRetry){
   svcLock = true;
   let retryAuth = false;
   try {
+    await ensureLocFile();
+    applyKnownLoc(svcRows, 'service');
     if (!force && svcDirty() === 0) return;
     const key = await ensureKey(!!interactive);
     if (!key) {
@@ -2325,6 +2343,7 @@ function renderSvcHint(){
 }
 function renderSvcAll(){
   if (!$('#svcKpis')) return;
+  if (locFile && svcRows && svcRows.length && svcMode !== 'loading') applyKnownLoc(svcRows, 'service');
   if (svcMode === 'loading') {
     $('#svcKpis').innerHTML = '';
     $('#svcChartStage').innerHTML = '';
@@ -2484,6 +2503,7 @@ function saveSvcForm(){
     Object.assign(cur, cleanSvc(Object.assign({ id: cur.id, no: cur.no }, data)));
   }
   closeSvcModal();
+  applyKnownLoc(svcRows, 'service');
   commitSvc(true);
 }
 function svcRowsForExport(){
