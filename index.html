@@ -1035,6 +1035,10 @@ function statusCounts(list){
 }
 
 function hasLoc(r){ return !!(r && String(r.loc || '').trim()); }
+function hasCoords(r){
+  const lat = Number(r && r.lat), lng = Number(r && r.lng);
+  return Number.isFinite(lat) && Number.isFinite(lng) && !(lat === 0 && lng === 0);
+}
 function mapHref(r){
   const lat = Number(r && r.lat), lng = Number(r && r.lng);
   if (!Number.isFinite(lat) || !Number.isFinite(lng) || (lat === 0 && lng === 0)) return '';
@@ -1072,7 +1076,7 @@ function applyKnownLoc(list, table){
   });
   list.forEach(r => {
     if (!r || (table === 'project' && isRosterRow(r))) return;
-    if (hasLoc(r) && !retiredPin(r)) return;
+    if (hasCoords(r) && !retiredPin(r)) return;
     const k = String(r.so || '').trim();
     let hit = null;
     if (k && bySo.has(k)) {
