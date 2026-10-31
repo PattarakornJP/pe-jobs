@@ -1055,6 +1055,15 @@
       "src": "Wikidata Q111996551 Hotel Tide Phuket ตรวจกับที่อยู่ 168/3 หมู่ 1 รัษฎา"
     },
     {
+      "id": 210,
+      "so": "SO2610-109",
+      "loc": "Banyan Tree Phuket, Laguna, Cherng Talay",
+      "lat": 8.0130233,
+      "lng": 98.2958261,
+      "how": "approximate",
+      "src": "Google Maps/OSM geocode of the hotel"
+    },
+    {
       "id": 0,
       "so": "SO2604-065",
       "loc": "บ้านคุณโจ้ (เฉพาะสินค้า)",
