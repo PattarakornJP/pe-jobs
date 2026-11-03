@@ -1064,6 +1064,42 @@
       "src": "Google Maps/OSM geocode of the hotel"
     },
     {
+      "id": 211,
+      "so": "SO2611-008",
+      "loc": "The Shore at Katathani Resort ห้อง8838",
+      "lat": 7.818,
+      "lng": 98.298,
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า (ใช้พิกัดเดียวกับ SO2603-094 ที่เดียวกัน)"
+    },
+    {
+      "id": 212,
+      "so": "SO2610-113",
+      "loc": "Grand Mercure Khao Lak Bangsak",
+      "lat": 8.64,
+      "lng": 98.24,
+      "how": "approximate",
+      "src": "จุดกลางพื้นที่บนแผนที่ลูกค้า (ใช้พิกัดเดียวกับ SO2606-020 ที่เดียวกัน)"
+    },
+    {
+      "id": 213,
+      "so": "SO2611-016",
+      "loc": "Natai Beach House -Main Building",
+      "lat": 8.287,
+      "lng": 98.274,
+      "how": "approximate",
+      "src": "บ้านส่วนตัว ทราบแค่พื้นที่หาดนาไต จ.พังงา (ประมาณจากหาดนาไต)"
+    },
+    {
+      "id": 214,
+      "so": "SO2611-017",
+      "loc": "Natai Beach House-Villa",
+      "lat": 8.287,
+      "lng": 98.274,
+      "how": "approximate",
+      "src": "บ้านส่วนตัว ทราบแค่พื้นที่หาดนาไต จ.พังงา (ประมาณจากหาดนาไต)"
+    },
+    {
       "id": 0,
       "so": "SO2604-065",
       "loc": "บ้านคุณโจ้ (เฉพาะสินค้า)",
