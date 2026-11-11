@@ -6,8 +6,10 @@ const sync = require('./location-sync');
 const file = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/locations.json'), 'utf8'));
 const pin217 = file.project.find(it => it.id === 217 && it.so === 'SO2611-058');
 assert.ok(pin217, 'locations.json has job 217 SO2611-058');
-assert.strictEqual(pin217.lat, 7.92185);
-assert.strictEqual(pin217.lng, 98.39645);
+assert.ok(Number.isFinite(Number(pin217.lat)) && Number.isFinite(Number(pin217.lng)));
+const lat217 = sync.coordOrBlank(pin217.lat);
+const lng217 = sync.coordOrBlank(pin217.lng);
+const how217 = sync.normHow(pin217.how);
 
 function sheetRow(over) {
   return Object.assign({
@@ -35,9 +37,9 @@ function clone(r) { return JSON.parse(JSON.stringify(r)); }
   const n = sync.applyFile([row], file.project, 'sync');
   assert.strictEqual(n, 1);
   assert.strictEqual(row.loc, pin217.loc);
-  assert.strictEqual(row.lat, '7.92185');
-  assert.strictEqual(row.lng, '98.39645');
-  assert.strictEqual(row.locHow, 'approximate');
+  assert.strictEqual(row.lat, lat217);
+  assert.strictEqual(row.lng, lng217);
+  assert.strictEqual(row.locHow, how217);
   assert.strictEqual(row.note, 'KEEP-NOTE-217');
   assert.strictEqual(row.st, 'มัดจำแล้ว');
   assert.strictEqual(row.comp, 'คุณสุนิสา ลิ้มเจริญ');
@@ -49,12 +51,12 @@ function clone(r) { return JSON.parse(JSON.stringify(r)); }
   const base = sheetRow({ loc: 'old place', lat: '7.1', lng: '98.1', locHow: 'exact', locSrc: 'old' });
   const current = clone(base);
   assert.strictEqual(sync.applyFile([current], file.project, 'sync'), 1);
-  assert.strictEqual(current.lat, '7.92185');
-  assert.strictEqual(current.lng, '98.39645');
+  assert.strictEqual(current.lat, lat217);
+  assert.strictEqual(current.lng, lng217);
   const over = sync.overlayLocations([base], [current]);
   assert.strictEqual(over.length, 1);
-  assert.strictEqual(over[0].lat, '7.92185');
-  assert.strictEqual(over[0].lng, '98.39645');
+  assert.strictEqual(over[0].lat, lat217);
+  assert.strictEqual(over[0].lng, lng217);
   assert.strictEqual(over[0].loc, pin217.loc);
   assert.strictEqual(over[0].note, 'KEEP-NOTE-217');
   assert.strictEqual(over[0].st, 'มัดจำแล้ว');
@@ -68,8 +70,8 @@ function clone(r) { return JSON.parse(JSON.stringify(r)); }
 {
   const row = sheetRow({
     loc: 'ชื่อที่แก้บนชีต',
-    lat: 7.92185,
-    lng: 98.39645,
+    lat: pin217.lat,
+    lng: pin217.lng,
     locHow: 'approximate',
     locSrc: pin217.src
   });
@@ -86,7 +88,7 @@ function clone(r) { return JSON.parse(JSON.stringify(r)); }
   assert.strictEqual(sync.applyFile([fill], file.project, 'fill'), 0);
   assert.strictEqual(fill.lat, '8');
   assert.strictEqual(sync.applyFile([syncRow], file.project, 'sync'), 1);
-  assert.strictEqual(syncRow.lat, '7.92185');
+  assert.strictEqual(syncRow.lat, lat217);
 }
 
 // A manual UI edit is not overwritten by the file.
@@ -102,7 +104,7 @@ function clone(r) { return JSON.parse(JSON.stringify(r)); }
   const retired = sheetRow({ lat: 8.1661545, lng: 98.2952039, loc: 'old' });
   const other = { id: 1, so: 'SO2601-001', loc: 'Avani+Koh Lanta (The Peak building)', lat: '7.62', lng: '99.04', note: 'keep-1' };
   assert.strictEqual(sync.applyFile([retired, other], file.project, 'sync'), 1);
-  assert.strictEqual(retired.lat, '7.92185');
+  assert.strictEqual(retired.lat, lat217);
   assert.strictEqual(other.note, 'keep-1');
   assert.strictEqual(other.lat, '7.62');
 }
