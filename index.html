@@ -460,6 +460,7 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
   </div>
 </div>
 
+<script src="location-sync.js"></script>
 <script>
 const DATA_VERSION="2026-10-19";
 // ลิงก์เว็บแอปที่ลงท้าย /exec — ว่างไว้ = ใช้ข้อมูลในไฟล์นี้ตามเดิม
@@ -668,6 +669,11 @@ if (!SHARED) {
 let sortKey = 'so', sortDir = 1;
 let onlyNoLoc = false;
 let locFile = null;
+const manualLoc = new Set();
+let locTimer = null;
+let svcLocTimer = null;
+let quietLocTries = 0;
+let quietSvcTries = 0;
 let editingId = null;
 
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -754,7 +760,7 @@ function updateSaveBtn(){
   btn.disabled = false;
   btn.classList.toggle('ok', n === 0);
   btn.textContent = n > 0 ? ('บันทึก (' + n + ')') : 'บันทึกแล้ว ✓';
-  if (n > 0) setSaveState('ยังไม่ได้บันทึก ' + n + ' รายการ', true);
+  if (n > 0 && !(getKey() && otherJobDrift() === 0 && projectLocDrift() > 0)) setSaveState('ยังไม่ได้บันทึก ' + n + ' รายการ', true);
 }
 function getKey(){
   if (keyMem) return keyMem;
@@ -863,21 +869,21 @@ function applyServer(data){
   const pack = adoptRoster(data.rows || []);
   applyRosterPack(pack);
   baseRows = cloneRows(rows);
-  const locBefore = rows.filter(hasLoc).length;
-  applyKnownLoc(rows, 'project');
-  const locAdded = rows.filter(hasLoc).length - locBefore;
+  const locChanged = applyKnownLoc(rows, 'project', 'sync');
   loadedRev = data.lastSaved || data.updatedAt || '';
   sheetReady = true;
   holdAuto = false;
   booting = false;
   bumpNext();
   if (!rows.length) showBanner('ชีตยังว่าง เปิด Google Sheet แล้วเลือกเมนู PE Jobs > ตั้งค่าเริ่มต้น จากนั้นกด โหลดใหม่', true);
+  else if (locChanged && !getKey()) showBanner(locNeedsSaveBanner(locChanged), false);
   else if (pack.baseSig == null) showBanner('เตรียมรายชื่อผู้รับผิดชอบไว้แล้ว กดปุ่มเขียว บันทึก ครั้งหนึ่ง เพื่อเก็บรายชื่อนี้', false);
-  else if (locAdded) showBanner('เติมสถานที่จากแผนที่ลูกค้าแล้ว ' + locAdded + ' งาน กดปุ่มเขียว บันทึก ครั้งหนึ่ง เพื่อเก็บลงชีต', false);
   else showBanner('');
-  setSaveState(loadedRev ? ('บันทึกล่าสุด ' + fmtTime(loadedRev)) : 'โหลดจากชีตแล้ว', false);
+  if (locChanged && getKey() && rows.length) setSaveState('กำลังส่งสถานที่ขึ้นชีต ' + locChanged + ' งาน', false);
+  else setSaveState(loadedRev ? ('บันทึกล่าสุด ' + fmtTime(loadedRev)) : 'โหลดจากชีตแล้ว', false);
   updateSaveBtn();
   renderAll();
+  scheduleLocSync();
 }
 async function loadFromSheet(){
   if (!SHARED) return;
@@ -916,9 +922,15 @@ function scheduleAutoSave(){
 }
 function commitChange(auto){
   if (!SHARED) { save(); renderAll(); return; }
-  if (dirtyCount() === 0) clearTimeout(saveTimer);
+  if (dirtyCount() === 0) { clearTimeout(saveTimer); clearTimeout(locTimer); }
   updateSaveBtn();
   renderAll();
+  if (auto === 'now') {
+    clearTimeout(saveTimer);
+    clearTimeout(locTimer);
+    saveToSheet(false, false);
+    return;
+  }
   if (auto) scheduleAutoSave();
 }
 function openConflict(target){
@@ -927,14 +939,17 @@ function openConflict(target){
   $('#askMask').classList.add('on');
 }
 function closeConflict(){ $('#askMask').classList.remove('on'); }
-async function saveToSheet(force, interactive, allowRetry){
+async function saveToSheet(force, interactive, allowRetry, locOnly){
   if (!SHARED) return;
   if (saveLock) { saveQueued = true; return; }
   saveLock = true;
   let retryAuth = false;
+  let reloadAfter = false;
+  locOnly = !!locOnly;
   try {
     await ensureLocFile();
-    applyKnownLoc(rows, 'project');
+    applyKnownLoc(rows, 'project', 'sync');
+    if (locOnly && (otherJobDrift() || projectLocDrift() === 0)) locOnly = false;
     if (sheetReady && !force && dirtyCount() === 0) return;
     if (!sheetReady && interactive && !force) {
       const go = confirm('ยังโหลดข้อมูลจากชีตไม่สำเร็จ\nถ้าบันทึกตอนนี้ จะส่งข้อมูลบนหน้านี้ขึ้นไปทับของเดิม\nต้องการบันทึกทับหรือไม่?');
@@ -948,7 +963,7 @@ async function saveToSheet(force, interactive, allowRetry){
     }
     saving = true;
     updateSaveBtn();
-    const payloadRows = sheetPayload();
+    const payloadRows = locOnly ? sheetPayloadLocOnly() : sheetPayload();
     const payload = {
       key: key,
       lastSaved: loadedRev,
@@ -970,10 +985,23 @@ async function saveToSheet(force, interactive, allowRetry){
       setSaveState('ยังไม่ได้บันทึก', true);
       retryAuth = !!interactive && allowRetry !== false && String(data.error || '').indexOf('รหัสไม่ถูกต้อง') >= 0;
     } else if (data && data.conflict) {
-      holdAuto = true;
       saveQueued = false;
-      setSaveState('มีข้อมูลใหม่กว่าบนชีต', true);
-      openConflict();
+      const quiet = locOnly && otherJobDrift() === 0 && !$('#mask').classList.contains('on') && !$('#rosterMask').classList.contains('on');
+      if (quiet) {
+        quietLocTries++;
+        if (quietLocTries < 2) {
+          holdAuto = false;
+          reloadAfter = true;
+        } else {
+          holdAuto = true;
+          setSaveState('มีข้อมูลใหม่กว่าบนชีต', true);
+          showBanner('ยังส่งสถานที่ขึ้นชีตไม่สำเร็จ กดปุ่ม บันทึก อีกครั้ง', true);
+        }
+      } else {
+        holdAuto = true;
+        setSaveState('มีข้อมูลใหม่กว่าบนชีต', true);
+        openConflict();
+      }
     } else if (!data || data.saved !== true) {
       showBanner((data && data.error) || 'ยังบันทึกไม่สำเร็จ กดปุ่ม บันทึก อีกครั้ง', true);
       setSaveState('ยังไม่ได้บันทึก', true);
@@ -999,6 +1027,7 @@ async function saveToSheet(force, interactive, allowRetry){
       setSaveState('บันทึกแล้วบางส่วน กำลังส่งที่เหลือ', false);
     }
     setKey(key);
+    quietLocTries = 0;
     }
   } finally {
     saving = false;
@@ -1006,8 +1035,9 @@ async function saveToSheet(force, interactive, allowRetry){
     updateSaveBtn();
     const queued = saveQueued;
     saveQueued = false;
-    if (queued && !holdAuto && dirtyCount() > 0) scheduleAutoSave();
+    if (!reloadAfter && queued && !holdAuto && dirtyCount() > 0) scheduleAutoSave();
   }
+  if (reloadAfter) loadFromSheet();
   if (retryAuth) {
     const again = await ensureKey(true);
     if (again) return saveToSheet(force, true, false);
@@ -1064,34 +1094,56 @@ function retiredPin(r){
   const lat = Number(r && r.lat), lng = Number(r && r.lng);
   return Math.abs(lat - 8.1661545) < 1e-5 && Math.abs(lng - 98.2952039) < 1e-5;
 }
-function applyKnownLoc(list, table){
+function applyKnownLoc(list, table, mode){
   const items = locFile && locFile[table];
-  if (!items || !list) return;
-  const bySo = new Map();
-  items.forEach(it => {
-    const k = String(it.so || '').trim();
-    if (!k) return;
-    if (!bySo.has(k)) bySo.set(k, []);
-    bySo.get(k).push(it);
+  if (!items || !list || typeof PELocSync === 'undefined') return 0;
+  return PELocSync.applyFile(list, items, mode === 'sync' ? 'sync' : 'fill', function(r){
+    if (table === 'project' && isRosterRow(r)) return true;
+    return manualLoc.has(table + ':' + r.id);
   });
-  list.forEach(r => {
-    if (!r || (table === 'project' && isRosterRow(r))) return;
-    if (hasCoords(r) && !retiredPin(r)) return;
-    const k = String(r.so || '').trim();
-    let hit = null;
-    if (k && bySo.has(k)) {
-      const pool = bySo.get(k);
-      hit = pool.find(it => String(it.id) === String(r.id)) || (pool.length === 1 ? pool[0] : null);
-    } else if (!k) {
-      hit = items.find(it => String(it.id) === String(r.id) && !String(it.so || '').trim());
-    }
-    if (!hit || !hit.loc) return;
-    r.loc = String(hit.loc);
-    r.lat = coordOrBlank(hit.lat);
-    r.lng = coordOrBlank(hit.lng);
-    r.locHow = normHow(hit.how);
-    r.locSrc = locSrcOf(hit.src);
+}
+function projectLocDrift(){
+  return typeof PELocSync === 'undefined' ? 0 : PELocSync.driftCount(jobRows(), baseRows);
+}
+function coreTuple(r){
+  const c = cleanRow(r);
+  return JSON.stringify([c.id,c.src,c.so,c.comp,c.proj,c.work,c.pay,c.prog,c.st,c.note,c.eng,c.m,c.y]);
+}
+function otherJobDrift(){
+  const base = new Map(baseRows.map(r => [String(r.id), coreTuple(r)]));
+  const seen = new Set();
+  let n = 0;
+  jobRows().forEach(r => {
+    const id = String(r.id);
+    seen.add(id);
+    const prev = base.get(id);
+    if (prev == null || prev !== coreTuple(r)) n++;
   });
+  base.forEach((_, id) => { if (!seen.has(id)) n++; });
+  return n;
+}
+function sheetPayloadLocOnly(){
+  return PELocSync.overlayLocations(baseRows, jobRows()).map(cleanRow).concat([cleanRow(rosterRow())]);
+}
+function locNeedsSaveBanner(n){
+  return 'เติมสถานที่จากแผนที่ลูกค้าแล้ว ' + n + ' งาน กดปุ่มเขียว บันทึก ครั้งหนึ่ง เพื่อเก็บลงชีต';
+}
+function scheduleLocSync(){
+  if (!SHARED || !sheetReady || holdAuto || !getKey()) return;
+  if (quietLocTries >= 2) return;
+  if (projectLocDrift() === 0) return;
+  clearTimeout(locTimer);
+  locTimer = setTimeout(function(){
+    if (projectLocDrift() === 0 || !sheetReady || holdAuto) return;
+    saveToSheet(false, false, true, otherJobDrift() === 0);
+  }, 1200);
+}
+function lockTypedLoc(table, row){
+  const key = table + ':' + row.id;
+  const items = locFile && locFile[table];
+  const hit = items && typeof PELocSync !== 'undefined' ? PELocSync.findHit(row, items) : null;
+  if (hit) manualLoc.delete(key);
+  else manualLoc.add(key);
 }
 function locCell(r, q){
   if (!hasLoc(r)) return '<span class="locmiss">ยังไม่มี</span>';
@@ -1136,17 +1188,20 @@ async function fetchLocFile(){
 async function loadLocFile(){
   await ensureLocFile();
   if (rows && rows.length) {
-    const locBefore = rows.filter(hasLoc).length;
-    applyKnownLoc(rows, 'project');
-    const locAdded = rows.filter(hasLoc).length - locBefore;
-    if (locAdded && sheetReady) showBanner('เติมสถานที่จากแผนที่ลูกค้าแล้ว ' + locAdded + ' งาน กดปุ่มเขียว บันทึก ครั้งหนึ่ง เพื่อเก็บลงชีต', false);
+    const locChanged = applyKnownLoc(rows, 'project', 'sync');
+    if (locChanged && sheetReady && !getKey()) showBanner(locNeedsSaveBanner(locChanged), false);
+    if (locChanged && sheetReady && getKey()) setSaveState('กำลังส่งสถานที่ขึ้นชีต ' + locChanged + ' งาน', false);
     updateSaveBtn();
     renderAll();
+    scheduleLocSync();
   }
-  if (typeof svcRows !== 'undefined' && svcRows && svcRows.length) {
-    applyKnownLoc(svcRows, 'service');
+  if (typeof svcRows !== 'undefined' && svcRows && svcRows.length && svcMode === 'live') {
+    const locChanged = applyKnownLoc(svcRows, 'service', 'sync');
+    if (locChanged && !getKey()) showSvcBanner(locNeedsSaveBanner(locChanged), false);
+    if (locChanged && getKey() && view() === 'service') paintSave('กำลังส่งสถานที่ขึ้นชีต ' + locChanged + ' งาน', false);
     if (view() === 'service') renderSvcAll();
     updateSaveBtn();
+    scheduleSvcLocSync();
   }
 }
 
@@ -1395,12 +1450,21 @@ $('#mSave').addEventListener('click', () => {
     y: parseInt($('#fY').value, 10) || 0, m: Math.min(12, Math.max(0, parseInt($('#fM').value, 10) || 0))
   };
   data.prog = data.note || data.st;
-  if (editingId == null) rows.push({id: nextId++, ...data});
-  else Object.assign(rows.find(r => r.id === editingId), data);
+  const prev = editingId == null ? null : rows.find(r => r.id === editingId);
+  const prevLoc = prev ? String(prev.loc || '').trim() : '';
+  const locTextChanged = prevLoc !== String(data.loc || '').trim();
+  let savedId = editingId;
+  if (editingId == null) {
+    savedId = nextId++;
+    rows.push({id: savedId, ...data});
+  } else Object.assign(prev, data);
+  const savedRow = rows.find(r => r.id === savedId);
+  if (locTextChanged && savedRow) lockTypedLoc('project', savedRow);
+  else manualLoc.delete('project:' + savedId);
   applyKnownLoc(rows, 'project');
   try { if (data.eng && data.eng !== NO_ENG) localStorage.setItem(LAST_ENG_KEY, data.eng); } catch(e){}
   closeModal();
-  commitChange(true);
+  commitChange(locTextChanged ? 'now' : true);
 });
 $('#mDel').addEventListener('click', () => {
   const r = rows.find(x => x.id === editingId);
@@ -1926,6 +1990,43 @@ function showSvcBanner(text, bad){
   b.textContent = text;
   b.className = 'banner on' + (bad ? ' bad' : '');
 }
+function svcPaint(txt, warn){
+  if (view() !== 'service') return;
+  paintSave(txt, warn);
+}
+function svcLocDrift(){
+  return typeof PELocSync === 'undefined' ? 0 : PELocSync.driftCount(svcRows, svcBase);
+}
+function svcCoreTuple(r){
+  const c = cleanSvc(r);
+  return JSON.stringify([c.id,c.no,c.date,c.customer,c.detail,c.type,c.sales,c.so,c.workDate,c.team,c.note,SVC_FLAGS.map(k => c[k])]);
+}
+function svcOtherDrift(){
+  const base = new Map(svcBase.map(r => [String(r.id), svcCoreTuple(r)]));
+  const seen = new Set();
+  let n = 0;
+  svcRows.forEach(r => {
+    const id = String(r.id);
+    seen.add(id);
+    const prev = base.get(id);
+    if (prev == null || prev !== svcCoreTuple(r)) n++;
+  });
+  base.forEach((_, id) => { if (!seen.has(id)) n++; });
+  return n;
+}
+function svcPayloadLocOnly(){
+  return PELocSync.overlayLocations(svcBase, svcRows).map(cleanSvc);
+}
+function scheduleSvcLocSync(){
+  if (svcMode !== 'live' || svcHold || !getKey()) return;
+  if (quietSvcTries >= 2) return;
+  if (svcLocDrift() === 0) return;
+  clearTimeout(svcLocTimer);
+  svcLocTimer = setTimeout(function(){
+    if (svcMode !== 'live' || svcHold || svcLocDrift() === 0) return;
+    saveService(false, false, true, svcOtherDrift() === 0);
+  }, 1200);
+}
 function svcStoreGet(){
   try { const raw = localStorage.getItem(SVC_STORE); return raw ? JSON.parse(raw) : null; }
   catch(e){ return null; }
@@ -1935,9 +2036,9 @@ function svcStoreSet(){
     localStorage.setItem(SVC_STORE, JSON.stringify({
       v: SVC_VERSION, at: new Date().toLocaleString('th-TH'), rows: svcRows.map(cleanSvc)
     }));
-    paintSave('บันทึกอัตโนมัติแล้ว ' + nowHHMM(), false);
+    svcPaint('บันทึกอัตโนมัติแล้ว ' + nowHHMM(), false);
   } catch(e) {
-    paintSave('เบราว์เซอร์นี้บันทึกอัตโนมัติไม่ได้', true);
+    svcPaint('เบราว์เซอร์นี้บันทึกอัตโนมัติไม่ได้', true);
   }
 }
 function svcUseSeed(kind){
@@ -1949,7 +2050,7 @@ function svcUseSeed(kind){
   svcHold = false;
   document.body.classList.add('svc-readonly');
   showSvcBanner(SVC_BANNER[kind] || SVC_BANNER.bad, kind === 'bad');
-  paintSave('อ่านอย่างเดียว', true);
+  svcPaint('อ่านอย่างเดียว', true);
 }
 function svcResponseKind(data){
   if (!data || data.ok !== true || !Array.isArray(data.rows)) return 'bad';
@@ -1963,15 +2064,16 @@ function svcResponseKind(data){
 function applySvcServer(data){
   svcRows = (data.rows || []).map(cleanSvc);
   svcBase = svcRows.map(r => ({...r}));
-  const locBefore = svcRows.filter(hasLoc).length;
-  applyKnownLoc(svcRows, 'service');
-  const locAdded = svcRows.filter(hasLoc).length - locBefore;
+  const locChanged = applyKnownLoc(svcRows, 'service', 'sync');
   svcRev = data.lastSaved || '';
   svcMode = 'live';
   svcHold = false;
   document.body.classList.remove('svc-readonly');
-  showSvcBanner(locAdded ? ('เติมสถานที่จากแผนที่ลูกค้าแล้ว ' + locAdded + ' งาน กดปุ่มเขียว บันทึก เพื่อเก็บลงชีต') : '');
-  paintSave(svcRev ? ('บันทึกล่าสุด ' + fmtTime(svcRev)) : 'โหลดจากชีตแล้ว', false);
+  if (locChanged && !getKey()) showSvcBanner(locNeedsSaveBanner(locChanged), false);
+  else showSvcBanner('');
+  if (locChanged && getKey()) svcPaint('กำลังส่งสถานที่ขึ้นชีต ' + locChanged + ' งาน', false);
+  else svcPaint(svcRev ? ('บันทึกล่าสุด ' + fmtTime(svcRev)) : 'โหลดจากชีตแล้ว', false);
+  scheduleSvcLocSync();
 }
 function loadSvcLocal(){
   const saved = svcStoreGet();
@@ -1995,7 +2097,7 @@ function loadSvcLocal(){
   svcBooted = true;
   document.body.classList.remove('svc-readonly');
   showSvcBanner('');
-  paintSave('บันทึกอัตโนมัติในเครื่องนี้', false);
+  svcPaint('บันทึกอัตโนมัติในเครื่องนี้', false);
   renderSvcAll();
   updateSaveBtn();
 }
@@ -2006,7 +2108,7 @@ async function loadService(){
   svcBooted = true;
   svcMode = 'loading';
   document.body.classList.add('svc-readonly');
-  paintSave('กำลังโหลดข้อมูล...', false);
+  svcPaint('กำลังโหลดข้อมูล...', false);
   updateSaveBtn();
   renderSvcAll();
   try {
@@ -2051,7 +2153,7 @@ function updateSvcSaveBtn(){
   btn.disabled = false;
   btn.classList.toggle('ok', n === 0);
   btn.textContent = n > 0 ? ('บันทึก (' + n + ')') : 'บันทึกแล้ว ✓';
-  if (n > 0) paintSave('ยังไม่ได้บันทึก ' + n + ' รายการ', true);
+  if (n > 0 && !(getKey() && svcOtherDrift() === 0 && svcLocDrift() > 0)) svcPaint('ยังไม่ได้บันทึก ' + n + ' รายการ', true);
 }
 function scheduleSvcSave(){
   if (svcMode !== 'live' || svcHold || svcLock) return;
@@ -2062,19 +2164,28 @@ function scheduleSvcSave(){
 function commitSvc(auto){
   if (svcMode === 'readonly' || svcMode === 'loading') return;
   if (svcMode === 'local') { svcStoreSet(); renderSvcAll(); return; }
-  if (svcDirty() === 0) clearTimeout(svcTimer);
+  if (svcDirty() === 0) { clearTimeout(svcTimer); clearTimeout(svcLocTimer); }
   updateSaveBtn();
   renderSvcAll();
+  if (auto === 'now') {
+    clearTimeout(svcTimer);
+    clearTimeout(svcLocTimer);
+    saveService(false, false);
+    return;
+  }
   if (auto) scheduleSvcSave();
 }
-async function saveService(force, interactive, allowRetry){
+async function saveService(force, interactive, allowRetry, locOnly){
   if (svcMode !== 'live') return;
   if (svcLock) { svcQueued = true; return; }
   svcLock = true;
   let retryAuth = false;
+  let reloadAfter = false;
+  locOnly = !!locOnly;
   try {
     await ensureLocFile();
-    applyKnownLoc(svcRows, 'service');
+    applyKnownLoc(svcRows, 'service', 'sync');
+    if (locOnly && (svcOtherDrift() || svcLocDrift() === 0)) locOnly = false;
     if (!force && svcDirty() === 0) return;
     const key = await ensureKey(!!interactive);
     if (!key) {
@@ -2083,29 +2194,42 @@ async function saveService(force, interactive, allowRetry){
     }
     svcSaving = true;
     updateSaveBtn();
-    const payloadRows = svcRows.map(cleanSvc);
+    const payloadRows = locOnly ? svcPayloadLocOnly() : svcRows.map(cleanSvc);
     const payload = { key: key, table: 'service', lastSaved: svcRev, force: !!force, rows: payloadRows };
     let data = null;
     try { data = await apiPost(payload); }
     catch(err){
       showSvcBanner('ยังบันทึกไม่สำเร็จ ตรวจอินเทอร์เน็ต แล้วกดปุ่ม บันทึก อีกครั้ง', true);
-      paintSave('ยังไม่ได้บันทึก', true);
+      svcPaint('ยังไม่ได้บันทึก', true);
       return;
     }
     if (data && data.auth === false) {
       clearKey();
       svcQueued = false;
       showSvcBanner(data.error || 'รหัสไม่ถูกต้อง ใส่รหัสใหม่อีกครั้ง แล้วกด บันทึก', true);
-      paintSave('ยังไม่ได้บันทึก', true);
+      svcPaint('ยังไม่ได้บันทึก', true);
       retryAuth = !!interactive && allowRetry !== false && String(data.error || '').indexOf('รหัสไม่ถูกต้อง') >= 0;
     } else if (data && data.conflict) {
-      svcHold = true;
       svcQueued = false;
-      paintSave('มีข้อมูลใหม่กว่าบนชีต', true);
-      openConflict('service');
+      const quiet = locOnly && svcOtherDrift() === 0 && !$('#svcMask').classList.contains('on');
+      if (quiet) {
+        quietSvcTries++;
+        if (quietSvcTries < 2) {
+          svcHold = false;
+          reloadAfter = true;
+        } else {
+          svcHold = true;
+          svcPaint('มีข้อมูลใหม่กว่าบนชีต', true);
+          showSvcBanner('ยังส่งสถานที่ขึ้นชีตไม่สำเร็จ กดปุ่ม บันทึก อีกครั้ง', true);
+        }
+      } else {
+        svcHold = true;
+        svcPaint('มีข้อมูลใหม่กว่าบนชีต', true);
+        openConflict('service');
+      }
     } else if (!data || data.saved !== true || data.table !== 'service') {
       showSvcBanner((data && data.error) || 'ยังบันทึกไม่สำเร็จ กดปุ่ม บันทึก อีกครั้ง', true);
-      paintSave('ยังไม่ได้บันทึก', true);
+      svcPaint('ยังไม่ได้บันทึก', true);
     } else {
       const sent = svcSigList(payloadRows);
       const nowSig = svcSigList(svcRows);
@@ -2117,13 +2241,14 @@ async function saveService(force, interactive, allowRetry){
         svcRows = payloadRows;
         svcBase = payloadRows.map(r => ({...r}));
         showSvcBanner('');
-        paintSave('บันทึกล่าสุด ' + fmtTime(svcRev), false);
+        svcPaint('บันทึกล่าสุด ' + fmtTime(svcRev), false);
       } else {
         svcBase = payloadRows.map(r => ({...r}));
         svcQueued = true;
-        paintSave('บันทึกแล้วบางส่วน กำลังส่งที่เหลือ', false);
+        svcPaint('บันทึกแล้วบางส่วน กำลังส่งที่เหลือ', false);
       }
       setKey(key);
+      quietSvcTries = 0;
     }
   } finally {
     svcSaving = false;
@@ -2132,8 +2257,9 @@ async function saveService(force, interactive, allowRetry){
     renderSvcAll();
     const queued = svcQueued;
     svcQueued = false;
-    if (queued && !svcHold && svcDirty() > 0) scheduleSvcSave();
+    if (!reloadAfter && queued && !svcHold && svcDirty() > 0) scheduleSvcSave();
   }
+  if (reloadAfter) loadService();
   if (retryAuth) {
     const again = await ensureKey(true);
     if (again) return saveService(force, true, false);
@@ -2497,18 +2623,24 @@ function saveSvcForm(){
     loc: $('#svcLoc').value.trim(),
     ...locKept(svcEditing == null ? null : svcRows.find(r => r.id === svcEditing), $('#svcLoc').value.trim())
   }, readSvcSteps());
+  const prev = svcEditing == null ? null : svcRows.find(r => r.id === svcEditing);
+  const prevLoc = prev ? String(prev.loc || '').trim() : '';
+  const locTextChanged = prevLoc !== String(data.loc || '').trim();
+  let savedId = svcEditing;
   if (svcEditing == null) {
-    const id = Math.max(0, ...svcRows.map(r => +r.id || 0)) + 1;
+    savedId = Math.max(0, ...svcRows.map(r => +r.id || 0)) + 1;
     const no = Math.max(0, ...svcRows.map(r => +r.no || 0)) + 1;
-    svcRows.push(cleanSvc(Object.assign({ id: id, no: no }, data)));
+    svcRows.push(cleanSvc(Object.assign({ id: savedId, no: no }, data)));
   } else {
-    const cur = svcRows.find(r => r.id === svcEditing);
-    if (!cur) return closeSvcModal();
-    Object.assign(cur, cleanSvc(Object.assign({ id: cur.id, no: cur.no }, data)));
+    if (!prev) return closeSvcModal();
+    Object.assign(prev, cleanSvc(Object.assign({ id: prev.id, no: prev.no }, data)));
   }
+  const savedRow = svcRows.find(r => r.id === savedId);
+  if (locTextChanged && savedRow) lockTypedLoc('service', savedRow);
+  else manualLoc.delete('service:' + savedId);
   closeSvcModal();
   applyKnownLoc(svcRows, 'service');
-  commitSvc(true);
+  commitSvc(locTextChanged ? 'now' : true);
 }
 function svcRowsForExport(){
   return svcRows.map(cleanSvc).sort((a, b) => (a.no - b.no) || (a.id - b.id));
@@ -2673,10 +2805,11 @@ window.addEventListener('hashchange', applyView);
 if (SHARED) {
   $('#saveBtn').hidden = false;
   $('#reloadBtn').hidden = false;
-  $('#footHint').innerHTML = 'เปลี่ยนสถานะได้จากช่องในตาราง · กดปุ่มเขียว <b>บันทึก</b> เพื่อให้ทุกคนเห็นข้อมูลเดียวกัน · พอเครื่องนี้จำรหัสแล้ว ระบบจะบันทึกให้เองหลังแก้';
+  $('#footHint').innerHTML = 'เปลี่ยนสถานะได้จากช่องในตาราง · พอเครื่องนี้จำรหัสแล้ว ระบบบันทึกให้เอง และส่งสถานที่ขึ้นชีตอัตโนมัติ · ปุ่มเขียว <b>บันทึก</b> ยังใช้ได้';
   updateSaveBtn();
   loadFromSheet();
   loadLocFile();
+  loadService();
 } else {
   loadLocFile();
   initSaveState();
