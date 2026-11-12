@@ -186,10 +186,14 @@ button.textbtn:hover{text-decoration:underline;color:var(--accent)}
 .viewtabs a:hover{color:var(--ink)}
 .viewtabs a.on{background:var(--ink);color:var(--page);border-color:transparent}
 html[data-boot="service"] .view-project,html[data-boot="service"] .only-project{display:none!important}
+html[data-boot="plan"] .view-project,html[data-boot="plan"] .view-service,html[data-boot="plan"] .only-project{display:none!important}
 html:not([data-boot="service"]) body:not([data-view]) .view-service{display:none}
-body[data-view="project"] .view-service{display:none}
-body[data-view="service"] .view-project,body[data-view="service"] .only-project{display:none!important}
+html:not([data-boot="plan"]) body:not([data-view="plan"]) .view-plan{display:none}
+body[data-view="project"] .view-service,body[data-view="project"] .view-plan{display:none}
+body[data-view="service"] .view-project,body[data-view="service"] .view-plan,body[data-view="service"] .only-project{display:none!important}
+body[data-view="plan"] .view-project,body[data-view="plan"] .view-service,body[data-view="plan"] .only-project{display:none!important}
 body[data-view="project"] .only-service{display:none!important}
+body[data-view="plan"] .wrap{max-width:1280px}
 body.svc-readonly[data-view="service"] #addBtn,
 body.svc-readonly[data-view="service"] #saveBtn{display:none!important}
 .toolbar.svc{display:flex;flex-wrap:wrap}
@@ -217,10 +221,43 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
 @media(max-width:640px){
   .viewtabs a{flex:1}
   .upitem{grid-template-columns:1fr}
+  .gname{width:148px}
 }
+input.plandate{width:118px;padding:6px 8px;font-size:12.5px}
+input.planperson{width:148px;padding:6px 8px;font-size:12.5px}
+.toolbar.plan{display:flex;flex-wrap:wrap}
+.toolbar.plan>*{flex:1 1 140px;min-width:0}
+.toolbar.plan input.full{flex:1 1 100%}
+tr.plangroup td{background:var(--chip);font-weight:650;color:var(--ink2);position:sticky;left:0}
+.gantt-scroll{overflow:auto;max-height:70vh;border:1px solid var(--border);border-radius:10px;background:var(--surface)}
+.gantt-sheet{position:relative}
+.grow{display:flex;min-height:30px;border-bottom:1px solid var(--grid);align-items:stretch}
+.ghead{position:sticky;top:0;z-index:5;background:var(--surface);min-height:28px}
+.ghead2{top:28px}
+.gname{position:sticky;left:0;z-index:3;width:220px;flex:none;background:var(--surface);
+  padding:5px 10px;font-size:12.5px;border-right:1px solid var(--grid);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center}
+.ghead .gname{z-index:6;font-weight:650}
+.gtrack{position:relative;flex:none;height:30px}
+.gmonths,.gdays{display:flex}
+.gmonth{font-size:12px;font-weight:650;color:var(--ink2);padding:4px 6px;border-left:1px solid var(--grid);
+  overflow:hidden;white-space:nowrap}
+.gday{font-size:10px;color:var(--muted);text-align:center;border-left:1px solid var(--grid);line-height:22px}
+.gday.end{background:var(--chip)}
+.gday.today{color:var(--crit);font-weight:700}
+.ggroup{background:var(--chip)}
+.ggroup .gname{background:var(--chip);font-weight:650;color:var(--ink2)}
+.gbody{position:relative}
+.gbar{position:absolute;top:6px;height:18px;border-radius:4px;min-width:4px;cursor:pointer}
+.gbar.project{background:#2a78d6}
+.gbar.cm{background:#d03b3b}
+.gbar.pm{background:#0f9d8f}
+.gbar.done{opacity:.45}
+.gtoday{position:absolute;top:0;bottom:0;width:2px;background:var(--crit);z-index:1;pointer-events:none}
+.zoombar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
 
 </style>
-<script>if(location.hash==="#service")document.documentElement.setAttribute("data-boot","service");</script>
+<script>(function(){var h=location.hash;if(h==="#service")document.documentElement.setAttribute("data-boot","service");else if(h==="#plan")document.documentElement.setAttribute("data-boot","plan");})();</script>
 </head>
 <body>
 <div class="wrap">
@@ -246,6 +283,7 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
   <div class="viewtabs" role="tablist">
     <a role="tab" id="tabProject" href="#project">งาน Project</a>
     <a role="tab" id="tabService" href="#service">งาน Service &amp; PM</a>
+    <a role="tab" id="tabPlan" href="#plan">แผนงาน</a>
   </div>
 
   <nav class="nav">
@@ -357,6 +395,63 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
   </section>
   <p class="foot">ที่มา: ชีต Service · วันในระบบเป็น พ.ศ. · ลำดับ 9 แก้วันที่จาก 23/92/569 เป็น 23/09/2569</p>
   </div>
+  <div id="viewPlan" class="view-plan">
+  <div class="banner" id="planBanner" role="status"></div>
+  <div class="kpis" id="planKpis"></div>
+  <section class="card">
+    <h2>เส้นเวลางาน</h2>
+    <p class="desc">แท่งตามวันเริ่มถึงวันจบ · เส้นแดงคือวันนี้ · เลื่อนซ้ายขวาเพื่อดูทั้งช่วง</p>
+    <div class="legend">
+      <span class="k"><i class="sw" style="background:#2a78d6"></i>งาน Project</span>
+      <span class="k"><i class="sw" style="background:#d03b3b"></i>ซ่อม CM</span>
+      <span class="k"><i class="sw" style="background:#0f9d8f"></i>PM</span>
+      <span class="k"><i class="sw" style="background:#2a78d6;opacity:.45"></i>ส่งมอบ / เสร็จแล้ว</span>
+    </div>
+    <div class="zoombar">
+      <button type="button" id="planZoomMonth" class="on">เดือน</button>
+      <button type="button" id="planZoomWeek">สัปดาห์</button>
+      <button type="button" id="planToday">วันนี้</button>
+    </div>
+    <div id="gantt"></div>
+  </section>
+  <section class="card">
+    <h2>รายการแผนงาน</h2>
+    <p class="desc">แก้วันในตารางได้เลย ระบบบันทึกให้เองเมื่อเครื่องนี้จำรหัสแล้ว · รายการที่ผูกใบงานจะอัปเดตใบงานเดียวกัน</p>
+    <div class="toolbar plan">
+      <input class="full" type="search" id="planQ" placeholder="ค้นชื่องาน หรือเลข SO" autocomplete="off">
+      <select id="planGroup" aria-label="กลุ่ม">
+        <option value="">ทุกกลุ่ม</option>
+        <option value="install">งานติดตั้ง</option>
+        <option value="handover">ส่งมอบ</option>
+        <option value="cm">CM (ซ่อม)</option>
+        <option value="pm">PM</option>
+      </select>
+      <select id="planPerson" aria-label="ผู้รับผิดชอบ"></select>
+      <input type="text" id="planFrom" inputmode="numeric" placeholder="ตั้งแต่วัน 01/11/2569" aria-label="ตั้งแต่วัน" autocomplete="off">
+      <input type="text" id="planTo" inputmode="numeric" placeholder="ถึงวัน 30/11/2569" aria-label="ถึงวัน" autocomplete="off">
+      <button id="planClear" type="button">ล้างตัวกรอง</button>
+    </div>
+    <p class="count" id="planCount"></p>
+    <div class="tblwrap">
+      <table>
+        <thead><tr>
+          <th>รหัส</th>
+          <th>ชื่องาน</th>
+          <th>ระยะเวลา (วัน)</th>
+          <th>วันเริ่ม</th>
+          <th>วันจบ</th>
+          <th>ผู้รับผิดชอบ</th>
+          <th>สถานะ</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="planBody"></tbody>
+      </table>
+    </div>
+    <datalist id="planPeople"></datalist>
+    <p class="hint" id="planHint"></p>
+  </section>
+  <p class="foot">ที่มา: Project Plan 2026 · วันในไฟล์ต้นฉบับเป็น พ.ศ. แบบสั้น เช่น พ 12/11/69</p>
+  </div>
 </div>
 
 <div class="mask" id="mask">
@@ -373,6 +468,8 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
       <div class="f"><label for="fSrcI">กลุ่มงาน</label><select id="fSrcI"></select></div>
       <div class="f"><label for="fY">ปี (ค.ศ.)</label><input type="text" id="fY" inputmode="numeric" placeholder="2026"></div>
       <div class="f"><label for="fM">เดือน (1-12)</label><input type="text" id="fM" inputmode="numeric" placeholder="1"></div>
+      <div class="f"><label for="fPlanStart">วันเริ่มแผน</label><input type="text" id="fPlanStart" inputmode="numeric" placeholder="12/11/2569" autocomplete="off"></div>
+      <div class="f"><label for="fPlanEnd">วันจบแผน</label><input type="text" id="fPlanEnd" inputmode="numeric" placeholder="14/11/2569" autocomplete="off"></div>
       <div class="f full"><label for="fPay">การชำระเงิน</label><textarea id="fPay"></textarea></div>
       <div class="f full"><label for="fNote">หมายเหตุ / ความคืบหน้า</label><textarea id="fNote"></textarea></div>
     </div>
@@ -421,6 +518,8 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
       </div>
       <div class="f"><label for="svcSales">ส่งต่อเซลล์</label><input type="text" id="svcSales" placeholder="เช่น แจ้งพี่ทราย" autocomplete="off"></div>
       <div class="f"><label for="svcWorkDate">วันเข้างาน</label><input type="text" id="svcWorkDate" placeholder="29/09/2569 หรือ 5 - 8 ต.ค.69" autocomplete="off"></div>
+      <div class="f"><label for="svcPlanStart">วันเริ่มแผน</label><input type="text" id="svcPlanStart" inputmode="numeric" placeholder="12/11/2569" autocomplete="off"></div>
+      <div class="f"><label for="svcPlanEnd">วันจบแผน</label><input type="text" id="svcPlanEnd" inputmode="numeric" placeholder="14/11/2569" autocomplete="off"></div>
       <div class="f full"><label for="svcTeam">ทีมช่าง</label><input type="text" id="svcTeam" list="svcTeamList" placeholder="พิมพ์ชื่อทีม หรือเลือกจากรายการ" autocomplete="off"><datalist id="svcTeamList"></datalist></div>
       <div class="f full"><label for="svcNote">หมายเหตุ</label><textarea id="svcNote"></textarea></div>
     </div>
@@ -429,6 +528,34 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
       <button class="danger left" id="svcDel" type="button">ลบงานนี้</button>
       <button id="svcCancel" type="button">ยกเลิก</button>
       <button class="primary" id="svcSave" type="button">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div class="mask" id="planMask">
+  <div class="modal">
+    <h3 id="planTitle">เพิ่มรายการแผน</h3>
+    <div class="fgrid">
+      <div class="f full"><label for="planName">ชื่องาน *</label><input type="text" id="planName" autocomplete="off"></div>
+      <div class="f"><label for="planGroupEdit">กลุ่ม</label><select id="planGroupEdit"></select></div>
+      <div class="f"><label for="planStatus">สถานะ</label><select id="planStatus"></select></div>
+      <div class="f"><label for="planStartEdit">วันเริ่ม</label><input type="text" id="planStartEdit" inputmode="numeric" placeholder="12/11/2569" autocomplete="off"></div>
+      <div class="f"><label for="planFinishEdit">วันจบ</label><input type="text" id="planFinishEdit" inputmode="numeric" placeholder="14/11/2569" autocomplete="off"></div>
+      <div class="f"><label for="planPersonEdit">ผู้รับผิดชอบ</label><input type="text" id="planPersonEdit" list="planPeople" autocomplete="off"></div>
+      <div class="f"><label for="planLink">ผูกกับ</label>
+        <select id="planLink">
+          <option value="">ไม่ผูกใบงาน</option>
+          <option value="jobs">งาน Project</option>
+          <option value="service">งาน Service</option>
+        </select>
+      </div>
+      <div class="f"><label for="planSo">เลข SO</label><input type="text" id="planSo" placeholder="เว้นได้ ถ้าไม่มีใบงาน" autocomplete="off"></div>
+      <div class="f full"><label for="planNote">หมายเหตุ</label><textarea id="planNote"></textarea></div>
+    </div>
+    <div class="mact">
+      <button class="danger left" id="planDel" type="button">ลบรายการนี้</button>
+      <button id="planFormCancel" type="button">ยกเลิก</button>
+      <button class="primary" id="planFormSave" type="button">บันทึก</button>
     </div>
   </div>
 </div>
@@ -461,6 +588,9 @@ button.kpi.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent
 </div>
 
 <script src="location-sync.js"></script>
+<script src="plan-model.js"></script>
+<script src="plan-seed.js"></script>
+<script src="plan-view.js"></script>
 <script>
 const DATA_VERSION="2026-10-19";
 // ลิงก์เว็บแอปที่ลงท้าย /exec — ว่างไว้ = ใช้ข้อมูลในไฟล์นี้ตามเดิม
@@ -519,7 +649,10 @@ function cleanRow(r){
     lat: coordOrBlank(r.lat),
     lng: coordOrBlank(r.lng),
     locHow: normHow(r.locHow),
-    locSrc: locSrcOf(r.locSrc)
+    locSrc: locSrcOf(r.locSrc),
+    planStart: (window.PEPlanModel ? PEPlanModel.parseDate(r.planStart) : String(r.planStart || '')),
+    planEnd: (window.PEPlanModel ? PEPlanModel.parseDate(r.planEnd) : String(r.planEnd || '')),
+    planSet: (String(r.planSet || '') === '1' ? '1' : '')
   };
 }
 function normHow(v){
@@ -629,6 +762,8 @@ let baseRows = [];
 let loadedRev = '';
 let sheetReady = !SHARED;
 let booting = SHARED;
+let jobsPlanReady = false;
+let svcPlanReady = false;
 let saving = false;
 let saveLock = false;
 let saveQueued = false;
@@ -697,7 +832,7 @@ function paintSave(txt, warn){
 }
 function setSaveState(txt, warn){
   projectSave = {txt: txt, warn: !!warn};
-  if (view() === 'service') return;
+  if (view() === 'service' || view() === 'plan') return;
   paintSave(txt, warn);
 }
 function save(){
@@ -716,7 +851,7 @@ function initSaveState(){
 /* ---------- ข้อมูลร่วมบน Google Sheet ---------- */
 function rowSig(r){
   const c = cleanRow(r);
-  return JSON.stringify([c.id,c.src,c.so,c.comp,c.proj,c.work,c.pay,c.prog,c.st,c.note,c.eng,c.m,c.y,c.loc,c.lat,c.lng,c.locHow,c.locSrc]);
+  return JSON.stringify([c.id,c.src,c.so,c.comp,c.proj,c.work,c.pay,c.prog,c.st,c.note,c.eng,c.m,c.y,c.loc,c.lat,c.lng,c.locHow,c.locSrc,c.planStart,c.planEnd,c.planSet]);
 }
 function dirtyCount(){
   const base = new Map(baseRows.map(r => [String(r.id), rowSig(r)]));
@@ -742,6 +877,7 @@ function fmtTime(iso){
 }
 function updateSaveBtn(){
   if (view() === 'service') { updateSvcSaveBtn(); return; }
+  if (view() === 'plan') { if (window.PEPlan) PEPlan.updateSaveBtn(); return; }
   const btn = $('#saveBtn');
   if (!SHARED || !btn) return;
   if (booting || saving) {
@@ -871,6 +1007,7 @@ function applyServer(data){
   baseRows = cloneRows(rows);
   const locChanged = applyKnownLoc(rows, 'project', 'sync');
   loadedRev = data.lastSaved || data.updatedAt || '';
+  jobsPlanReady = !!(window.PEPlanModel && PEPlanModel.sheetHasPlanFields(data));
   sheetReady = true;
   holdAuto = false;
   booting = false;
@@ -884,6 +1021,7 @@ function applyServer(data){
   updateSaveBtn();
   renderAll();
   scheduleLocSync();
+  if (window.PEPlan) PEPlan.onJobs();
 }
 async function loadFromSheet(){
   if (!SHARED) return;
@@ -905,6 +1043,7 @@ async function loadFromSheet(){
     baseRows = cloneRows(rows);
     baseRosterSig = rosterSig();
     sheetReady = false;
+    jobsPlanReady = false;
     loadedRev = '';
     booting = false;
     bumpNext();
@@ -934,7 +1073,7 @@ function commitChange(auto){
   if (auto) scheduleAutoSave();
 }
 function openConflict(target){
-  conflictTarget = target === 'service' ? 'service' : 'jobs';
+  conflictTarget = target === 'service' ? 'service' : (target === 'plan' ? 'plan' : 'jobs');
   $('#askText').textContent = 'มีคนอื่นเพิ่งบันทึกข้อมูลใหม่กว่านี้ ถ้าโหลดใหม่ การแก้บนหน้านี้จะหาย ถ้าบันทึกทับ ข้อมูลบนหน้านี้จะไปแทนของเดิม';
   $('#askMask').classList.add('on');
 }
@@ -1107,7 +1246,7 @@ function projectLocDrift(){
 }
 function coreTuple(r){
   const c = cleanRow(r);
-  return JSON.stringify([c.id,c.src,c.so,c.comp,c.proj,c.work,c.pay,c.prog,c.st,c.note,c.eng,c.m,c.y]);
+  return JSON.stringify([c.id,c.src,c.so,c.comp,c.proj,c.work,c.pay,c.prog,c.st,c.note,c.eng,c.m,c.y,c.planStart,c.planEnd,c.planSet]);
 }
 function otherJobDrift(){
   const base = new Map(baseRows.map(r => [String(r.id), coreTuple(r)]));
@@ -1358,6 +1497,7 @@ function renderAll(){
   if (locFile) applyKnownLoc(rows, 'project');
   renderKpis(); renderCharts(); refreshFilters(); renderTable();
   if ($('#rosterMask').classList.contains('on')) renderRoster();
+  if (window.PEPlan) PEPlan.render();
 }
 
 ['#q','#fSt','#fEng','#fSrc'].forEach(s => {
@@ -1406,6 +1546,8 @@ function openModal(id){
   $('#fSrcI').value = r ? r.src : '';
   $('#fY').value = r && r.y ? r.y : new Date().getFullYear();
   $('#fM').value = r && r.m ? r.m : (new Date().getMonth() + 1);
+  $('#fPlanStart').value = r && r.planStart && window.PEPlanModel ? PEPlanModel.formatDate(r.planStart) : '';
+  $('#fPlanEnd').value = r && r.planEnd && window.PEPlanModel ? PEPlanModel.formatDate(r.planEnd) : '';
   $('#fPay').value = r ? r.pay : '';
   $('#fNote').value = r ? r.note : '';
   $('#fLoc').value = r ? (r.loc || '') : '';
@@ -1423,14 +1565,34 @@ function openModal(id){
   setTimeout(() => $('#fSo').focus(), 30);
 }
 function closeModal(){ mask.classList.remove('on'); editingId = null; }
+function readPlanFields(startId, endId){
+  const rawS = $( '#' + startId).value.trim();
+  const rawE = $( '#' + endId).value.trim();
+  const start = rawS ? (window.PEPlanModel ? PEPlanModel.parseDate(rawS) : '') : '';
+  const end = rawE ? (window.PEPlanModel ? PEPlanModel.parseDate(rawE) : '') : '';
+  if (rawS && !start) { alert('วันเริ่มแผนไม่ถูกต้อง ให้ใช้แบบ 12/11/2569'); return null; }
+  if (rawE && !end) { alert('วันจบแผนไม่ถูกต้อง ให้ใช้แบบ 12/11/2569'); return null; }
+  if (start && end && end < start) { alert('วันจบแผนต้องไม่ก่อนวันเริ่มแผน'); return null; }
+  return { start: start, end: end };
+}
+function prevPlan(id){
+  const row = id == null ? null : rows.find(r => r.id === id);
+  return {
+    start: row && row.planStart ? row.planStart : '',
+    end: row && row.planEnd ? row.planEnd : '',
+    set: row && row.planSet ? row.planSet : ''
+  };
+}
 $('#addBtn').addEventListener('click', () => {
   if (view() === 'service') openSvcModal(null);
+  else if (view() === 'plan') { if (window.PEPlan) PEPlan.openEditor(null); }
   else openModal(null);
 });
 $('#mCancel').addEventListener('click', closeModal);
 mask.addEventListener('click', e => { if (e.target === mask) closeModal(); });
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
+  if ($('#planMask') && $('#planMask').classList.contains('on')) { if (window.PEPlan) PEPlan.closeEditor(); return; }
   if ($('#svcMask') && $('#svcMask').classList.contains('on')) { closeSvcModal(); return; }
   if ($('#rosterMask').classList.contains('on')) { closeRoster(); return; }
   if (mask.classList.contains('on')) closeModal();
@@ -1440,6 +1602,9 @@ $('#mSave').addEventListener('click', () => {
   const so = $('#fSo').value.trim();
   if (!so){ $('#fSo').focus(); $('#fSo').style.outline = '2px solid var(--crit)'; return; }
   $('#fSo').style.outline = '';
+  const planDates = readPlanFields('fPlanStart', 'fPlanEnd');
+  if (!planDates) return;
+  const wasPlan = prevPlan(editingId);
   const data = {
     so, comp: $('#fComp').value.trim(), proj: $('#fProj').value.trim(), work: $('#fWork').value.trim(),
     pay: $('#fPay').value.trim(), note: $('#fNote').value.trim(),
@@ -1447,7 +1612,9 @@ $('#mSave').addEventListener('click', () => {
     eng: $('#fEngI').value.trim() || NO_ENG,
     loc: $('#fLoc').value.trim(),
     ...locKept(editingId == null ? null : rows.find(x => x.id === editingId), $('#fLoc').value.trim()),
-    y: parseInt($('#fY').value, 10) || 0, m: Math.min(12, Math.max(0, parseInt($('#fM').value, 10) || 0))
+    y: parseInt($('#fY').value, 10) || 0, m: Math.min(12, Math.max(0, parseInt($('#fM').value, 10) || 0)),
+    planStart: planDates.start, planEnd: planDates.end,
+    planSet: (planDates.start !== wasPlan.start || planDates.end !== wasPlan.end || wasPlan.set === '1') ? '1' : ''
   };
   data.prog = data.note || data.st;
   const prev = editingId == null ? null : rows.find(r => r.id === editingId);
@@ -1459,12 +1626,14 @@ $('#mSave').addEventListener('click', () => {
     rows.push({id: savedId, ...data});
   } else Object.assign(prev, data);
   const savedRow = rows.find(r => r.id === savedId);
+  if (window.PEPlan && savedRow) PEPlan.afterJobSaved(savedRow);
   if (locTextChanged && savedRow) lockTypedLoc('project', savedRow);
   else manualLoc.delete('project:' + savedId);
   applyKnownLoc(rows, 'project');
   try { if (data.eng && data.eng !== NO_ENG) localStorage.setItem(LAST_ENG_KEY, data.eng); } catch(e){}
   closeModal();
-  commitChange(locTextChanged ? 'now' : true);
+  const planChanged = planDates.start !== wasPlan.start || planDates.end !== wasPlan.end;
+  commitChange(locTextChanged || planChanged ? 'now' : true);
 });
 $('#mDel').addEventListener('click', () => {
   const r = rows.find(x => x.id === editingId);
@@ -1587,6 +1756,7 @@ function loadSheetJS(i){
 }
 $('#xlsxBtn').addEventListener('click', async () => {
   if (view() === 'service') { exportServiceXlsx(); return; }
+  if (view() === 'plan' && window.PEPlan) { PEPlan.exportXlsx(); return; }
   const btn = $('#xlsxBtn');
   const prev = btn.textContent;
   btn.disabled = true;
@@ -1755,9 +1925,11 @@ $('#rosterList').addEventListener('keydown', e => {
 
 $('#saveBtn').addEventListener('click', () => {
   if (view() === 'service') saveService(false, true);
+  else if (view() === 'plan' && window.PEPlan) PEPlan.saveAll(true);
   else saveToSheet(false, true);
 });
 $('#reloadBtn').addEventListener('click', () => {
+  if (view() === 'plan' && window.PEPlan) { PEPlan.reload(); return; }
   if (view() === 'service') {
     if (svcMode === 'live' && svcDirty() > 0 && !confirm('มีการแก้ไขที่ยังไม่บันทึก โหลดใหม่จะทิ้งการแก้ไขนี้')) return;
     svcHold = false;
@@ -1770,12 +1942,14 @@ $('#reloadBtn').addEventListener('click', () => {
 });
 $('#askOk').addEventListener('click', () => {
   closeConflict();
+  if (conflictTarget === 'plan' && window.PEPlan) { PEPlan.holdOff(); PEPlan.reload(true); return; }
   if (conflictTarget === 'service') { svcHold = false; loadService(); return; }
   holdAuto = false;
   loadFromSheet();
 });
 $('#askAlt').addEventListener('click', () => {
   closeConflict();
+  if (conflictTarget === 'plan' && window.PEPlan) { PEPlan.saveForce(); return; }
   if (conflictTarget === 'service') { svcHold = false; saveService(true, true); return; }
   holdAuto = false;
   saveToSheet(true, true);
@@ -1783,7 +1957,8 @@ $('#askAlt').addEventListener('click', () => {
 window.addEventListener('beforeunload', e => {
   const projDirty = SHARED && sheetReady && dirtyCount() > 0;
   const svcDirtyNow = svcMode === 'live' && svcDirty() > 0;
-  if (projDirty || svcDirtyNow) {
+  const planDirtyNow = window.PEPlan && PEPlan.dirty();
+  if (projDirty || svcDirtyNow || planDirtyNow) {
     e.preventDefault();
     e.returnValue = '';
   }
@@ -1857,7 +2032,9 @@ let svcSortDir = 1;
 let conflictTarget = 'jobs';
 
 function view(){
-  return document.body && document.body.getAttribute('data-view') === 'service' ? 'service' : 'project';
+  const v = document.body && document.body.getAttribute('data-view');
+  if (v === 'service' || v === 'plan') return v;
+  return 'project';
 }
 function onFlag(v){ return v === 1 || v === true || v === '1' || v === 'true'; }
 function pad2(n){ n = String(n); return n.length < 2 ? '0' + n : n; }
@@ -1916,7 +2093,10 @@ function cleanSvc(r){
     lat: coordOrBlank(r.lat),
     lng: coordOrBlank(r.lng),
     locHow: normHow(r.locHow),
-    locSrc: locSrcOf(r.locSrc)
+    locSrc: locSrcOf(r.locSrc),
+    planStart: (window.PEPlanModel ? PEPlanModel.parseDate(r.planStart) : String(r.planStart || '')),
+    planEnd: (window.PEPlanModel ? PEPlanModel.parseDate(r.planEnd) : String(r.planEnd || '')),
+    planSet: (String(r.planSet || '') === '1' ? '1' : '')
   };
   if (o.type === 'PM (บำรุงรักษา)') o.type = 'PM';
   SVC_FLAGS.forEach(k => { o[k] = onFlag(r[k]) ? 1 : 0; });
@@ -1999,7 +2179,7 @@ function svcLocDrift(){
 }
 function svcCoreTuple(r){
   const c = cleanSvc(r);
-  return JSON.stringify([c.id,c.no,c.date,c.customer,c.detail,c.type,c.sales,c.so,c.workDate,c.team,c.note,SVC_FLAGS.map(k => c[k])]);
+  return JSON.stringify([c.id,c.no,c.date,c.customer,c.detail,c.type,c.sales,c.so,c.workDate,c.team,c.note,c.planStart,c.planEnd,c.planSet,SVC_FLAGS.map(k => c[k])]);
 }
 function svcOtherDrift(){
   const base = new Map(svcBase.map(r => [String(r.id), svcCoreTuple(r)]));
@@ -2047,6 +2227,7 @@ function svcUseSeed(kind){
   svcBase = svcRows.map(r => ({...r}));
   svcRev = '';
   svcMode = 'readonly';
+  svcPlanReady = false;
   svcHold = false;
   document.body.classList.add('svc-readonly');
   showSvcBanner(SVC_BANNER[kind] || SVC_BANNER.bad, kind === 'bad');
@@ -2066,6 +2247,7 @@ function applySvcServer(data){
   svcBase = svcRows.map(r => ({...r}));
   const locChanged = applyKnownLoc(svcRows, 'service', 'sync');
   svcRev = data.lastSaved || '';
+  svcPlanReady = !!(window.PEPlanModel && PEPlanModel.sheetHasPlanFields(data));
   svcMode = 'live';
   svcHold = false;
   document.body.classList.remove('svc-readonly');
@@ -2074,6 +2256,7 @@ function applySvcServer(data){
   if (locChanged && getKey()) svcPaint('กำลังส่งสถานที่ขึ้นชีต ' + locChanged + ' งาน', false);
   else svcPaint(svcRev ? ('บันทึกล่าสุด ' + fmtTime(svcRev)) : 'โหลดจากชีตแล้ว', false);
   scheduleSvcLocSync();
+  if (window.PEPlan) PEPlan.onService();
 }
 function loadSvcLocal(){
   const saved = svcStoreGet();
@@ -2490,6 +2673,7 @@ function renderSvcAll(){
   refreshSvcFilters();
   renderSvcTable();
   renderSvcHint();
+  if (window.PEPlan) PEPlan.render();
 }
 function teamSuggestions(){
   const out = [];
@@ -2562,6 +2746,8 @@ function fillSvcForm(row){
   $('#svcDetail').value = row ? row.detail : '';
   $('#svcSales').value = row ? row.sales : '';
   $('#svcWorkDate').value = row && row.workDate ? fmtDMY(row.workDate) : '';
+  $('#svcPlanStart').value = row && row.planStart && window.PEPlanModel ? PEPlanModel.formatDate(row.planStart) : '';
+  $('#svcPlanEnd').value = row && row.planEnd && window.PEPlanModel ? PEPlanModel.formatDate(row.planEnd) : '';
   $('#svcTeam').value = row ? row.team : '';
   $('#svcNote').value = row ? row.note : '';
   $('#svcLoc').value = row ? (row.loc || '') : '';
@@ -2610,6 +2796,14 @@ function saveSvcForm(){
   }
   const rawW = $('#svcWorkDate').value.trim();
   const workIso = rawW ? parseSingleDate(rawW) : '';
+  const planDates = readPlanFields('svcPlanStart', 'svcPlanEnd');
+  if (!planDates) return;
+  const prev = svcEditing == null ? null : svcRows.find(r => r.id === svcEditing);
+  const wasPlan = {
+    start: prev && prev.planStart ? prev.planStart : '',
+    end: prev && prev.planEnd ? prev.planEnd : '',
+    set: prev && prev.planSet ? prev.planSet : ''
+  };
   const data = Object.assign({
     customer: customer,
     detail: $('#svcDetail').value.trim(),
@@ -2621,9 +2815,11 @@ function saveSvcForm(){
     team: $('#svcTeam').value.trim(),
     note: $('#svcNote').value.trim(),
     loc: $('#svcLoc').value.trim(),
-    ...locKept(svcEditing == null ? null : svcRows.find(r => r.id === svcEditing), $('#svcLoc').value.trim())
+    ...locKept(prev, $('#svcLoc').value.trim()),
+    planStart: planDates.start,
+    planEnd: planDates.end,
+    planSet: (planDates.start !== wasPlan.start || planDates.end !== wasPlan.end || wasPlan.set === '1') ? '1' : (prev && prev.planSet) || ''
   }, readSvcSteps());
-  const prev = svcEditing == null ? null : svcRows.find(r => r.id === svcEditing);
   const prevLoc = prev ? String(prev.loc || '').trim() : '';
   const locTextChanged = prevLoc !== String(data.loc || '').trim();
   let savedId = svcEditing;
@@ -2636,11 +2832,13 @@ function saveSvcForm(){
     Object.assign(prev, cleanSvc(Object.assign({ id: prev.id, no: prev.no }, data)));
   }
   const savedRow = svcRows.find(r => r.id === savedId);
+  if (window.PEPlan && savedRow) PEPlan.afterServiceSaved(savedRow);
   if (locTextChanged && savedRow) lockTypedLoc('service', savedRow);
   else manualLoc.delete('service:' + savedId);
   closeSvcModal();
   applyKnownLoc(svcRows, 'service');
-  commitSvc(locTextChanged ? 'now' : true);
+  const planChanged = planDates.start !== wasPlan.start || planDates.end !== wasPlan.end;
+  commitSvc(locTextChanged || planChanged ? 'now' : true);
 }
 function svcRowsForExport(){
   return svcRows.map(cleanSvc).sort((a, b) => (a.no - b.no) || (a.id - b.id));
@@ -2729,24 +2927,40 @@ async function exportServiceXlsx(){
   }
 }
 function applyView(){
-  const svc = location.hash === '#service';
-  document.body.setAttribute('data-view', svc ? 'service' : 'project');
+  const hash = location.hash;
+  const mode = hash === '#service' ? 'service' : (hash === '#plan' ? 'plan' : 'project');
+  document.body.setAttribute('data-view', mode);
   document.documentElement.removeAttribute('data-boot');
-  const tp = $('#tabProject'), ts = $('#tabService');
-  if (tp) tp.classList.toggle('on', !svc);
-  if (ts) ts.classList.toggle('on', svc);
+  const tp = $('#tabProject'), ts = $('#tabService'), tn = $('#tabPlan');
+  if (tp) tp.classList.toggle('on', mode === 'project');
+  if (ts) ts.classList.toggle('on', mode === 'service');
+  if (tn) tn.classList.toggle('on', mode === 'plan');
   const h1 = document.querySelector('header.top h1');
   const lead = $('#subLead');
-  if (h1) h1.textContent = svc ? 'Service & PM — ตารางงาน' : 'Project Engineer — ตารางงาน';
-  document.title = h1 ? h1.textContent : document.title;
-  if (lead) lead.textContent = svc ? 'ประเภทงาน · ขั้นปัจจุบัน · ทีมช่าง' : 'ผู้รับผิดชอบ · เลข SO · สถานะงาน';
-  if (!svc) {
+  const titles = {
+    project: ['Project Engineer — ตารางงาน', 'ผู้รับผิดชอบ · เลข SO · สถานะงาน'],
+    service: ['Service & PM — ตารางงาน', 'ประเภทงาน · ขั้นปัจจุบัน · ทีมช่าง'],
+    plan: ['แผนงาน — กำหนดการ', 'วันเริ่ม · วันจบ · ผู้รับผิดชอบ']
+  };
+  const pair = titles[mode];
+  if (h1) h1.textContent = pair[0];
+  document.title = pair[0];
+  if (lead) lead.textContent = pair[1];
+  const add = $('#addBtn');
+  if (add) add.textContent = mode === 'plan' ? '+ เพิ่มรายการ' : '+ เพิ่มงาน';
+  if (mode === 'project') {
     paintSave(projectSave.txt, projectSave.warn);
     updateSaveBtn();
     return;
   }
+  if (mode === 'service') {
+    if (!svcBooted) loadService();
+    else { renderSvcAll(); updateSaveBtn(); }
+    return;
+  }
   if (!svcBooted) loadService();
-  else { renderSvcAll(); updateSaveBtn(); }
+  if (window.PEPlan) PEPlan.onShow();
+  else updateSaveBtn();
 }
 function bindSvcEvents(){
   $('#svcMask').addEventListener('click', e => { if (e.target.id === 'svcMask') closeSvcModal(); });
@@ -2800,6 +3014,44 @@ function bindSvcEvents(){
 }
 
 bindSvcEvents();
+if (window.PEPlan) {
+  PEPlan.bind({
+    jobs: function () { return typeof jobRows === 'function' ? jobRows() : []; },
+    services: function () { return svcRows || []; },
+    baseJobs: function () { return baseRows || []; },
+    baseServices: function () { return svcBase || []; },
+    jobsReady: function () { return !!jobsPlanReady; },
+    serviceReady: function () { return !!svcPlanReady; },
+    booting: function () { return !!booting; },
+    svcMode: function () { return svcMode; },
+    commitJob: function () { commitChange(true); },
+    commitService: function () { commitSvc(true); },
+    openJob: function (id) { openModal(id); },
+    openService: function (id) { openSvcModal(id); },
+    roster: function () { return rosterNames.slice(); },
+    shared: function () { return !!SHARED; },
+    getKey: function () { return getKey(); },
+    ensureKey: function (interactive) { return ensureKey(interactive); },
+    clearKey: function () { clearKey(); },
+    apiGet: function (table) { return apiGet(table); },
+    apiPost: function (body) { return apiPost(body); },
+    openConflict: function () { openConflict('plan'); },
+    loadSheetJS: function () { return loadSheetJS(0); },
+    view: function () { return view(); },
+    dirtyJobs: function () { return dirtyCount(); },
+    dirtyService: function () { return svcMode === 'live' ? svcDirty() : 0; },
+    saveJobs: function (interactive) { return saveToSheet(false, interactive); },
+    saveService: function (interactive) { return saveService(false, interactive); },
+    reloadJobs: function () { holdAuto = false; return loadFromSheet(); },
+    reloadService: function () { svcHold = false; return loadService(); },
+    deriveStage: function (row) { return deriveStage(row); },
+    jobStatuses: function () { return STATUSES; },
+    noEng: function () { return NO_ENG; },
+    busy: function () { return !!(saving || svcSaving); },
+    refreshSave: function () { if (view() === 'plan') PEPlan.updateSaveBtn(); }
+  });
+  PEPlan.init();
+}
 applyView();
 window.addEventListener('hashchange', applyView);
 if (SHARED) {

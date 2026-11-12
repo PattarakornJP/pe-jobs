@@ -48,7 +48,7 @@ function clone(r) { return JSON.parse(JSON.stringify(r)); }
 
 // A different pin is replaced, and the overlay touches only location columns.
 {
-  const base = sheetRow({ loc: 'old place', lat: '7.1', lng: '98.1', locHow: 'exact', locSrc: 'old' });
+  const base = sheetRow({ loc: 'old place', lat: '7.1', lng: '98.1', locHow: 'exact', locSrc: 'old', planStart: '2026-11-12', planEnd: '2026-11-14', planSet: '1' });
   const current = clone(base);
   assert.strictEqual(sync.applyFile([current], file.project, 'sync'), 1);
   assert.strictEqual(current.lat, lat217);
@@ -60,6 +60,9 @@ function clone(r) { return JSON.parse(JSON.stringify(r)); }
   assert.strictEqual(over[0].loc, pin217.loc);
   assert.strictEqual(over[0].note, 'KEEP-NOTE-217');
   assert.strictEqual(over[0].st, 'มัดจำแล้ว');
+  assert.strictEqual(over[0].planStart, '2026-11-12');
+  assert.strictEqual(over[0].planEnd, '2026-11-14');
+  assert.strictEqual(over[0].planSet, '1');
   assert.strictEqual(over[0].pay, 'มัดจำแล้ว');
   assert.strictEqual(over[0].eng, 'ยังไม่ระบุ');
   assert.strictEqual(sync.driftCount([current], [base]), 1);
