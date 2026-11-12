@@ -7,22 +7,30 @@
  *    Execute as: Me, Who has access: Anyone
  *
  * GET  = อ่านงานทั้งหมด (คนเปิดเว็บอ่านได้) คืน lastSaved
- *        ?table=service อ่านแท็บ service (ไม่ส่ง table = งาน Project เหมือนเดิม)
+ *        ?table=service อ่านแท็บ service
+ *        ?table=plan อ่านแท็บ plan (ไม่ส่ง table = งาน Project เหมือนเดิม)
  * POST = บันทึกทั้งชุด ส่งเป็น text/plain เพื่อไม่ให้เบราว์เซอร์ถาม CORS ก่อน
- *        body.table = 'service' บันทึกลงแท็บ service คนละ rev/hash กับ jobs
+ *        body.table = 'service' บันทึกลงแท็บ service
+ *        body.table = 'plan' และ body.expect = 'plan' บันทึกลงแท็บ plan
+ *        คนละ rev/hash กันทั้งสามแท็บ
+ * คอลัมน์ planStart, planEnd, planSet ต่อท้าย jobs และ service
+ * การบันทึกสถานที่อย่างเดียวต้องไม่เปลี่ยนคอลัมน์เหล่านี้
  */
 
 // ★ ใส่รหัสผู้ดูแลตรงนี้ แล้วกดบันทึกไฟล์ แอดมินใช้รหัสนี้ตอนกดปุ่มบันทึกบนเว็บ
 var ADMIN_KEY = '';
 
 var SHEET_NAME = 'jobs';
-var HEADERS = ['id', 'src', 'so', 'comp', 'proj', 'work', 'pay', 'prog', 'st', 'note', 'eng', 'm', 'y', 'loc', 'lat', 'lng', 'locHow', 'locSrc', 'updatedAt'];
+var HEADERS = ['id', 'src', 'so', 'comp', 'proj', 'work', 'pay', 'prog', 'st', 'note', 'eng', 'm', 'y', 'loc', 'lat', 'lng', 'locHow', 'locSrc', 'planStart', 'planEnd', 'planSet', 'updatedAt'];
 var STATUSES = ['รอมัดจำ', 'มัดจำแล้ว', 'พร้อมเข้างาน', 'กำลังดำเนินการ', 'รอส่งมอบงาน', 'เสร็จแล้ว', 'ไม่ระบุ'];
 var SEED_CSV_URL = 'https://raw.githubusercontent.com/PattarakornJP/pe-jobs/main/seed/jobs.csv';
 var SERVICE_SHEET_NAME = 'service';
-var SERVICE_HEADERS = ['id', 'no', 'date', 'customer', 'detail', 'type', 'chkWait', 'chkDone', 'rptWait', 'rptDone', 'sales', 'so', 'depWait', 'depDone', 'partsWait', 'partsDone', 'enterWait', 'enterDone', 'workDate', 'workOpen', 'workDone', 'team', 'note', 'loc', 'lat', 'lng', 'locHow', 'locSrc', 'updatedAt'];
+var SERVICE_HEADERS = ['id', 'no', 'date', 'customer', 'detail', 'type', 'chkWait', 'chkDone', 'rptWait', 'rptDone', 'sales', 'so', 'depWait', 'depDone', 'partsWait', 'partsDone', 'enterWait', 'enterDone', 'workDate', 'workOpen', 'workDone', 'team', 'note', 'loc', 'lat', 'lng', 'locHow', 'locSrc', 'planStart', 'planEnd', 'planSet', 'updatedAt'];
 var SERVICE_FLAGS = ['chkWait', 'chkDone', 'rptWait', 'rptDone', 'depWait', 'depDone', 'partsWait', 'partsDone', 'enterWait', 'enterDone', 'workOpen', 'workDone'];
 var SERVICE_SEED_CSV_URL = 'https://raw.githubusercontent.com/PattarakornJP/pe-jobs/main/seed/service.csv';
+var PLAN_SHEET_NAME = 'plan';
+var PLAN_HEADERS = ['id', 'pdfId', 'name', 'group', 'start', 'finish', 'person', 'note', 'so', 'linkTable', 'status', 'updatedAt'];
+var PLAN_SEED_URL = 'https://raw.githubusercontent.com/PattarakornJP/pe-jobs/main/seed/plan.json';
 var MAX_ROWS = 5000;
 
 function onOpen() {
@@ -32,6 +40,7 @@ function onOpen() {
     .createMenu('PE Jobs')
     .addItem('ตั้งค่าเริ่มต้น', 'setup')
     .addItem('นำเข้างาน Service', 'importServiceSeed')
+    .addItem('นำเข้าแผนงาน', 'importPlanSeed')
     .addToUi();
 }
 
@@ -40,6 +49,10 @@ function onOpen() {
 function setup() {
   var svcNote = '';
   try { svcNote = importServiceIfEmpty_(); } catch (err) { svcNote = ''; }
+  try {
+    var planNote = importPlanIfEmpty_();
+    if (planNote) svcNote = svcNote ? (svcNote + '\n' + planNote) : planNote;
+  } catch (err) {}
   var sheet = ensureSheet_();
   if (sheet.getLastRow() > 1) {
     var ok = uiConfirm_(
@@ -47,7 +60,7 @@ function setup() {
       'แท็บ jobs มีข้อมูลอยู่ จะล้างแล้วโหลดชุดเริ่มต้นจากเว็บแทนหรือไม่?'
     );
     if (!ok) {
-      if (svcNote) uiAlert_('งาน Service', svcNote);
+      if (svcNote) uiAlert_('นำเข้าเพิ่ม', svcNote);
       return;
     }
   }
@@ -75,7 +88,9 @@ function setup() {
 
 function doGet(e) {
   e = e || {};
-  if (requestedTable_(e && e.parameter) === 'service') return doGetService_(e);
+  var table = requestedTable_(e && e.parameter);
+  if (table === 'service') return doGetService_(e);
+  if (table === 'plan') return doGetPlan_(e);
   var lock = LockService.getScriptLock();
   try {
     lock.waitLock(20000);
@@ -88,6 +103,7 @@ function doGet(e) {
       ok: true,
       count: snap.rows.length,
       lastSaved: snap.lastSaved,
+      fields: HEADERS,
       rows: snap.rows
     });
   } catch (err) {
@@ -108,6 +124,7 @@ function doPost(e) {
     return json_({ ok: false, error: 'ไม่มีข้อมูลให้บันทึก' });
   }
   if (requestedTable_(body) === 'service') return postService_(body);
+  if (requestedTable_(body) === 'plan') return postPlan_(body);
 
   var adminKey = String(ADMIN_KEY || '').trim();
   if (!adminKey) {
@@ -168,7 +185,9 @@ function doPost(e) {
 function requestedTable_(obj) {
   var t = obj && obj.table;
   t = String(t || '').trim().toLowerCase();
-  return t === 'service' ? 'service' : 'jobs';
+  if (t === 'service') return 'service';
+  if (t === 'plan') return 'plan';
+  return 'jobs';
 }
 
 function doGetService_(e) {
@@ -185,6 +204,7 @@ function doGetService_(e) {
       table: 'service',
       count: snap.rows.length,
       lastSaved: snap.lastSaved,
+      fields: SERVICE_HEADERS,
       rows: snap.rows
     });
   } catch (err) {
@@ -412,7 +432,10 @@ function normalizeServiceRow_(r) {
     lat: coord_(r.lat),
     lng: coord_(r.lng),
     locHow: locHow_(r.locHow),
-    locSrc: serviceText_(r.locSrc)
+    locSrc: serviceText_(r.locSrc),
+    planStart: parseDateToIso_(r.planStart),
+    planEnd: parseDateToIso_(r.planEnd),
+    planSet: planSet_(r.planSet)
   };
   for (var i = 0; i < SERVICE_FLAGS.length; i++) {
     out[SERVICE_FLAGS[i]] = flag_(r[SERVICE_FLAGS[i]]);
@@ -609,8 +632,17 @@ function normalizeRow_(r) {
     lat: coord_(r.lat),
     lng: coord_(r.lng),
     locHow: locHow_(r.locHow),
-    locSrc: stringify_(r.locSrc)
+    locSrc: stringify_(r.locSrc),
+    planStart: parseDateToIso_(r.planStart),
+    planEnd: parseDateToIso_(r.planEnd),
+    planSet: planSet_(r.planSet)
   };
+}
+
+function planSet_(v) {
+  var s = stringify_(v).trim().toLowerCase();
+  if (s === '1' || s === 'true' || s === 'yes') return '1';
+  return '';
 }
 
 function coord_(v) {
@@ -644,6 +676,265 @@ function clampMonth_(v) {
 
 function hashRows_(rows) {
   var text = JSON.stringify(rows.map(normalizeRow_));
+  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, text, Utilities.Charset.UTF_8);
+  return bytes.map(function (b) {
+    var v = (b + 256) % 256;
+    return (v < 16 ? '0' : '') + v.toString(16);
+  }).join('');
+}
+
+function doGetPlan_(e) {
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(20000);
+  } catch (err) {
+    return emit_(e, { ok: false, table: 'plan', error: 'ระบบไม่ว่าง รอสักครู่แล้วกด โหลดใหม่' });
+  }
+  try {
+    var snap = snapshotPlan_();
+    return emit_(e, {
+      ok: true,
+      table: 'plan',
+      count: snap.rows.length,
+      lastSaved: snap.lastSaved,
+      fields: PLAN_HEADERS,
+      rows: snap.rows
+    });
+  } catch (err) {
+    return emit_(e, { ok: false, table: 'plan', error: 'อ่านข้อมูลไม่สำเร็จ ลองกด โหลดใหม่' });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function postPlan_(body) {
+  if (String(body.expect || '') !== 'plan') {
+    return json_({ ok: false, table: 'plan', error: 'คำขอแผนงานไม่ครบ จึงยังไม่บันทึก' });
+  }
+  var adminKey = String(ADMIN_KEY || '').trim();
+  if (!adminKey) {
+    return json_({
+      ok: false,
+      table: 'plan',
+      auth: false,
+      error: 'ยังไม่ได้ตั้งรหัส เปิด Apps Script แล้วใส่รหัสที่บรรทัด ADMIN_KEY ด้านบนของ Code.gs'
+    });
+  }
+  var given = String(body.key || '').trim();
+  if (!given || given !== adminKey) {
+    return json_({ ok: false, table: 'plan', auth: false, error: 'รหัสไม่ถูกต้อง ใส่รหัสใหม่อีกครั้ง แล้วกด บันทึก' });
+  }
+  if (!Array.isArray(body.rows)) {
+    return json_({ ok: false, table: 'plan', error: 'ไม่มีรายการแผนให้บันทึก' });
+  }
+  if (!body.rows.length) {
+    return json_({ ok: false, table: 'plan', error: 'ไม่มีรายการเหลืออยู่ จึงยังไม่บันทึก เพื่อกันข้อมูลบนชีตหาย' });
+  }
+  if (body.rows.length > MAX_ROWS) {
+    return json_({ ok: false, table: 'plan', error: 'จำนวนรายการมากเกินไป จึงยังไม่บันทึก' });
+  }
+  if (payloadNotPlan_(body.rows)) {
+    return json_({ ok: false, table: 'plan', error: 'ข้อมูลนี้ไม่ใช่รายการแผน จึงยังไม่บันทึกลงแท็บ plan' });
+  }
+
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(20000);
+  } catch (err) {
+    return json_({ ok: false, table: 'plan', error: 'ระบบไม่ว่าง รอสักครู่แล้วกด บันทึก อีกครั้ง' });
+  }
+  try {
+    var current = snapshotPlan_();
+    var clientSaved = String(body.lastSaved || body.baseUpdatedAt || '');
+    if (!body.force && clientSaved !== String(current.lastSaved || '')) {
+      return json_({
+        ok: false,
+        table: 'plan',
+        conflict: true,
+        lastSaved: current.lastSaved,
+        count: current.rows.length,
+        error: 'มีคนอื่นเพิ่งบันทึกข้อมูลใหม่กว่านี้'
+      });
+    }
+    var now = new Date().toISOString();
+    var rows = body.rows.map(normalizePlanRow_);
+    writePlanRows_(rows, now);
+    var saved = readPlanRows_();
+    PropertiesService.getScriptProperties().setProperties({
+      PLAN_REV: now,
+      PLAN_HASH: hashPlanRows_(saved)
+    });
+    return json_({ ok: true, table: 'plan', saved: true, count: saved.length, lastSaved: now });
+  } catch (err) {
+    return json_({ ok: false, table: 'plan', error: 'บันทึกไม่สำเร็จ ลองกด บันทึก อีกครั้ง' });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function payloadNotPlan_(rows) {
+  if (!rows || !rows.length) return false;
+  var bad = 0;
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i] || {};
+    var named = stringify_(r.name) || stringify_(r.group);
+    var jobLike = stringify_(r.comp) && !named;
+    var svcLike = stringify_(r.customer) && !named;
+    if (jobLike || svcLike) bad++;
+  }
+  return bad === rows.length;
+}
+
+function importPlanIfEmpty_() {
+  var sheet = ensurePlanSheet_();
+  if (sheet.getLastRow() > 1) return '';
+  var res = UrlFetchApp.fetch(PLAN_SEED_URL, { muteHttpExceptions: true, followRedirects: true });
+  if (res.getResponseCode() !== 200) return '';
+  var count = importPlanJson_(sheet, res.getContentText('UTF-8'));
+  stampPlan_();
+  return 'นำเข้า ' + count + ' รายการ ไปที่แท็บ plan';
+}
+
+function importPlanSeed() {
+  var sheet = ensurePlanSheet_();
+  if (sheet.getLastRow() > 1) {
+    var ok = uiConfirm_(
+      'มีแผนงานอยู่แล้ว',
+      'แท็บ plan มีข้อมูลอยู่ จะล้างแล้วโหลดชุด Project Plan 2026 จากเว็บแทนหรือไม่?'
+    );
+    if (!ok) return;
+  }
+  var res = UrlFetchApp.fetch(PLAN_SEED_URL, { muteHttpExceptions: true, followRedirects: true });
+  if (res.getResponseCode() !== 200) {
+    uiAlert_(
+      'โหลดแผนไม่ได้',
+      'ยังดึงไฟล์จาก GitHub ไม่สำเร็จ (' + res.getResponseCode() + ')\nเปิดหน้าแผนงานแล้วกด บันทึก แทน'
+    );
+    return;
+  }
+  try {
+    var count = importPlanJson_(sheet, res.getContentText('UTF-8'));
+    stampPlan_();
+    uiAlert_('นำเข้าแล้ว', 'นำเข้า ' + count + ' รายการ ไปที่แท็บ plan');
+  } catch (err) {
+    uiAlert_('นำเข้าไม่สำเร็จ', 'เปิดหน้าแผนงานแล้วกด บันทึก แทน');
+  }
+}
+
+function stampPlan_() {
+  var now = new Date().toISOString();
+  PropertiesService.getScriptProperties().setProperties({
+    PLAN_REV: now,
+    PLAN_HASH: hashPlanRows_(readPlanRows_())
+  });
+}
+
+function ensurePlanSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(PLAN_SHEET_NAME);
+  if (!sheet) sheet = ss.insertSheet(PLAN_SHEET_NAME);
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange(1, 1, 1, PLAN_HEADERS.length).setValues([PLAN_HEADERS]).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function snapshotPlan_() {
+  var rows = readPlanRows_();
+  var hash = hashPlanRows_(rows);
+  var props = PropertiesService.getScriptProperties();
+  var rev = props.getProperty('PLAN_REV');
+  var old = props.getProperty('PLAN_HASH');
+  if (!rev || old !== hash) {
+    rev = new Date().toISOString();
+    props.setProperties({ PLAN_REV: rev, PLAN_HASH: hash });
+  }
+  return { rows: rows, lastSaved: rev };
+}
+
+function readPlanRows_() {
+  var sheet = ensurePlanSheet_();
+  var values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+  var header = values[0].map(function (h) { return String(h).replace(/^\uFEFF/, '').trim(); });
+  var rows = [];
+  for (var i = 1; i < values.length; i++) {
+    var obj = {};
+    var empty = true;
+    for (var c = 0; c < header.length; c++) {
+      if (!header[c]) continue;
+      var v = values[i][c];
+      if (v !== '' && v != null) empty = false;
+      obj[header[c]] = v;
+    }
+    if (empty) continue;
+    if (!stringify_(obj.id) && !stringify_(obj.name) && !stringify_(obj.so)) continue;
+    rows.push(normalizePlanRow_(obj));
+  }
+  return rows;
+}
+
+function writePlanRows_(rows, now) {
+  var sheet = ensurePlanSheet_();
+  var width = PLAN_HEADERS.length;
+  sheet.getRange(1, 1, 1, width).setValues([PLAN_HEADERS]).setFontWeight('bold').setNumberFormat('@');
+  sheet.setFrozenRows(1);
+  var last = sheet.getLastRow();
+  if (last > 1) sheet.getRange(2, 1, last - 1, width).clearContent();
+  if (!rows.length) return;
+  var values = rows.map(function (r) {
+    var n = normalizePlanRow_(r);
+    return PLAN_HEADERS.map(function (h) {
+      if (h === 'updatedAt') return now || '';
+      var v = n[h];
+      return v == null ? '' : String(v);
+    });
+  });
+  var range = sheet.getRange(2, 1, values.length, width);
+  range.setNumberFormat('@');
+  range.setValues(values);
+}
+
+function importPlanJson_(sheet, text) {
+  var data = JSON.parse(String(text || '').replace(/^\uFEFF/, ''));
+  if (!data || !data.length) throw new Error('empty plan');
+  var rows = [];
+  for (var i = 0; i < data.length; i++) {
+    var n = normalizePlanRow_(data[i]);
+    if (!n.id && !n.name) continue;
+    rows.push(n);
+  }
+  writePlanRows_(rows, '');
+  return rows.length;
+}
+
+function normalizePlanRow_(r) {
+  r = r || {};
+  var group = stringify_(r.group);
+  if (group !== 'install' && group !== 'handover' && group !== 'cm' && group !== 'pm') group = 'install';
+  var link = stringify_(r.linkTable);
+  if (link !== 'jobs' && link !== 'service') link = '';
+  var start = parseDateToIso_(r.start);
+  var finish = parseDateToIso_(r.finish);
+  if (start && finish && finish < start) finish = start;
+  return {
+    id: Number(r.id) || 0,
+    pdfId: Number(r.pdfId) || 0,
+    name: stringify_(r.name),
+    group: group,
+    start: start,
+    finish: finish,
+    person: stringify_(r.person),
+    note: stringify_(r.note),
+    so: stringify_(r.so),
+    linkTable: link,
+    status: stringify_(r.status)
+  };
+}
+
+function hashPlanRows_(rows) {
+  var text = JSON.stringify((rows || []).map(normalizePlanRow_));
   var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, text, Utilities.Charset.UTF_8);
   return bytes.map(function (b) {
     var v = (b + 256) % 256;
