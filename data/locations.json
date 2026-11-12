@@ -1127,6 +1127,15 @@
       "src": "ลิงก์ Google Maps จากพี่กร"
     },
     {
+      "id": 218,
+      "so": "SO2611-061",
+      "loc": "Red Ginger Chic Resort, Ao Nang, Krabi",
+      "lat": 8.0393486,
+      "lng": 98.8171941,
+      "how": "exact",
+      "src": "OpenStreetMap node 3678616717 Red Ginger Resort"
+    },
+    {
       "id": 0,
       "so": "SO2604-065",
       "loc": "บ้านคุณโจ้ (เฉพาะสินค้า)",
