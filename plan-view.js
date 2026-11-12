@@ -18,14 +18,17 @@
   var planHold = false;
   var planQueued = false;
   var reconciling = false;
-  var zoom = 'month';
+  var dayWidth = 16;
+  var pendingAnchor = null;
   var pinToday = true;
+  var fsWanted = false;
   var ganttPos = { l: 0, t: 0 };
   var shown = [];
   var editingId = null;
   var statusText = 'พร้อมใช้งาน';
   var statusWarn = false;
   var painting = false;
+  var suppressFilter = false;
 
   function el(id) { return document.getElementById(id); }
   function esc(t) {
@@ -230,9 +233,13 @@
       names.push(n);
     });
     names.sort(function (a, b) { return a.localeCompare(b, 'th'); });
-    sel.innerHTML = '<option value="">ทุกคน</option><option value="__none__">ยังไม่ระบุ</option>' +
+    var html = '<option value="">ทุกคน</option><option value="__none__">ยังไม่ระบุ</option>' +
       names.map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + '</option>'; }).join('');
+    if (sel.innerHTML === html && sel.value === cur) return;
+    suppressFilter = true;
+    sel.innerHTML = html;
     if ([].some.call(sel.options, function (o) { return o.value === cur; })) sel.value = cur;
+    suppressFilter = false;
   }
 
   function renderKpis(list) {
@@ -268,8 +275,8 @@
     var today = model.todayIso();
     var span = model.spanOf(dated, today, 2);
     var days = model.eachDay(span.from, span.to);
-    var dw = zoom === 'week' ? 34 : 16;
-    var labelW = 220;
+    var dw = dayWidth;
+    var labelW = labelWidth();
     var width = days.length * dw;
     var months = [];
     days.forEach(function (iso, i) {
@@ -288,7 +295,7 @@
       var n = +iso.slice(8);
       var d = model.dow(iso);
       var cls = 'gday' + (d === 0 || d === 6 ? ' end' : '') + (iso === today ? ' today' : '');
-      var txt = zoom === 'week' || n === 1 || d === 1 ? String(n) : '';
+      var txt = dw >= 18 || n === 1 || d === 1 ? String(n) : '';
       return '<div class="' + cls + '" style="width:' + dw + 'px">' + txt + '</div>';
     }).join('');
     var todayIdx = days.indexOf(today);
@@ -319,20 +326,52 @@
         '</div></div>';
     });
     host.innerHTML =
-      '<div class="gantt-scroll" id="ganttScroll"><div class="gantt-sheet" style="width:' + (labelW + width) + 'px">' +
+      '<div class="gantt-scroll" id="ganttScroll"><div class="gantt-sheet" style="width:' + (labelW + width) + 'px;--g-label:' + labelW + 'px">' +
       '<div class="grow ghead"><div class="gname">งาน</div><div class="gtrack gmonths" style="width:' + width + 'px">' + head1 + '</div></div>' +
       '<div class="grow ghead ghead2"><div class="gname">วันนี้ ' + esc(model.formatDate(today)) + '</div><div class="gtrack gdays" style="width:' + width + 'px">' + head2 + '</div></div>' +
       '<div class="gbody">' + todayLine + body + '</div></div></div>';
     var sc = el('ganttScroll');
     if (!sc) return;
     if (pinToday) {
-      var x = (todayIdx >= 0 ? todayIdx * dw : 0) - Math.max(120, sc.clientWidth * 0.28);
+      var x = (todayIdx >= 0 ? todayIdx * dw : 0) - Math.max(120, (sc.clientWidth - labelW) * 0.35);
       sc.scrollLeft = Math.max(0, x);
       pinToday = false;
+      pendingAnchor = null;
+    } else if (pendingAnchor) {
+      sc.scrollLeft = exportApi().scrollLeftForCenter(pendingAnchor.index, sc.clientWidth, labelW, dw);
+      sc.scrollTop = pendingAnchor.top || 0;
+      pendingAnchor = null;
     } else {
       sc.scrollLeft = ganttPos.l;
       sc.scrollTop = ganttPos.t;
     }
+  }
+
+  function exportApi() {
+    return root.PEPlanExport;
+  }
+
+  function labelWidth() {
+    return window.innerWidth <= 640 ? 148 : 220;
+  }
+
+  function captureAnchor() {
+    var sc = el('ganttScroll');
+    if (!sc) return { index: 0, top: 0 };
+    return {
+      index: exportApi().centerIndex(sc.scrollLeft, sc.clientWidth, labelWidth(), dayWidth),
+      top: sc.scrollTop
+    };
+  }
+
+  function setDayWidth(next, anchor) {
+    var api = exportApi();
+    var width = api.clampDayWidth(next);
+    if (Math.abs(width - dayWidth) < 0.05) return;
+    pendingAnchor = anchor || captureAnchor();
+    dayWidth = width;
+    pinToday = false;
+    render();
   }
 
   function statusControl(entry, status) {
@@ -411,9 +450,14 @@
     }
   }
 
+  var renderTimes = [];
   function render() {
     if (painting) return;
     if (!el('viewPlan')) return;
+    var now = Date.now();
+    renderTimes = renderTimes.filter(function (t) { return now - t < 1000; });
+    if (renderTimes.length > 25) return;
+    renderTimes.push(now);
     painting = true;
     try { renderNow(); }
     finally { painting = false; }
@@ -431,10 +475,12 @@
     renderGantt(shown);
     renderTable(shown);
     renderHint();
+    var preset = exportApi().presetName(dayWidth);
     var week = el('planZoomWeek');
     var month = el('planZoomMonth');
-    if (week) week.classList.toggle('on', zoom === 'week');
-    if (month) month.classList.toggle('on', zoom === 'month');
+    if (week) week.classList.toggle('on', preset === 'week');
+    if (month) month.classList.toggle('on', preset === 'month');
+    syncFsButtons();
     if (bridge.view && bridge.view() === 'plan' && bridge.refreshSave) bridge.refreshSave();
   }
 
@@ -890,39 +936,234 @@
     await loadRemote();
   }
 
+  function filteredEntries() {
+    var all = model.sortEntries(model.buildEntries(planRows, jobs(), services()));
+    var opts = filters();
+    if (el('planFrom') && el('planFrom').value.trim() && !model.parseDate(el('planFrom').value)) opts.from = '';
+    if (el('planTo') && el('planTo').value.trim() && !model.parseDate(el('planTo').value)) opts.to = '';
+    return { opts: opts, list: model.sortEntries(model.filterEntries(all, opts)) };
+  }
+
+  function filterText(opts) {
+    var parts = [];
+    if (opts.group) parts.push(model.groupOf(opts.group).label);
+    if (opts.person === '__none__') parts.push('ยังไม่ระบุผู้รับผิดชอบ');
+    else if (opts.person) parts.push(opts.person);
+    var from = model.parseDate(opts.from);
+    var to = model.parseDate(opts.to);
+    if (from || to) parts.push((from ? model.formatDate(from) : '…') + ' – ' + (to ? model.formatDate(to) : '…'));
+    if (opts.q) parts.push('ค้นหา ' + opts.q);
+    return parts.join(' · ');
+  }
+
+  function exportSpec() {
+    var pack = filteredEntries();
+    var dated = pack.list.filter(function (e) { return e.barStart && e.barEnd; });
+    var span = dated.length ? model.spanOf(dated, '', 0) : { from: model.todayIso(), to: model.todayIso() };
+    var from = model.parseDate(pack.opts.from);
+    var to = model.parseDate(pack.opts.to);
+    if (from && from > span.from) span.from = from;
+    if (to && to < span.to) span.to = to;
+    if (span.to < span.from) span.to = span.from;
+    var days = model.eachDay(span.from, span.to);
+    var index = {};
+    days.forEach(function (iso, i) { index[iso] = i; });
+    var bars = [];
+    var last = '';
+    pack.list.forEach(function (e) {
+      var label = model.groupOf(e.group).label;
+      if (label !== last) {
+        last = label;
+        bars.push({ group: label });
+      }
+      var st = statusOf(e);
+      var a = e.barStart && index[e.barStart] != null ? index[e.barStart] : null;
+      var b = e.barEnd && index[e.barEnd] != null ? index[e.barEnd] : null;
+      if (a == null && e.barStart && e.barStart < span.from) a = 0;
+      if (b == null && e.barEnd && e.barEnd > span.to) b = days.length - 1;
+      bars.push({
+        name: e.name,
+        color: e.color,
+        done: isDone(e, st),
+        startIndex: a,
+        endIndex: b
+      });
+    });
+    var rows = pack.list.map(function (e) {
+      return {
+        groupLabel: model.groupOf(e.group).label,
+        idText: e.source === 'plan' ? (e.pdfId || e.planId) : e.pdfId,
+        name: e.name,
+        so: e.so,
+        days: e.days || '',
+        startText: model.formatDate(e.start),
+        finishText: model.formatDate(e.finish),
+        person: personOf(e) === 'ยังไม่ระบุ' ? '' : personOf(e),
+        status: statusOf(e)
+      };
+    });
+    return {
+      exportedOn: model.formatDate(model.todayIso()),
+      filterText: filterText(pack.opts),
+      today: model.todayIso(),
+      days: days,
+      bars: bars,
+      rows: rows
+    };
+  }
+
+  function loadScript(url) {
+    return new Promise(function (resolve, reject) {
+      var found = document.querySelector('script[data-src="' + url + '"]');
+      if (found) { resolve(); return; }
+      var s = document.createElement('script');
+      s.src = url;
+      s.async = true;
+      s.setAttribute('data-src', url);
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error('โหลดไลบรารีไม่สำเร็จ')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function downloadBlob(blob, name) {
+    var a = document.createElement('a');
+    var url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = name;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 0);
+  }
+
+  function bytesToB64(buf) {
+    var bytes = new Uint8Array(buf);
+    var bin = '';
+    var size = 0x8000;
+    for (var i = 0; i < bytes.length; i += size) {
+      bin += String.fromCharCode.apply(null, bytes.subarray(i, i + size));
+    }
+    return btoa(bin);
+  }
+
+  var fontCache = null;
+  function loadFonts() {
+    if (fontCache) return fontCache;
+    fontCache = Promise.all(['fonts/Sarabun-Regular.ttf', 'fonts/Sarabun-Bold.ttf'].map(function (path) {
+      return fetch(path).then(function (res) {
+        if (!res.ok) throw new Error('font');
+        return res.arrayBuffer();
+      }).then(bytesToB64);
+    })).then(function (pair) {
+      return { regular: pair[0], bold: pair[1] };
+    });
+    return fontCache;
+  }
+
   async function exportXlsx() {
-    var btn = el('xlsxBtn');
+    var btn = el('planXlsx') || el('xlsxBtn');
     var prev = btn ? btn.textContent : '';
     if (btn) { btn.disabled = true; btn.textContent = 'กำลังเตรียมไฟล์...'; }
     try {
-      if (bridge.loadSheetJS) await bridge.loadSheetJS();
-      if (!root.XLSX) throw new Error('xlsx');
-      var list = model.sortEntries(model.filterEntries(model.buildEntries(planRows, jobs(), services()), filters()));
-      var aoa = [['รหัส', 'ชื่องาน', 'กลุ่ม', 'ระยะเวลา (วัน)', 'วันเริ่ม', 'วันจบ', 'ผู้รับผิดชอบ', 'สถานะ', 'เลข SO', 'หมายเหตุ']];
-      list.forEach(function (e) {
-        aoa.push([
-          e.source === 'plan' ? (e.pdfId || e.planId) : e.pdfId,
-          e.name,
-          model.groupOf(e.group).label,
-          e.days || '',
-          model.formatDate(e.start),
-          model.formatDate(e.finish),
-          personOf(e),
-          statusOf(e),
-          e.so || '',
-          e.note || ''
-        ]);
-      });
-      var ws = root.XLSX.utils.aoa_to_sheet(aoa);
-      ws['!cols'] = [10, 42, 16, 14, 16, 16, 24, 18, 22, 36].map(function (w) { return { wch: w }; });
-      var wb = root.XLSX.utils.book_new();
-      root.XLSX.utils.book_append_sheet(wb, ws, 'แผนงาน');
-      root.XLSX.writeFile(wb, 'PE_Plan_' + model.todayIso() + '.xlsx');
+      await loadScript('https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js');
+      if (!root.ExcelJS) throw new Error('exceljs');
+      var wb = exportApi().buildXlsx(root.ExcelJS, exportSpec());
+      var buf = await wb.xlsx.writeBuffer();
+      downloadBlob(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), 'PE_Plan_' + model.todayIso() + '.xlsx');
     } catch (err) {
       window.alert('ส่งออก Excel ไม่ได้ในตอนนี้');
     } finally {
-      if (btn) { btn.disabled = false; btn.textContent = prev; }
+      if (btn) { btn.disabled = false; btn.textContent = prev || 'ส่งออก Excel'; }
     }
+  }
+
+  async function exportPdf() {
+    var btn = el('planPdf');
+    var prev = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'กำลังเตรียม PDF...'; }
+    try {
+      await loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js');
+      var JsPDF = root.jspdf && root.jspdf.jsPDF;
+      if (!JsPDF) throw new Error('jspdf');
+      var fonts = await loadFonts();
+      var doc = exportApi().buildPdf(JsPDF, fonts, exportSpec());
+      doc.save('PE_Plan_' + model.todayIso() + '.pdf');
+    } catch (err) {
+      window.alert('ส่งออก PDF ไม่ได้ในตอนนี้');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = prev || 'ส่งออก PDF'; }
+    }
+  }
+
+  function iosLike() {
+    var ua = navigator.userAgent || '';
+    if (/iP(hone|ad|od)/.test(ua)) return true;
+    return navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+  }
+
+  function nativeFs(node) {
+    if (!node || iosLike()) return null;
+    return node.requestFullscreen || node.webkitRequestFullscreen || node.mozRequestFullScreen || null;
+  }
+
+  function isFullscreen() {
+    var node = el('planStage');
+    if (!node) return false;
+    var cur = document.fullscreenElement || document.webkitFullscreenElement;
+    if (cur === node) return true;
+    return node.classList.contains('plan-fs');
+  }
+
+  function syncFsButtons() {
+    var on = isFullscreen();
+    var open = el('planFull');
+    var close = el('planFullExit');
+    if (open) open.hidden = on;
+    if (close) close.hidden = !on;
+    document.body.classList.toggle('plan-fs-lock', !!(el('planStage') && el('planStage').classList.contains('plan-fs')));
+  }
+
+  function exitFullscreen() {
+    var node = el('planStage');
+    fsWanted = false;
+    if (node) node.classList.remove('plan-fs');
+    var cur = document.fullscreenElement || document.webkitFullscreenElement;
+    if (cur && (document.exitFullscreen || document.webkitExitFullscreen)) {
+      var exit = document.exitFullscreen || document.webkitExitFullscreen;
+      try { exit.call(document); } catch (e) {}
+    }
+    syncFsButtons();
+  }
+
+  function enterFullscreen() {
+    var node = el('planStage');
+    if (!node) return;
+    fsWanted = true;
+    var req = nativeFs(node);
+    if (!req) {
+      node.classList.add('plan-fs');
+      syncFsButtons();
+      return;
+    }
+    var result;
+    try { result = req.call(node); } catch (e) { result = Promise.reject(e); }
+    Promise.resolve(result).then(function () {
+      var cur = document.fullscreenElement || document.webkitFullscreenElement;
+      if (cur !== node) node.classList.add('plan-fs');
+      syncFsButtons();
+    }).catch(function () {
+      node.classList.add('plan-fs');
+      syncFsButtons();
+    });
+  }
+
+  function toggleFullscreen() {
+    if (isFullscreen()) exitFullscreen();
+    else enterFullscreen();
   }
 
   function bindOnce() {
@@ -931,9 +1172,9 @@
     ['planGroup', 'planPerson', 'planFrom', 'planTo'].forEach(function (id) {
       var node = el(id);
       if (!node) return;
-      node.addEventListener('change', render);
+      node.addEventListener('change', function () { if (!suppressFilter) render(); });
       node.addEventListener('input', function () {
-        if (id === 'planFrom' || id === 'planTo') return;
+        if (suppressFilter || id === 'planFrom' || id === 'planTo') return;
         render();
       });
     });
@@ -966,10 +1207,56 @@
     });
     var week = el('planZoomWeek');
     var month = el('planZoomMonth');
-    if (week) week.addEventListener('click', function () { zoom = 'week'; pinToday = true; render(); });
-    if (month) month.addEventListener('click', function () { zoom = 'month'; pinToday = true; render(); });
+    var api = exportApi();
+    if (week) week.addEventListener('click', function () { setDayWidth(api.WEEK_DW); });
+    if (month) month.addEventListener('click', function () { setDayWidth(api.MONTH_DW); });
+    var zoomIn = el('planZoomIn');
+    var zoomOut = el('planZoomOut');
+    if (zoomIn) zoomIn.addEventListener('click', function () { setDayWidth(dayWidth * 1.25); });
+    if (zoomOut) zoomOut.addEventListener('click', function () { setDayWidth(dayWidth / 1.25); });
     var today = el('planToday');
-    if (today) today.addEventListener('click', function () { pinToday = true; render(); });
+    if (today) today.addEventListener('click', function () { pinToday = true; pendingAnchor = null; render(); });
+    var xlsx = el('planXlsx');
+    if (xlsx) xlsx.addEventListener('click', function () { exportXlsx(); });
+    var pdf = el('planPdf');
+    if (pdf) pdf.addEventListener('click', function () { exportPdf(); });
+    var full = el('planFull');
+    var fullExit = el('planFullExit');
+    if (full) full.addEventListener('click', enterFullscreen);
+    if (fullExit) fullExit.addEventListener('click', exitFullscreen);
+    document.addEventListener('fullscreenchange', syncFsButtons);
+    document.addEventListener('webkitfullscreenchange', syncFsButtons);
+    var stage = el('planStage');
+    if (stage) {
+      stage.addEventListener('wheel', function (e) {
+        if (!e.ctrlKey && !e.metaKey) return;
+        if (!el('gantt') || !el('gantt').contains(e.target)) return;
+        e.preventDefault();
+        var factor = Math.exp(-e.deltaY * 0.0016);
+        setDayWidth(dayWidth * factor);
+      }, { passive: false });
+      var pinch = null;
+      stage.addEventListener('touchstart', function (e) {
+        if (e.touches.length === 2) {
+          var a = e.touches[0], b = e.touches[1];
+          pinch = { d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), w: dayWidth, anchor: captureAnchor() };
+        }
+      }, { passive: true });
+      stage.addEventListener('touchmove', function (e) {
+        if (!pinch || e.touches.length < 2) return;
+        e.preventDefault();
+        var a = e.touches[0], b = e.touches[1];
+        var d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        if (!d || !pinch.d) return;
+        pendingAnchor = pinch.anchor;
+        var width = exportApi().clampDayWidth(pinch.w * (d / pinch.d));
+        if (Math.abs(width - dayWidth) < 0.4) return;
+        dayWidth = width;
+        pinToday = false;
+        render();
+      }, { passive: false });
+      stage.addEventListener('touchend', function () { pinch = null; });
+    }
     var add = el('planFormSave');
     if (add) add.addEventListener('click', saveEditor);
     var cancel = el('planFormCancel');
@@ -1008,6 +1295,10 @@
     reload: reload,
     dirty: function () { return dirty() || planNeedsUpload; },
     exportXlsx: exportXlsx,
+    exportPdf: exportPdf,
+    isFullscreen: isFullscreen,
+    exitFullscreen: exitFullscreen,
+    enterFullscreen: enterFullscreen,
     holdOff: function () { planHold = false; }
   };
 })(typeof globalThis !== 'undefined' ? globalThis : this);
