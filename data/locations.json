@@ -1136,6 +1136,15 @@
       "src": "OpenStreetMap node 3678616717 Red Ginger Resort"
     },
     {
+      "id": 219,
+      "so": "SO2611-064",
+      "loc": "Phulay Bay, a Ritz-Carlton Reserve",
+      "lat": 8.0851,
+      "lng": 98.7453,
+      "how": "exact",
+      "src": "Google Maps / hotel address 111 Moo 3 Nongthalay, Krabi"
+    },
+    {
       "id": 0,
       "so": "SO2604-065",
       "loc": "บ้านคุณโจ้ (เฉพาะสินค้า)",
