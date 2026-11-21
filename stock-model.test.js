@@ -46,3 +46,30 @@ assert.strictEqual(M.thaiDate('2026-11-21'), '21/11/2569');
 assert.strictEqual(M.status(1, 10), 'low');
 assert.strictEqual(M.status(-1, 10), 'over');
 console.log('stock-model ok');
+
+// ---- แอดมิน: แก้/เพิ่ม/ลบรายการ และหมวด ----
+let st = M.applyAll({ moves: data.seedMoves, items: [], cats: [] }, [
+  { kind: 'cat', op: 'upsert', row: { id: 'c-pipe', name: 'ท่อเหล็ก' } },
+  { kind: 'cat', op: 'upsert', row: { id: 'ins', name: 'ฉนวนยาง' } },
+  { kind: 'item', op: 'upsert', row: { id: 'u-1', cat: 'c-pipe', name: 'ท่อเหล็กดำ 1"', unit: 'เส้น', qtyIn: 10, img: 'sheet:i1' } },
+  { kind: 'item', op: 'upsert', row: Object.assign({}, data.items.find(i => i.id === 'hw-006'), { name: 'Thermowell แก้ชื่อ', qtyIn: 3 }) },
+  { kind: 'item', op: 'upsert', row: Object.assign({}, data.items.find(i => i.id === 'hw-007'), { deleted: 1 }) },
+  { op: 'upsert', row: { id: 'w9', itemId: 'u-1', type: 'out', date: '2026-11-21', qty: 4 } },
+  { kind: 'img', op: 'upsert', row: { id: 'i1', data: 'data:image/jpeg;base64,AAAA' } }
+]);
+let mm = M.mergeMaster(data, st.items, st.cats);
+assert.strictEqual(mm.categories.length, 6);
+assert.strictEqual(mm.categories.find(c => c.id === 'ins').name, 'ฉนวนยาง');
+assert.strictEqual(mm.items.length, 344);                 // +1 ใหม่ −1 ลบ
+assert.ok(!mm.items.find(i => i.id === 'hw-007'));
+let bb = Object.fromEntries(M.balances(mm.items, st.moves).map(r => [r.item.id, r]));
+assert.strictEqual(bb['u-1'].remain, 6);
+assert.strictEqual(bb['hw-006'].item.name, 'Thermowell แก้ชื่อ');
+assert.strictEqual(bb['hw-006'].remain, 3);
+assert.strictEqual(bb['u-1'].item.img, 'sheet:i1');
+// ลบหมวด: รายการที่ค้างย้ายไปหมวดแรก
+st = M.applyAll(st, [{ kind: 'cat', op: 'upsert', row: { id: 'c-pipe', name: 'ท่อเหล็ก', deleted: 1 } }]);
+mm = M.mergeMaster(data, st.items, st.cats);
+assert.strictEqual(mm.categories.length, 5);
+assert.strictEqual(mm.items.find(i => i.id === 'u-1').cat, 'hw');
+console.log('stock-model admin ok');
