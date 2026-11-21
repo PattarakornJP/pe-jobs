@@ -194,6 +194,74 @@ body[data-view="service"] .view-project,body[data-view="service"] .view-plan,bod
 body[data-view="plan"] .view-project,body[data-view="plan"] .view-service,body[data-view="plan"] .only-project{display:none!important}
 body[data-view="project"] .only-service{display:none!important}
 body[data-view="plan"] .wrap{max-width:1280px}
+html[data-boot="stock"] .view-project,html[data-boot="stock"] .view-service,html[data-boot="stock"] .view-plan,html[data-boot="stock"] .only-project{display:none!important}
+html:not([data-boot="stock"]) body:not([data-view="stock"]) .view-stock{display:none}
+body[data-view="stock"] .view-project,body[data-view="stock"] .view-service,body[data-view="stock"] .view-plan,body[data-view="stock"] .only-project,
+body[data-view="stock"] header.top .topbtns>button:not(#themeBtn),body[data-view="stock"] #saveState{display:none!important}
+body[data-view="stock"] .wrap{max-width:1280px}
+.stk-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+.stk-cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:0 0 18px}
+.stk-cat{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:12px 14px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--border);color:var(--ink)}
+.stk-cat .nm{font-weight:650;font-size:13.5px;line-height:1.3}
+.stk-cat .big{font-size:24px;font-weight:650;line-height:1.2}
+.stk-cat .big small{font-size:12px;color:var(--muted);font-weight:500}
+.stk-cat .sm{color:var(--muted);font-size:11.5px}
+.stk-cat .tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px}
+.stk-cat.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.kpi.crit{border-color:var(--crit)}
+.tg{font-style:normal;display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:999px;white-space:nowrap;
+  background:var(--chip);color:var(--ink2);border:1px solid var(--border)}
+.tg.low{background:rgba(250,178,25,.18);border-color:var(--warn);color:var(--ink)}
+.tg.zero,.tg.over{background:rgba(208,59,59,.12);border-color:var(--crit);color:var(--crit)}
+.tg.ok{color:var(--good);border-color:var(--good);background:transparent}
+.tg.mv-out{color:var(--accent);border-color:var(--accent);background:transparent}
+.tg.mv-ret,.tg.mv-in,.tg.mv-item{color:var(--good);border-color:var(--good);background:transparent}
+.toolbar.stk{display:flex;flex-wrap:wrap}
+.toolbar.stk>*{flex:1 1 150px;min-width:0}
+.toolbar.stk input.full{flex:1 1 100%}
+.stk-table td.num,.stk-table th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.stk-table td.nm{min-width:240px}
+.stk-table td.nm small{display:block;color:var(--muted);font-size:11.5px}
+.stk-table td.nm .textbtn{color:var(--ink);font-size:13px;font-weight:600}
+.stk-table td.dt{white-space:nowrap;font-variant-numeric:tabular-nums}
+.stk-table td.img{width:52px;padding:5px 8px}
+.stk-table td.img img{width:42px;height:42px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:pointer;background:#fff}
+.stk-table td.rem b{font-size:14px}
+.stk-table td.rem.low b{color:#9a6b00}
+.stk-table td.rem.zero b,.stk-table td.rem.over b{color:var(--crit)}
+.rbar{display:block;height:4px;border-radius:9px;background:var(--grid);margin-top:4px;min-width:70px}
+.rbar span{display:block;height:100%;border-radius:9px;background:var(--good)}
+td.rem.low .rbar span{background:var(--warn)}
+td.rem.zero .rbar span,td.rem.over .rbar span{background:var(--crit)}
+tr.st-zero,tr.st-over{background:rgba(208,59,59,.05)}
+tr.st-low{background:rgba(250,178,25,.07)}
+.muted{color:var(--muted)}
+.stk-more{text-align:center;margin-top:10px}
+.stk-more button[hidden]{display:none}
+#stkNotes summary{cursor:pointer}
+#stkNotes ul{margin:10px 0 0;padding-left:20px;color:var(--ink2);font-size:13px}
+#stkBanner button{margin-left:8px;padding:4px 10px;font-size:12.5px}
+.stk-modal-in,#stkMask input[type=date],#stkMask input[type=number]{background:var(--page);color:var(--ink);border:1px solid var(--border);border-radius:10px;
+  padding:10px 12px;font:inherit;font-size:13.5px;width:100%}
+.stk-fixed{padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:var(--page)}
+.stk-fixed small{display:block;color:var(--muted);font-size:12px}
+#stkPick{height:auto;min-height:120px}
+.stk-ihead{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.stk-ihead img{width:120px;height:120px;object-fit:contain;border-radius:12px;border:1px solid var(--border);background:#fff;flex:none}
+.stk-ihead h3{margin:0 0 4px}
+.stk-nums{display:flex;gap:16px;flex-wrap:wrap}
+.stk-nums span{display:flex;flex-direction:column;font-size:12px;color:var(--ink2)}
+.stk-nums b{font-size:22px;color:var(--ink)}
+.stk-nums .rem.low b{color:#9a6b00}
+.stk-nums .rem.zero b,.stk-nums .rem.over b{color:var(--crit)}
+.stk-item h4{margin:6px 0 8px;font-size:14px}
+.stk-item .rrow .nm small{display:block;font-weight:400}
+@media(max-width:640px){
+  .viewtabs a{padding:8px 6px;font-size:13px}
+  .stk-table td.img,.stk-table th:nth-child(2){display:none}
+  .stk-ihead{flex-direction:column}
+}
 body.svc-readonly[data-view="service"] #addBtn,
 body.svc-readonly[data-view="service"] #saveBtn{display:none!important}
 .toolbar.svc{display:flex;flex-wrap:wrap}
@@ -269,7 +337,7 @@ body.plan-fs-lock{overflow:hidden}
 #planFullExit[hidden],#planFull[hidden]{display:none}
 
 </style>
-<script>(function(){var h=location.hash;if(h==="#service")document.documentElement.setAttribute("data-boot","service");else if(h==="#plan")document.documentElement.setAttribute("data-boot","plan");})();</script>
+<script>(function(){var h=location.hash;if(h==="#service")document.documentElement.setAttribute("data-boot","service");else if(h==="#plan")document.documentElement.setAttribute("data-boot","plan");else if(h==="#stock")document.documentElement.setAttribute("data-boot","stock");})();</script>
 </head>
 <body>
 <div class="wrap">
@@ -296,6 +364,7 @@ body.plan-fs-lock{overflow:hidden}
     <a role="tab" id="tabProject" href="#project">งาน Project</a>
     <a role="tab" id="tabService" href="#service">งาน Service &amp; PM</a>
     <a role="tab" id="tabPlan" href="#plan">แผนงาน</a>
+    <a role="tab" id="tabStock" href="#stock">วัสดุนอกสต๊อก</a>
   </div>
 
   <nav class="nav">
@@ -476,6 +545,8 @@ body.plan-fs-lock{overflow:hidden}
   </section>
   <p class="foot">ที่มา: Project Plan 2026 · วันในไฟล์ต้นฉบับเป็น พ.ศ. แบบสั้น เช่น พ 12/11/69</p>
   </div>
+
+  <div id="viewStock" class="view-stock"></div>
 </div>
 
 <div class="mask" id="mask">
@@ -616,6 +687,8 @@ body.plan-fs-lock{overflow:hidden}
 <script src="plan-export.js"></script>
 <script src="plan-seed.js"></script>
 <script src="plan-view.js"></script>
+<script src="stock-model.js"></script>
+<script src="stock-view.js"></script>
 <script>
 const DATA_VERSION="2026-10-19";
 // ลิงก์เว็บแอปที่ลงท้าย /exec — ว่างไว้ = ใช้ข้อมูลในไฟล์นี้ตามเดิม
@@ -2954,19 +3027,22 @@ async function exportServiceXlsx(){
 }
 function applyView(){
   const hash = location.hash;
-  const mode = hash === '#service' ? 'service' : (hash === '#plan' ? 'plan' : 'project');
+  const mode = hash === '#service' ? 'service' : (hash === '#plan' ? 'plan' : (hash === '#stock' ? 'stock' : 'project'));
   document.body.setAttribute('data-view', mode);
   document.documentElement.removeAttribute('data-boot');
   const tp = $('#tabProject'), ts = $('#tabService'), tn = $('#tabPlan');
   if (tp) tp.classList.toggle('on', mode === 'project');
   if (ts) ts.classList.toggle('on', mode === 'service');
   if (tn) tn.classList.toggle('on', mode === 'plan');
+  const tk = $('#tabStock');
+  if (tk) tk.classList.toggle('on', mode === 'stock');
   const h1 = document.querySelector('header.top h1');
   const lead = $('#subLead');
   const titles = {
     project: ['Project Engineer — ตารางงาน', 'ผู้รับผิดชอบ · เลข SO · สถานะงาน'],
     service: ['Service & PM — ตารางงาน', 'ประเภทงาน · ขั้นปัจจุบัน · ทีมช่าง'],
-    plan: ['แผนงาน — กำหนดการ', 'วันเริ่ม · วันจบ · ผู้รับผิดชอบ']
+    plan: ['แผนงาน — กำหนดการ', 'วันเริ่ม · วันจบ · ผู้รับผิดชอบ'],
+    stock: ['วัสดุงานติดตั้งนอกสต๊อก', 'แยกหมวดตามชีต · ตัดยอดตามวันที่เบิก · คงเหลือ']
   };
   const pair = titles[mode];
   if (h1) h1.textContent = pair[0];
@@ -2982,6 +3058,10 @@ function applyView(){
   if (mode === 'service') {
     if (!svcBooted) loadService();
     else { renderSvcAll(); updateSaveBtn(); }
+    return;
+  }
+  if (mode === 'stock') {
+    if (window.PEStock) PEStock.onShow();
     return;
   }
   if (!svcBooted) loadService();
@@ -3077,6 +3157,18 @@ if (window.PEPlan) {
     refreshSave: function () { if (view() === 'plan') PEPlan.updateSaveBtn(); }
   });
   PEPlan.init();
+}
+if (window.PEStock) {
+  PEStock.bind({
+    shared: function () { return !!SHARED; },
+    getKey: function () { return getKey(); },
+    setKey: function (k) { setKey(k); },
+    ensureKey: function (interactive) { return ensureKey(interactive); },
+    clearKey: function () { clearKey(); },
+    apiGet: function (table) { return apiGet(table); },
+    apiPost: function (body) { return apiPost(body); },
+    loadSheetJS: function () { return loadSheetJS(0); }
+  });
 }
 applyView();
 window.addEventListener('hashchange', applyView);
