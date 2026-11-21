@@ -41,9 +41,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-thermowell.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-007",
@@ -56,9 +57,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-thermowell.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-008",
@@ -71,9 +73,10 @@
    "qtyIn": 8,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-capnut.jpg",
    "fileUsed": 0,
-   "fileRemain": 8
+   "fileRemain": 8,
+   "imgSrc": "web"
   },
   {
    "id": "hw-009",
@@ -86,9 +89,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-010",
@@ -116,9 +120,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-heater.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-012",
@@ -133,7 +138,8 @@
    "note": "",
    "img": "img/nonstock/image1.jpg",
    "fileUsed": 1,
-   "fileRemain": 0
+   "fileRemain": 0,
+   "imgSrc": "file"
   },
   {
    "id": "hw-013",
@@ -146,9 +152,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pressure-switch.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-014",
@@ -161,9 +168,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pressure-switch.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-015",
@@ -191,9 +199,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pressure-switch.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-017",
@@ -206,9 +215,10 @@
    "qtyIn": 4,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-brass-nipple.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-018",
@@ -221,9 +231,10 @@
    "qtyIn": 7,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-nipple.jpg",
    "fileUsed": 0,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "web"
   },
   {
    "id": "hw-019",
@@ -236,9 +247,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-nipple.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-020",
@@ -281,9 +293,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-thermometer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-023",
@@ -296,9 +309,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-check-valve.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-024",
@@ -311,9 +325,10 @@
    "qtyIn": 3,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-upvc-clip.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-025",
@@ -326,9 +341,10 @@
    "qtyIn": 5,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow45.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "hw-026",
@@ -341,9 +357,10 @@
    "qtyIn": 17,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow45.jpg",
    "fileUsed": 0,
-   "fileRemain": 17
+   "fileRemain": 17,
+   "imgSrc": "web"
   },
   {
    "id": "hw-027",
@@ -356,9 +373,10 @@
    "qtyIn": 2,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image2.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-028",
@@ -371,9 +389,10 @@
    "qtyIn": 2,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image2.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-029",
@@ -386,9 +405,10 @@
    "qtyIn": 5,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image2.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-030",
@@ -403,7 +423,8 @@
    "note": "",
    "img": "img/nonstock/image2.jpg",
    "fileUsed": 0,
-   "fileRemain": 17
+   "fileRemain": 17,
+   "imgSrc": "file"
   },
   {
    "id": "hw-031",
@@ -416,9 +437,10 @@
    "qtyIn": 6,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-032",
@@ -431,9 +453,10 @@
    "qtyIn": 3,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-033",
@@ -446,9 +469,10 @@
    "qtyIn": 3,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-034",
@@ -461,9 +485,10 @@
    "qtyIn": 6,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-035",
@@ -476,9 +501,10 @@
    "qtyIn": 8,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 8
+   "fileRemain": 8,
+   "imgSrc": "web"
   },
   {
    "id": "hw-036",
@@ -491,9 +517,10 @@
    "qtyIn": 5,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "hw-037",
@@ -506,9 +533,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-038",
@@ -521,9 +549,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-039",
@@ -536,9 +565,10 @@
    "qtyIn": 2,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-elbow90-fi.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-040",
@@ -551,9 +581,10 @@
    "qtyIn": 2,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-elbow.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-041",
@@ -566,9 +597,10 @@
    "qtyIn": 7,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "web"
   },
   {
    "id": "hw-042",
@@ -581,9 +613,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image3.jpg",
    "fileUsed": 2,
-   "fileRemain": 0
+   "fileRemain": 0,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-043",
@@ -596,9 +629,10 @@
    "qtyIn": 16,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image3.jpg",
    "fileUsed": 2,
-   "fileRemain": 14
+   "fileRemain": 14,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-044",
@@ -611,9 +645,10 @@
    "qtyIn": 5,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image3.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-045",
@@ -628,7 +663,8 @@
    "note": "",
    "img": "img/nonstock/image3.jpg",
    "fileUsed": 6,
-   "fileRemain": 8
+   "fileRemain": 8,
+   "imgSrc": "file"
   },
   {
    "id": "hw-046",
@@ -641,9 +677,10 @@
    "qtyIn": 3,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image3.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-047",
@@ -656,9 +693,10 @@
    "qtyIn": 10,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image3.jpg",
    "fileUsed": 0,
-   "fileRemain": 10
+   "fileRemain": 10,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-048",
@@ -671,9 +709,10 @@
    "qtyIn": 2,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-049",
@@ -686,9 +725,10 @@
    "qtyIn": 4,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-050",
@@ -701,9 +741,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-051",
@@ -716,9 +757,10 @@
    "qtyIn": 1,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-brassm.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-052",
@@ -731,9 +773,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-053",
@@ -746,9 +789,10 @@
    "qtyIn": 9,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 9
+   "fileRemain": 9,
+   "imgSrc": "web"
   },
   {
    "id": "hw-054",
@@ -761,9 +805,10 @@
    "qtyIn": 2,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-055",
@@ -776,9 +821,10 @@
    "qtyIn": 21,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 21
+   "fileRemain": 21,
+   "imgSrc": "web"
   },
   {
    "id": "hw-056",
@@ -791,9 +837,10 @@
    "qtyIn": 13,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 13
+   "fileRemain": 13,
+   "imgSrc": "web"
   },
   {
    "id": "hw-057",
@@ -806,9 +853,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-058",
@@ -821,9 +869,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-f.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-059",
@@ -836,9 +885,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-f.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-060",
@@ -851,9 +901,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-brassf.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-061",
@@ -866,9 +917,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-062",
@@ -881,9 +933,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-063",
@@ -896,9 +949,10 @@
    "qtyIn": 2,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-064",
@@ -911,9 +965,10 @@
    "qtyIn": 11,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 11
+   "fileRemain": 11,
+   "imgSrc": "web"
   },
   {
    "id": "hw-065",
@@ -926,9 +981,10 @@
    "qtyIn": 2,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-brassm.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-066",
@@ -941,9 +997,10 @@
    "qtyIn": 3,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-brassf.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-067",
@@ -956,9 +1013,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-hose-barb2.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-068",
@@ -971,9 +1029,10 @@
    "qtyIn": 5,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-saddle.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "hw-069",
@@ -986,9 +1045,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-070",
@@ -1001,9 +1061,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-071",
@@ -1016,9 +1077,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-072",
@@ -1031,9 +1093,10 @@
    "qtyIn": 6,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-073",
@@ -1046,9 +1109,10 @@
    "qtyIn": 5,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "hw-074",
@@ -1061,9 +1125,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-075",
@@ -1076,9 +1141,10 @@
    "qtyIn": 4,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-076",
@@ -1091,9 +1157,10 @@
    "qtyIn": 5,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "hw-077",
@@ -1106,9 +1173,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-078",
@@ -1121,9 +1189,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-079",
@@ -1136,9 +1205,10 @@
    "qtyIn": 2,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-080",
@@ -1151,9 +1221,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-081",
@@ -1166,9 +1237,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-082",
@@ -1181,9 +1253,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-083",
@@ -1196,9 +1269,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-084",
@@ -1211,9 +1285,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-085",
@@ -1226,9 +1301,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-086",
@@ -1241,9 +1317,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-087",
@@ -1256,9 +1333,10 @@
    "qtyIn": 1,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-088",
@@ -1271,9 +1349,10 @@
    "qtyIn": 4,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-089",
@@ -1286,9 +1365,10 @@
    "qtyIn": 11,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 11
+   "fileRemain": 11,
+   "imgSrc": "web"
   },
   {
    "id": "hw-090",
@@ -1301,9 +1381,10 @@
    "qtyIn": 3,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-091",
@@ -1316,9 +1397,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-092",
@@ -1331,9 +1413,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-093",
@@ -1346,9 +1429,10 @@
    "qtyIn": 3,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-094",
@@ -1361,9 +1445,10 @@
    "qtyIn": 10,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-reducer.jpg",
    "fileUsed": 0,
-   "fileRemain": 10
+   "fileRemain": 10,
+   "imgSrc": "web"
   },
   {
    "id": "hw-095",
@@ -1376,9 +1461,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-clip.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-096",
@@ -1391,9 +1477,10 @@
    "qtyIn": 4,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-capacitor.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-097",
@@ -1406,9 +1493,10 @@
    "qtyIn": 3,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-cable-gland.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-098",
@@ -1421,9 +1509,10 @@
    "qtyIn": 4,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-clamp.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-099",
@@ -1436,9 +1525,10 @@
    "qtyIn": 3,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow45.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-100",
@@ -1451,9 +1541,10 @@
    "qtyIn": 1,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow45.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-101",
@@ -1466,9 +1557,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow45.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-102",
@@ -1481,9 +1573,10 @@
    "qtyIn": 10,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow45.jpg",
    "fileUsed": 0,
-   "fileRemain": 10
+   "fileRemain": 10,
+   "imgSrc": "web"
   },
   {
    "id": "hw-103",
@@ -1496,9 +1589,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow45.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-104",
@@ -1511,9 +1605,10 @@
    "qtyIn": 7,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow45.jpg",
    "fileUsed": 0,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "web"
   },
   {
    "id": "hw-105",
@@ -1526,9 +1621,10 @@
    "qtyIn": 4,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow45.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-106",
@@ -1541,9 +1637,10 @@
    "qtyIn": 7,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow90.jpg",
    "fileUsed": 6,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-107",
@@ -1556,9 +1653,10 @@
    "qtyIn": 10,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 10
+   "fileRemain": 10,
+   "imgSrc": "web"
   },
   {
    "id": "hw-108",
@@ -1571,9 +1669,10 @@
    "qtyIn": 4,
    "recv": "2026-11-11",
    "note": "0.12 กิโลกรัม",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-109",
@@ -1586,9 +1685,10 @@
    "qtyIn": 16,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 16
+   "fileRemain": 16,
+   "imgSrc": "web"
   },
   {
    "id": "hw-110",
@@ -1601,9 +1701,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-111",
@@ -1616,9 +1717,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-112",
@@ -1631,9 +1733,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-elbow90-fi.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-113",
@@ -1646,9 +1749,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-drain-90.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-114",
@@ -1661,9 +1765,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-brassf.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-115",
@@ -1676,9 +1781,10 @@
    "qtyIn": 5,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pe-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "hw-116",
@@ -1691,9 +1797,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image4.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-117",
@@ -1706,9 +1813,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-118",
@@ -1723,7 +1831,8 @@
    "note": "",
    "img": "img/nonstock/image4.jpg",
    "fileUsed": 1,
-   "fileRemain": 0
+   "fileRemain": 0,
+   "imgSrc": "file"
   },
   {
    "id": "hw-119",
@@ -1736,9 +1845,10 @@
    "qtyIn": 5,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "hw-120",
@@ -1751,9 +1861,10 @@
    "qtyIn": 3,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-121",
@@ -1766,9 +1877,10 @@
    "qtyIn": 14,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image4.jpg",
    "fileUsed": 0,
-   "fileRemain": 14
+   "fileRemain": 14,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-122",
@@ -1781,9 +1893,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image4.jpg",
    "fileUsed": 1,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-123",
@@ -1796,9 +1909,10 @@
    "qtyIn": 10,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image3.jpg",
    "fileUsed": 0,
-   "fileRemain": 10
+   "fileRemain": 10,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-124",
@@ -1811,9 +1925,10 @@
    "qtyIn": 21,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 21
+   "fileRemain": 21,
+   "imgSrc": "web"
   },
   {
    "id": "hw-125",
@@ -1826,9 +1941,10 @@
    "qtyIn": 7,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image4.jpg",
    "fileUsed": 0,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-126",
@@ -1841,9 +1957,10 @@
    "qtyIn": 4,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-127",
@@ -1856,9 +1973,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image4.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-128",
@@ -1871,9 +1989,10 @@
    "qtyIn": 1,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image3.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-129",
@@ -1886,9 +2005,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-130",
@@ -1901,9 +2021,10 @@
    "qtyIn": 1,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image3.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-131",
@@ -1916,9 +2037,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-132",
@@ -1931,9 +2053,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-coupling-m.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-133",
@@ -1946,9 +2069,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling-brassf.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-134",
@@ -1961,9 +2085,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-135",
@@ -1976,9 +2101,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-coupling.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-136",
@@ -1991,9 +2117,10 @@
    "qtyIn": 10,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-flangead.jpg",
    "fileUsed": 0,
-   "fileRemain": 10
+   "fileRemain": 10,
+   "imgSrc": "web"
   },
   {
    "id": "hw-137",
@@ -2006,9 +2133,10 @@
    "qtyIn": 3,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-flangead.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-138",
@@ -2021,9 +2149,10 @@
    "qtyIn": 3,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-flangead.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-139",
@@ -2036,9 +2165,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-nipple-long.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-140",
@@ -2051,9 +2181,10 @@
    "qtyIn": 2,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-nipple-long.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-141",
@@ -2066,9 +2197,10 @@
    "qtyIn": 2,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-steel-nipple.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-142",
@@ -2081,9 +2213,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-upvc-nipple.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-143",
@@ -2096,9 +2229,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-plug.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-144",
@@ -2111,9 +2245,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-plug.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-145",
@@ -2126,9 +2261,10 @@
    "qtyIn": 4,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-plug.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-146",
@@ -2141,9 +2277,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-cap.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-147",
@@ -2156,9 +2293,10 @@
    "qtyIn": 11,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-cap.jpg",
    "fileUsed": 0,
-   "fileRemain": 11
+   "fileRemain": 11,
+   "imgSrc": "web"
   },
   {
    "id": "hw-148",
@@ -2171,9 +2309,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-cap.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-149",
@@ -2186,9 +2325,10 @@
    "qtyIn": 2,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-cap.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-150",
@@ -2201,9 +2341,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-union.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-151",
@@ -2216,9 +2357,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-union.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-152",
@@ -2231,9 +2373,10 @@
    "qtyIn": 3,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-union.jpg",
    "fileUsed": 2,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-153",
@@ -2246,9 +2389,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-union.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-154",
@@ -2261,9 +2405,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-union.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-155",
@@ -2276,9 +2421,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-union.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-156",
@@ -2291,9 +2437,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-ballvalve.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-157",
@@ -2306,9 +2453,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-ballvalve.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-158",
@@ -2321,9 +2469,10 @@
    "qtyIn": 2,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image5.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-159",
@@ -2336,9 +2485,10 @@
    "qtyIn": 4,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image5.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-160",
@@ -2353,7 +2503,8 @@
    "note": "",
    "img": "img/nonstock/image5.jpg",
    "fileUsed": 4,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "file"
   },
   {
    "id": "hw-161",
@@ -2366,9 +2517,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image5.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-162",
@@ -2381,9 +2533,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-bushing.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-163",
@@ -2396,9 +2549,10 @@
    "qtyIn": 1,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-bushing.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-164",
@@ -2411,9 +2565,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ss-bushing.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-165",
@@ -2426,9 +2581,10 @@
    "qtyIn": 3,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-tee.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-166",
@@ -2441,9 +2597,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-tee.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-167",
@@ -2456,9 +2613,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-tee.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-168",
@@ -2471,9 +2629,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-tee.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-169",
@@ -2486,9 +2645,10 @@
    "qtyIn": 1,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image6.jpg",
    "fileUsed": 1,
-   "fileRemain": 0
+   "fileRemain": 0,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-170",
@@ -2501,9 +2661,10 @@
    "qtyIn": 5,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-thread.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "hw-171",
@@ -2516,9 +2677,10 @@
    "qtyIn": 3,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image6.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-172",
@@ -2531,9 +2693,10 @@
    "qtyIn": 3,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image6.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-173",
@@ -2548,7 +2711,8 @@
    "note": "",
    "img": "img/nonstock/image6.jpg",
    "fileUsed": 6,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "file"
   },
   {
    "id": "hw-174",
@@ -2561,9 +2725,10 @@
    "qtyIn": 4,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image6.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-175",
@@ -2576,9 +2741,10 @@
    "qtyIn": 6,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image6.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-176",
@@ -2591,9 +2757,10 @@
    "qtyIn": 6,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image6.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-177",
@@ -2606,9 +2773,10 @@
    "qtyIn": 12,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image6.jpg",
    "fileUsed": 0,
-   "fileRemain": 12
+   "fileRemain": 12,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-178",
@@ -2621,9 +2789,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image6.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-179",
@@ -2636,9 +2805,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-thread.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-180",
@@ -2651,9 +2821,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-thread.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-181",
@@ -2666,9 +2837,10 @@
    "qtyIn": 4,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-thread.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-182",
@@ -2681,9 +2853,10 @@
    "qtyIn": 3,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-tee.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-183",
@@ -2696,9 +2869,10 @@
    "qtyIn": 2,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-tee.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-184",
@@ -2711,9 +2885,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-185",
@@ -2726,9 +2901,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-186",
@@ -2741,9 +2917,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-187",
@@ -2756,9 +2933,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-188",
@@ -2771,9 +2949,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-189",
@@ -2786,9 +2965,10 @@
    "qtyIn": 20,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 20
+   "fileRemain": 20,
+   "imgSrc": "web"
   },
   {
    "id": "hw-190",
@@ -2801,9 +2981,10 @@
    "qtyIn": 12,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 1,
-   "fileRemain": 11
+   "fileRemain": 11,
+   "imgSrc": "web"
   },
   {
    "id": "hw-191",
@@ -2816,9 +2997,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 2,
-   "fileRemain": 0
+   "fileRemain": 0,
+   "imgSrc": "web"
   },
   {
    "id": "hw-192",
@@ -2831,9 +3013,10 @@
    "qtyIn": 17,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 1,
-   "fileRemain": 16
+   "fileRemain": 16,
+   "imgSrc": "web"
   },
   {
    "id": "hw-193",
@@ -2846,9 +3029,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-194",
@@ -2861,9 +3045,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-195",
@@ -2876,9 +3061,10 @@
    "qtyIn": 6,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-196",
@@ -2891,9 +3077,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-tee-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-197",
@@ -2906,9 +3093,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image7.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-198",
@@ -2921,9 +3109,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image7.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-199",
@@ -2936,9 +3125,10 @@
    "qtyIn": 2,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image7.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-200",
@@ -2951,9 +3141,10 @@
    "qtyIn": 1,
    "recv": "2026-11-16",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image7.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-201",
@@ -2966,9 +3157,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image7.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-202",
@@ -2981,9 +3173,10 @@
    "qtyIn": 7,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image7.jpg",
    "fileUsed": 0,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-203",
@@ -2996,9 +3189,10 @@
    "qtyIn": 2,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image7.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-204",
@@ -3013,7 +3207,8 @@
    "note": "",
    "img": "img/nonstock/image7.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "file"
   },
   {
    "id": "hw-205",
@@ -3026,9 +3221,10 @@
    "qtyIn": 1,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image7.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "similar"
   },
   {
    "id": "hw-206",
@@ -3041,9 +3237,10 @@
    "qtyIn": 6,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-hose-barb.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-207",
@@ -3056,9 +3253,10 @@
    "qtyIn": 6,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-hose-barb.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-208",
@@ -3071,9 +3269,10 @@
    "qtyIn": 6,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-hose-barb.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-209",
@@ -3086,9 +3285,10 @@
    "qtyIn": 6,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-hose-barb.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-210",
@@ -3101,9 +3301,10 @@
    "qtyIn": 6,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-hose-barb.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-211",
@@ -3118,7 +3319,8 @@
    "note": "",
    "img": "img/nonstock/image8.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "file"
   },
   {
    "id": "hw-212",
@@ -3146,9 +3348,10 @@
    "qtyIn": 2,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-steel-flange.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-214",
@@ -3161,9 +3364,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-steel-flange.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-215",
@@ -3176,9 +3380,10 @@
    "qtyIn": 3,
    "recv": "2026-11-19",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-steel-flange.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-216",
@@ -3191,9 +3396,10 @@
    "qtyIn": 1,
    "recv": "2026-11-19",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-steel-flange.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "hw-217",
@@ -3206,9 +3412,10 @@
    "qtyIn": 4,
    "recv": "2026-11-19",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-steel-flange.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-218",
@@ -3221,9 +3428,10 @@
    "qtyIn": 6,
    "recv": "2026-11-19",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-steel-flange.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-219",
@@ -3236,9 +3444,10 @@
    "qtyIn": 3,
    "recv": "2026-11-19",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-steel-flange.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "hw-220",
@@ -3251,9 +3460,10 @@
    "qtyIn": 20,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 20
+   "fileRemain": 20,
+   "imgSrc": "web"
   },
   {
    "id": "hw-221",
@@ -3266,9 +3476,10 @@
    "qtyIn": 6,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "hw-222",
@@ -3281,9 +3492,10 @@
    "qtyIn": 35,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 35
+   "fileRemain": 35,
+   "imgSrc": "web"
   },
   {
    "id": "hw-223",
@@ -3296,9 +3508,10 @@
    "qtyIn": 12,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-pipe.jpg",
    "fileUsed": 1,
-   "fileRemain": 11
+   "fileRemain": 11,
+   "imgSrc": "web"
   },
   {
    "id": "hw-224",
@@ -3311,9 +3524,10 @@
    "qtyIn": 72,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 72
+   "fileRemain": 72,
+   "imgSrc": "web"
   },
   {
    "id": "hw-225",
@@ -3326,9 +3540,10 @@
    "qtyIn": 14,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-pipe.jpg",
    "fileUsed": 1,
-   "fileRemain": 13
+   "fileRemain": 13,
+   "imgSrc": "web"
   },
   {
    "id": "hw-226",
@@ -3341,9 +3556,10 @@
    "qtyIn": 30,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 30
+   "fileRemain": 30,
+   "imgSrc": "web"
   },
   {
    "id": "hw-227",
@@ -3356,9 +3572,10 @@
    "qtyIn": 23,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 23
+   "fileRemain": 23,
+   "imgSrc": "web"
   },
   {
    "id": "hw-228",
@@ -3371,9 +3588,10 @@
    "qtyIn": 13,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 13
+   "fileRemain": 13,
+   "imgSrc": "web"
   },
   {
    "id": "hw-229",
@@ -3386,9 +3604,10 @@
    "qtyIn": 4,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "hw-230",
@@ -3401,9 +3620,10 @@
    "qtyIn": 8,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 8
+   "fileRemain": 8,
+   "imgSrc": "web"
   },
   {
    "id": "hw-231",
@@ -3416,9 +3636,10 @@
    "qtyIn": 19,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 19
+   "fileRemain": 19,
+   "imgSrc": "web"
   },
   {
    "id": "hw-232",
@@ -3431,9 +3652,10 @@
    "qtyIn": 16,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 16
+   "fileRemain": 16,
+   "imgSrc": "web"
   },
   {
    "id": "hw-233",
@@ -3446,9 +3668,10 @@
    "qtyIn": 10,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 10
+   "fileRemain": 10,
+   "imgSrc": "web"
   },
   {
    "id": "hw-234",
@@ -3461,9 +3684,10 @@
    "qtyIn": 5,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "hw-235",
@@ -3476,9 +3700,10 @@
    "qtyIn": 2,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "hw-236",
@@ -3491,9 +3716,10 @@
    "qtyIn": 2,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "ins-006",
@@ -3506,9 +3732,10 @@
    "qtyIn": 34,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-aeroflex.jpg",
    "fileUsed": 4,
-   "fileRemain": 30
+   "fileRemain": 30,
+   "imgSrc": "web"
   },
   {
    "id": "ins-007",
@@ -3521,9 +3748,10 @@
    "qtyIn": 7,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-aeroflex.jpg",
    "fileUsed": 0,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "web"
   },
   {
    "id": "ins-008",
@@ -3536,9 +3764,10 @@
    "qtyIn": 37,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-aeroflex.jpg",
    "fileUsed": 12,
-   "fileRemain": 25
+   "fileRemain": 25,
+   "imgSrc": "web"
   },
   {
    "id": "el-006",
@@ -3551,9 +3780,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-thermostat.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "el-007",
@@ -3566,9 +3796,10 @@
    "qtyIn": 1,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-junction-box.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "el-008",
@@ -3581,9 +3812,10 @@
    "qtyIn": 8,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-junction-box.jpg",
    "fileUsed": 2,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "el-009",
@@ -3596,9 +3828,10 @@
    "qtyIn": 7,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-junction-box.jpg",
    "fileUsed": 2,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "el-010",
@@ -3611,9 +3844,10 @@
    "qtyIn": 12,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-junction-box.jpg",
    "fileUsed": 0,
-   "fileRemain": 12
+   "fileRemain": 12,
+   "imgSrc": "web"
   },
   {
    "id": "el-011",
@@ -3626,9 +3860,10 @@
    "qtyIn": 5,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-bend.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "el-012",
@@ -3641,9 +3876,10 @@
    "qtyIn": 6,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-bend.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "el-013",
@@ -3656,9 +3892,10 @@
    "qtyIn": 53,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-bend.jpg",
    "fileUsed": 0,
-   "fileRemain": 53
+   "fileRemain": 53,
+   "imgSrc": "web"
   },
   {
    "id": "el-014",
@@ -3671,9 +3908,10 @@
    "qtyIn": 4,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-bend.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "el-015",
@@ -3686,9 +3924,10 @@
    "qtyIn": 9,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-bend.jpg",
    "fileUsed": 0,
-   "fileRemain": 9
+   "fileRemain": 9,
+   "imgSrc": "web"
   },
   {
    "id": "el-016",
@@ -3701,9 +3940,10 @@
    "qtyIn": 22,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-bend.jpg",
    "fileUsed": 0,
-   "fileRemain": 22
+   "fileRemain": 22,
+   "imgSrc": "web"
   },
   {
    "id": "el-017",
@@ -3716,9 +3956,10 @@
    "qtyIn": 41,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-bend.jpg",
    "fileUsed": 0,
-   "fileRemain": 41
+   "fileRemain": 41,
+   "imgSrc": "web"
   },
   {
    "id": "el-018",
@@ -3731,9 +3972,10 @@
    "qtyIn": 2,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-bend.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "el-019",
@@ -3746,9 +3988,10 @@
    "qtyIn": 3,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "el-020",
@@ -3761,9 +4004,10 @@
    "qtyIn": 23,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 23
+   "fileRemain": 23,
+   "imgSrc": "web"
   },
   {
    "id": "el-021",
@@ -3776,9 +4020,10 @@
    "qtyIn": 50,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-connector.jpg",
    "fileUsed": 0,
-   "fileRemain": 50
+   "fileRemain": 50,
+   "imgSrc": "web"
   },
   {
    "id": "el-022",
@@ -3791,9 +4036,10 @@
    "qtyIn": 31,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-connector.jpg",
    "fileUsed": 0,
-   "fileRemain": 31
+   "fileRemain": 31,
+   "imgSrc": "web"
   },
   {
    "id": "el-023",
@@ -3806,9 +4052,10 @@
    "qtyIn": 16,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-connector.jpg",
    "fileUsed": 1,
-   "fileRemain": 15
+   "fileRemain": 15,
+   "imgSrc": "web"
   },
   {
    "id": "el-024",
@@ -3821,9 +4068,10 @@
    "qtyIn": 60,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-connector.jpg",
    "fileUsed": 0,
-   "fileRemain": 60
+   "fileRemain": 60,
+   "imgSrc": "web"
   },
   {
    "id": "el-025",
@@ -3836,9 +4084,10 @@
    "qtyIn": 43,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-connector.jpg",
    "fileUsed": 0,
-   "fileRemain": 43
+   "fileRemain": 43,
+   "imgSrc": "web"
   },
   {
    "id": "el-026",
@@ -3851,9 +4100,10 @@
    "qtyIn": 3,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-connector.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "el-027",
@@ -3866,9 +4116,10 @@
    "qtyIn": 9,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image9.jpg",
    "fileUsed": 0,
-   "fileRemain": 9
+   "fileRemain": 9,
+   "imgSrc": "similar"
   },
   {
    "id": "el-028",
@@ -3881,9 +4132,10 @@
    "qtyIn": 12,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image9.jpg",
    "fileUsed": 0,
-   "fileRemain": 12
+   "fileRemain": 12,
+   "imgSrc": "similar"
   },
   {
    "id": "el-029",
@@ -3898,7 +4150,8 @@
    "note": "",
    "img": "img/nonstock/image9.jpg",
    "fileUsed": 0,
-   "fileRemain": 34
+   "fileRemain": 34,
+   "imgSrc": "file"
   },
   {
    "id": "el-030",
@@ -3913,7 +4166,8 @@
    "note": "",
    "img": "img/nonstock/image9.jpg",
    "fileUsed": 0,
-   "fileRemain": 13
+   "fileRemain": 13,
+   "imgSrc": "file"
   },
   {
    "id": "el-031",
@@ -3928,7 +4182,8 @@
    "note": "",
    "img": "img/nonstock/image9.jpg",
    "fileUsed": 0,
-   "fileRemain": 50
+   "fileRemain": 50,
+   "imgSrc": "file"
   },
   {
    "id": "el-032",
@@ -3943,7 +4198,8 @@
    "note": "",
    "img": "img/nonstock/image9.jpg",
    "fileUsed": 0,
-   "fileRemain": 8
+   "fileRemain": 8,
+   "imgSrc": "file"
   },
   {
    "id": "el-033",
@@ -3958,7 +4214,8 @@
    "note": "",
    "img": "img/nonstock/image9.jpg",
    "fileUsed": 0,
-   "fileRemain": 53
+   "fileRemain": 53,
+   "imgSrc": "file"
   },
   {
    "id": "el-034",
@@ -3973,7 +4230,8 @@
    "note": "",
    "img": "img/nonstock/image10.jpg",
    "fileUsed": 4,
-   "fileRemain": 33
+   "fileRemain": 33,
+   "imgSrc": "file"
   },
   {
    "id": "el-035",
@@ -3986,9 +4244,10 @@
    "qtyIn": 5,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image10.jpg",
    "fileUsed": 5,
-   "fileRemain": 0
+   "fileRemain": 0,
+   "imgSrc": "similar"
   },
   {
    "id": "el-036",
@@ -4001,9 +4260,10 @@
    "qtyIn": 2,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image10.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "similar"
   },
   {
    "id": "el-037",
@@ -4016,9 +4276,10 @@
    "qtyIn": 34,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image10.jpg",
    "fileUsed": 34,
-   "fileRemain": 0
+   "fileRemain": 0,
+   "imgSrc": "similar"
   },
   {
    "id": "el-038",
@@ -4031,9 +4292,10 @@
    "qtyIn": 1,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-elbow90.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "el-039",
@@ -4046,10 +4308,11 @@
    "qtyIn": 7,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-pipe.jpg",
    "fileRemainShown": 2,
    "fileUsed": 0,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "web"
   },
   {
    "id": "el-040",
@@ -4062,9 +4325,10 @@
    "qtyIn": 33,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 33
+   "fileRemain": 33,
+   "imgSrc": "web"
   },
   {
    "id": "el-041",
@@ -4077,10 +4341,11 @@
    "qtyIn": 36,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-pipe.jpg",
    "fileRemainShown": 2,
    "fileUsed": 0,
-   "fileRemain": 36
+   "fileRemain": 36,
+   "imgSrc": "web"
   },
   {
    "id": "el-042",
@@ -4093,9 +4358,10 @@
    "qtyIn": 18,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 18
+   "fileRemain": 18,
+   "imgSrc": "web"
   },
   {
    "id": "el-043",
@@ -4108,9 +4374,10 @@
    "qtyIn": 5,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "el-044",
@@ -4123,9 +4390,10 @@
    "qtyIn": 7,
    "recv": "2026-11-20",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-el-pipe.jpg",
    "fileUsed": 0,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "web"
   },
   {
    "id": "misc-006",
@@ -4138,9 +4406,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-flare-nut.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "misc-007",
@@ -4153,9 +4422,10 @@
    "qtyIn": 2,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-flare-nut.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "web"
   },
   {
    "id": "misc-008",
@@ -4170,7 +4440,8 @@
    "note": "",
    "img": "img/nonstock/image11.jpg",
    "fileUsed": 2,
-   "fileRemain": 32
+   "fileRemain": 32,
+   "imgSrc": "file"
   },
   {
    "id": "misc-009",
@@ -4183,9 +4454,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-glue-insul.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "misc-010",
@@ -4198,9 +4470,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-glue-pvc.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "misc-011",
@@ -4213,9 +4486,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-gas-can.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "misc-012",
@@ -4228,9 +4502,10 @@
    "qtyIn": 37,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-stud-coupler.jpg",
    "fileUsed": 0,
-   "fileRemain": 37
+   "fileRemain": 37,
+   "imgSrc": "web"
   },
   {
    "id": "misc-013",
@@ -4243,9 +4518,10 @@
    "qtyIn": 45,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-upvc-clip.jpg",
    "fileUsed": 0,
-   "fileRemain": 45
+   "fileRemain": 45,
+   "imgSrc": "web"
   },
   {
    "id": "misc-014",
@@ -4258,9 +4534,10 @@
    "qtyIn": 22,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-upvc-clip.jpg",
    "fileUsed": 10,
-   "fileRemain": 12
+   "fileRemain": 12,
+   "imgSrc": "web"
   },
   {
    "id": "misc-015",
@@ -4273,9 +4550,10 @@
    "qtyIn": 26,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-upvc-clip.jpg",
    "fileUsed": 0,
-   "fileRemain": 26
+   "fileRemain": 26,
+   "imgSrc": "web"
   },
   {
    "id": "misc-016",
@@ -4288,9 +4566,10 @@
    "qtyIn": 40,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-upvc-clip.jpg",
    "fileUsed": 12,
-   "fileRemain": 28
+   "fileRemain": 28,
+   "imgSrc": "web"
   },
   {
    "id": "misc-017",
@@ -4303,9 +4582,10 @@
    "qtyIn": 16,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-ppr-clip.jpg",
    "fileUsed": 0,
-   "fileRemain": 16
+   "fileRemain": 16,
+   "imgSrc": "web"
   },
   {
    "id": "misc-018",
@@ -4318,9 +4598,10 @@
    "qtyIn": 4,
    "recv": "2026-11-11",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pvc-clamp.jpg",
    "fileUsed": 0,
-   "fileRemain": 4
+   "fileRemain": 4,
+   "imgSrc": "web"
   },
   {
    "id": "misc-019",
@@ -4335,7 +4616,8 @@
    "note": "",
    "img": "img/nonstock/image12.jpg",
    "fileUsed": 24,
-   "fileRemain": 0
+   "fileRemain": 0,
+   "imgSrc": "file"
   },
   {
    "id": "misc-020",
@@ -4348,9 +4630,10 @@
    "qtyIn": 10,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image12.jpg",
    "fileUsed": 0,
-   "fileRemain": 10
+   "fileRemain": 10,
+   "imgSrc": "similar"
   },
   {
    "id": "misc-021",
@@ -4363,9 +4646,10 @@
    "qtyIn": 65,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/image12.jpg",
    "fileUsed": 0,
-   "fileRemain": 65
+   "fileRemain": 65,
+   "imgSrc": "similar"
   },
   {
    "id": "misc-022",
@@ -4378,9 +4662,10 @@
    "qtyIn": 7,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-imc-clamp.jpg",
    "fileUsed": 0,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "web"
   },
   {
    "id": "misc-023",
@@ -4393,9 +4678,10 @@
    "qtyIn": 6,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-pump-bolt.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "misc-024",
@@ -4410,7 +4696,8 @@
    "note": "",
    "img": "img/nonstock/image13.jpg",
    "fileUsed": 2,
-   "fileRemain": 18
+   "fileRemain": 18,
+   "imgSrc": "file"
   },
   {
    "id": "misc-025",
@@ -4425,7 +4712,8 @@
    "note": "",
    "img": "img/nonstock/image14.jpg",
    "fileUsed": 2,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "file"
   },
   {
    "id": "misc-026",
@@ -4438,9 +4726,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-alu-tape.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "misc-027",
@@ -4455,7 +4744,8 @@
    "note": "",
    "img": "img/nonstock/image15.jpg",
    "fileUsed": 50,
-   "fileRemain": 85
+   "fileRemain": 85,
+   "imgSrc": "file"
   },
   {
    "id": "misc-028",
@@ -4468,9 +4758,10 @@
    "qtyIn": 52,
    "recv": "2026-11-10",
    "note": "0.33 กิโลกรัม",
-   "img": "",
+   "img": "img/nonstock/image12.jpg",
    "fileUsed": 0,
-   "fileRemain": 52
+   "fileRemain": 52,
+   "imgSrc": "similar"
   },
   {
    "id": "misc-029",
@@ -4483,9 +4774,10 @@
    "qtyIn": 8,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-threaded-rod.jpg",
    "fileUsed": 0,
-   "fileRemain": 8
+   "fileRemain": 8,
+   "imgSrc": "web"
   },
   {
    "id": "misc-030",
@@ -4500,7 +4792,8 @@
    "note": "0.56 กิโลกรัม",
    "img": "img/nonstock/image16.jpg",
    "fileUsed": 6,
-   "fileRemain": 14
+   "fileRemain": 14,
+   "imgSrc": "file"
   },
   {
    "id": "misc-031",
@@ -4513,9 +4806,10 @@
    "qtyIn": 540,
    "recv": "2026-11-10",
    "note": "3.28 กิโลกรัม",
-   "img": "",
+   "img": "img/nonstock/web-hex-nut.jpg",
    "fileUsed": 0,
-   "fileRemain": 540
+   "fileRemain": 540,
+   "imgSrc": "web"
   },
   {
    "id": "misc-032",
@@ -4528,9 +4822,10 @@
    "qtyIn": 0.19,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-tek-screw.jpg",
    "fileUsed": 0,
-   "fileRemain": 0.19
+   "fileRemain": 0.19,
+   "imgSrc": "web"
   },
   {
    "id": "misc-033",
@@ -4543,9 +4838,10 @@
    "qtyIn": 0.22,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-tek-screw.jpg",
    "fileUsed": 0,
-   "fileRemain": 0.22
+   "fileRemain": 0.22,
+   "imgSrc": "web"
   },
   {
    "id": "misc-034",
@@ -4558,9 +4854,10 @@
    "qtyIn": 0.33,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-tek-screw.jpg",
    "fileUsed": 0,
-   "fileRemain": 0.33
+   "fileRemain": 0.33,
+   "imgSrc": "web"
   },
   {
    "id": "misc-035",
@@ -4573,9 +4870,10 @@
    "qtyIn": 3,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-coil-cleaner.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "web"
   },
   {
    "id": "misc-036",
@@ -4588,9 +4886,10 @@
    "qtyIn": 44,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-tag-red.jpg",
    "fileUsed": 0,
-   "fileRemain": 44
+   "fileRemain": 44,
+   "imgSrc": "web"
   },
   {
    "id": "misc-037",
@@ -4603,9 +4902,10 @@
    "qtyIn": 94,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-tag-green.jpg",
    "fileUsed": 0,
-   "fileRemain": 94
+   "fileRemain": 94,
+   "imgSrc": "web"
   },
   {
    "id": "misc-038",
@@ -4618,9 +4918,10 @@
    "qtyIn": 19,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-cut-disc.jpg",
    "fileUsed": 10,
-   "fileRemain": 9
+   "fileRemain": 9,
+   "imgSrc": "web"
   },
   {
    "id": "misc-039",
@@ -4633,9 +4934,10 @@
    "qtyIn": 75,
    "recv": "2026-11-10",
    "note": "3.37 กิโลกรัม",
-   "img": "",
+   "img": "img/nonstock/web-st-anchor.jpg",
    "fileUsed": 0,
-   "fileRemain": 75
+   "fileRemain": 75,
+   "imgSrc": "web"
   },
   {
    "id": "misc-040",
@@ -4648,9 +4950,10 @@
    "qtyIn": 16,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-st-anchor.jpg",
    "fileUsed": 9,
-   "fileRemain": 7
+   "fileRemain": 7,
+   "imgSrc": "web"
   },
   {
    "id": "misc-041",
@@ -4665,7 +4968,8 @@
    "note": "1.09 กิโลกรัม",
    "img": "img/nonstock/image17.jpg",
    "fileUsed": 30,
-   "fileRemain": 131
+   "fileRemain": 131,
+   "imgSrc": "file"
   },
   {
    "id": "misc-042",
@@ -4678,9 +4982,10 @@
    "qtyIn": 15,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-dropin.jpg",
    "fileUsed": 0,
-   "fileRemain": 15
+   "fileRemain": 15,
+   "imgSrc": "web"
   },
   {
    "id": "misc-043",
@@ -4693,9 +4998,10 @@
    "qtyIn": 8,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-dropin.jpg",
    "fileUsed": 0,
-   "fileRemain": 8
+   "fileRemain": 8,
+   "imgSrc": "web"
   },
   {
    "id": "misc-044",
@@ -4708,9 +5014,10 @@
    "qtyIn": 6,
    "recv": "2026-11-10",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-butterfly-anchor.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "misc-045",
@@ -4725,7 +5032,8 @@
    "note": "0.69 กิโลกรัม",
    "img": "img/nonstock/image18.jpg",
    "fileUsed": 100,
-   "fileRemain": 1184
+   "fileRemain": 1184,
+   "imgSrc": "file"
   },
   {
    "id": "misc-046",
@@ -4738,9 +5046,10 @@
    "qtyIn": 8,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-u-bolt.jpg",
    "fileUsed": 0,
-   "fileRemain": 8
+   "fileRemain": 8,
+   "imgSrc": "web"
   },
   {
    "id": "misc-047",
@@ -4753,9 +5062,10 @@
    "qtyIn": 14,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-u-bolt.jpg",
    "fileUsed": 0,
-   "fileRemain": 14
+   "fileRemain": 14,
+   "imgSrc": "web"
   },
   {
    "id": "misc-048",
@@ -4768,9 +5078,10 @@
    "qtyIn": 5,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-brazing-rod.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "misc-049",
@@ -4783,9 +5094,10 @@
    "qtyIn": 16,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-level-clamp.jpg",
    "fileUsed": 0,
-   "fileRemain": 16
+   "fileRemain": 16,
+   "imgSrc": "web"
   },
   {
    "id": "misc-050",
@@ -4798,9 +5110,10 @@
    "qtyIn": 5,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-level-clamp.jpg",
    "fileUsed": 0,
-   "fileRemain": 5
+   "fileRemain": 5,
+   "imgSrc": "web"
   },
   {
    "id": "misc-051",
@@ -4813,9 +5126,10 @@
    "qtyIn": 13,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-level-clamp.jpg",
    "fileUsed": 0,
-   "fileRemain": 13
+   "fileRemain": 13,
+   "imgSrc": "web"
   },
   {
    "id": "misc-052",
@@ -4828,9 +5142,10 @@
    "qtyIn": 34,
    "recv": "2026-11-10",
    "note": "1.12 กิโลกรัม",
-   "img": "",
+   "img": "img/nonstock/image20.jpg",
    "fileUsed": 0,
-   "fileRemain": 34
+   "fileRemain": 34,
+   "imgSrc": "similar"
   },
   {
    "id": "misc-053",
@@ -4843,9 +5158,10 @@
    "qtyIn": 1.99,
    "recv": "2026-11-10",
    "note": "1,250 ตัว",
-   "img": "",
+   "img": "img/nonstock/image20.jpg",
    "fileUsed": 0,
-   "fileRemain": 1.99
+   "fileRemain": 1.99,
+   "imgSrc": "similar"
   },
   {
    "id": "misc-054",
@@ -4860,7 +5176,8 @@
    "note": "1 กิโลกรัม",
    "img": "img/nonstock/image19.jpg",
    "fileUsed": 150,
-   "fileRemain": 0
+   "fileRemain": 0,
+   "imgSrc": "file"
   },
   {
    "id": "misc-055",
@@ -4875,7 +5192,8 @@
    "note": "2.32 กิโลกรัม",
    "img": "img/nonstock/image19.jpg",
    "fileUsed": 0,
-   "fileRemain": 1185
+   "fileRemain": 1185,
+   "imgSrc": "file"
   },
   {
    "id": "misc-056",
@@ -4890,7 +5208,8 @@
    "note": "1.02 กิโลกรัม",
    "img": "img/nonstock/image19.jpg",
    "fileUsed": 0,
-   "fileRemain": 700
+   "fileRemain": 700,
+   "imgSrc": "file"
   },
   {
    "id": "misc-057",
@@ -4905,7 +5224,8 @@
    "note": "0.77 กิโลกรัม",
    "img": "img/nonstock/image20.jpg",
    "fileUsed": 0,
-   "fileRemain": 400
+   "fileRemain": 400,
+   "imgSrc": "file"
   },
   {
    "id": "misc-058",
@@ -4920,7 +5240,8 @@
    "note": "2.16 กิโลกรัม",
    "img": "img/nonstock/image21.jpg",
    "fileUsed": 0,
-   "fileRemain": 1000
+   "fileRemain": 1000,
+   "imgSrc": "file"
   },
   {
    "id": "misc-059",
@@ -4935,7 +5256,8 @@
    "note": "1.05 กิโลกรัม",
    "img": "img/nonstock/image22.jpg",
    "fileUsed": 100,
-   "fileRemain": 604
+   "fileRemain": 604,
+   "imgSrc": "file"
   },
   {
    "id": "misc-060",
@@ -4950,7 +5272,8 @@
    "note": "1.79 กิโลกรัม",
    "img": "img/nonstock/image23.jpg",
    "fileUsed": 0,
-   "fileRemain": 1000
+   "fileRemain": 1000,
+   "imgSrc": "file"
   },
   {
    "id": "misc-061",
@@ -4965,7 +5288,8 @@
    "note": "",
    "img": "img/nonstock/image24.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "file"
   },
   {
    "id": "misc-062",
@@ -4978,9 +5302,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-wd40.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "misc-063",
@@ -4993,9 +5318,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-spray-paint.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "misc-064",
@@ -5008,9 +5334,10 @@
    "qtyIn": 1,
    "recv": "2026-11-09",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-spray-paint.jpg",
    "fileUsed": 0,
-   "fileRemain": 1
+   "fileRemain": 1,
+   "imgSrc": "web"
   },
   {
    "id": "misc-065",
@@ -5023,9 +5350,10 @@
    "qtyIn": 10,
    "recv": "2026-11-13",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-washer.jpg",
    "fileUsed": 0,
-   "fileRemain": 10
+   "fileRemain": 10,
+   "imgSrc": "web"
   },
   {
    "id": "misc-066",
@@ -5038,9 +5366,10 @@
    "qtyIn": 10,
    "recv": "2026-11-10",
    "note": "0.1 กิโลกรัม",
-   "img": "",
+   "img": "img/nonstock/web-washer.jpg",
    "fileUsed": 0,
-   "fileRemain": 10
+   "fileRemain": 10,
+   "imgSrc": "web"
   },
   {
    "id": "misc-067",
@@ -5053,9 +5382,10 @@
    "qtyIn": 230,
    "recv": "2026-11-10",
    "note": "1.08 กิโลกรัม",
-   "img": "",
+   "img": "img/nonstock/web-washer.jpg",
    "fileUsed": 0,
-   "fileRemain": 230
+   "fileRemain": 230,
+   "imgSrc": "web"
   },
   {
    "id": "misc-068",
@@ -5068,9 +5398,10 @@
    "qtyIn": 300,
    "recv": "2026-11-10",
    "note": "1.38 กิโลกรัม",
-   "img": "",
+   "img": "img/nonstock/web-washer.jpg",
    "fileUsed": 0,
-   "fileRemain": 300
+   "fileRemain": 300,
+   "imgSrc": "web"
   },
   {
    "id": "misc-069",
@@ -5083,9 +5414,10 @@
    "qtyIn": 6,
    "recv": "2026-11-19",
    "note": "",
-   "img": "",
+   "img": "img/nonstock/web-u-bolt.jpg",
    "fileUsed": 0,
-   "fileRemain": 6
+   "fileRemain": 6,
+   "imgSrc": "web"
   },
   {
    "id": "duct-006",
@@ -5100,7 +5432,8 @@
    "note": "",
    "img": "img/nonstock/image25.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "file"
   },
   {
    "id": "duct-007",
@@ -5115,7 +5448,8 @@
    "note": "",
    "img": "img/nonstock/image26.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "file"
   },
   {
    "id": "duct-008",
@@ -5130,7 +5464,8 @@
    "note": "",
    "img": "img/nonstock/image27.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "file"
   },
   {
    "id": "duct-009",
@@ -5145,7 +5480,8 @@
    "note": "",
    "img": "img/nonstock/image28.jpg",
    "fileUsed": 0,
-   "fileRemain": 2
+   "fileRemain": 2,
+   "imgSrc": "file"
   },
   {
    "id": "duct-010",
@@ -5160,7 +5496,8 @@
    "note": "",
    "img": "img/nonstock/image25.jpg",
    "fileUsed": 0,
-   "fileRemain": 32
+   "fileRemain": 32,
+   "imgSrc": "file"
   },
   {
    "id": "duct-011",
@@ -5175,7 +5512,8 @@
    "note": "",
    "img": "img/nonstock/image26.jpg",
    "fileUsed": 0,
-   "fileRemain": 3
+   "fileRemain": 3,
+   "imgSrc": "file"
   },
   {
    "id": "duct-012",
@@ -5190,7 +5528,8 @@
    "note": "",
    "img": "img/nonstock/image27.jpg",
    "fileUsed": 0,
-   "fileRemain": 21
+   "fileRemain": 21,
+   "imgSrc": "file"
   }
  ],
  "seedMoves": [

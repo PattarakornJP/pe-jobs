@@ -66,11 +66,77 @@
     };
   }
 
+  function normalizeItem(r) {
+    r = r || {};
+    return {
+      id: str(r.id), cat: str(r.cat), code: str(r.code), name: str(r.name), unit: str(r.unit),
+      qtyIn: round(Math.abs(num(r.qtyIn))), recv: isoDate(r.recv), note: str(r.note), img: str(r.img), imgSrc: str(r.img) ? (str(r.imgSrc) || 'admin') : '',
+      deleted: (r.deleted === true || r.deleted === 1 || str(r.deleted) === '1' || str(r.deleted) === 'true') ? 1 : 0
+    };
+  }
+  function normalizeCat(r) {
+    r = r || {};
+    var o = parseFloat(r.order);
+    return { id: str(r.id), name: str(r.name), order: isFinite(o) ? o : '', deleted: (r.deleted === 1 || r.deleted === true || str(r.deleted) === '1') ? 1 : 0 };
+  }
+  function upsertList(list, row) {
+    if (!row.id) return list;
+    var i = list.findIndex(function (m) { return m.id === row.id; });
+    if (i >= 0) list[i] = row; else list.push(row);
+    return list;
+  }
+
+  /** ใช้คำสั่งกับข้อมูลทั้งสามชุด (moves/items/cats) คืนชุดใหม่ ไม่แก้ของเดิม · ops ไม่ใส่ kind = move */
+  function applyAll(state, ops) {
+    var out = {
+      moves: (state.moves || []).map(normalizeMove),
+      items: (state.items || []).map(normalizeItem),
+      cats: (state.cats || []).map(normalizeCat)
+    };
+    var moveOps = [];
+    (ops || []).forEach(function (op) {
+      if (!op) return;
+      var kind = op.kind || 'move';
+      if (kind === 'move') { moveOps.push(op); return; }
+      if (kind === 'img') return;
+      var key = kind === 'item' ? 'items' : 'cats';
+      var norm = kind === 'item' ? normalizeItem : normalizeCat;
+      if (op.op === 'delete') out[key] = out[key].filter(function (x) { return x.id !== str(op.id); });
+      else if (op.op === 'upsert' && op.row) upsertList(out[key], norm(op.row));
+    });
+    out.moves = applyOps(out.moves, moveOps);
+    return out;
+  }
+
+  /** รวมหมวดและรายการตั้งต้นจากไฟล์กับที่แอดมินเพิ่ม/แก้ (ตาม id) ซ่อนที่ลบแล้ว */
+  function mergeMaster(base, itemOv, catOv) {
+    var cats = (base.categories || []).map(function (c, i) { return { id: c.id, name: c.name, order: i, base: true }; });
+    (catOv || []).forEach(function (o) {
+      var c = cats.find(function (x) { return x.id === o.id; });
+      if (c) { if (o.name) c.name = o.name; if (o.order !== '' && o.order != null) c.order = +o.order; c.deleted = o.deleted; }
+      else cats.push({ id: o.id, name: o.name || '(หมวดใหม่)', order: o.order === '' || o.order == null ? 1000 + cats.length : +o.order, deleted: o.deleted });
+    });
+    var liveCats = cats.filter(function (c) { return !c.deleted; }).sort(function (a, b) { return a.order - b.order; });
+    var items = (base.items || []).map(function (it) { return Object.assign({}, it); });
+    (itemOv || []).forEach(function (o) {
+      var i = items.findIndex(function (x) { return x.id === o.id; });
+      var row = { id: o.id, cat: o.cat, code: o.code, name: o.name, unit: o.unit, qtyIn: o.qtyIn, recv: o.recv, note: o.note, img: o.img, imgSrc: o.imgSrc, deleted: o.deleted, edited: true };
+      if (i >= 0) items[i] = Object.assign({}, items[i], row);
+      else { row.added = true; items.push(row); }
+    });
+    var catIds = {};
+    liveCats.forEach(function (c) { catIds[c.id] = 1; });
+    var live = items.filter(function (it) { return !it.deleted; });
+    // รายการที่หมวดถูกลบไป ย้ายไปแสดงที่หมวดแรกที่ยังอยู่ (กันรายการหาย)
+    live.forEach(function (it) { if (!catIds[it.cat] && liveCats.length) it.cat = liveCats[0].id; });
+    return { categories: liveCats, allCategories: cats, items: live, deletedItems: items.filter(function (it) { return it.deleted; }) };
+  }
+
   /** ใช้คำสั่ง upsert/delete กับรายการเคลื่อนไหว คืนชุดใหม่ (ไม่แก้ของเดิม) */
   function applyOps(moves, ops) {
     var list = (moves || []).map(normalizeMove);
     (ops || []).forEach(function (op) {
-      if (!op) return;
+      if (!op || (op.kind && op.kind !== 'move')) return;
       if (op.op === 'delete') {
         list = list.filter(function (m) { return m.id !== str(op.id); });
       } else if (op.op === 'upsert' && op.row) {
@@ -151,6 +217,7 @@
   return {
     TYPES: TYPES, FIELDS: FIELDS, LOW_RATIO: LOW_RATIO,
     num: num, isoDate: isoDate, thaiDate: thaiDate, normalizeMove: normalizeMove,
+    normalizeItem: normalizeItem, normalizeCat: normalizeCat, applyAll: applyAll, mergeMaster: mergeMaster,
     applyOps: applyOps, allItems: allItems, balances: balances, summarize: summarize, status: status, newId: newId
   };
 });
