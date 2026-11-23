@@ -6,7 +6,8 @@ const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/nonstock.json
 
 // หมวดตามชีต
 assert.deepStrictEqual(data.categories.map(c => c.name), ['งานติดตั้งระบบน้ำร้อน-น้ำเย็น', 'ฉนวน', 'งานไฟฟ้า', 'อุปกรณ์เบ็ดเตล็ดและอื่นๆ', 'ท่อดักท์']);
-assert.strictEqual(data.items.length, 344);
+assert.strictEqual(data.items.length, 343);  // ไฟล์ 23 พ.ย. รวมรายการซ้ำสามทาง PPR DN32
+assert.ok(!data.items.some(i => i.id === 'hw-169'));
 data.categories.forEach(c => assert.strictEqual(data.items.filter(i => i.cat === c.id).length, c.count));
 const ids = new Set(data.items.map(i => i.id));
 assert.strictEqual(ids.size, data.items.length, 'item ids unique');
@@ -21,7 +22,9 @@ const byId = Object.fromEntries(rows.map(r => [r.item.id, r]));
 assert.strictEqual(byId['ins-008'].remain, 25);         // ฉนวน 1-3/8" รับ 37 เบิก 12
 assert.strictEqual(byId['el-037'].remain, 0);           // คอนเน็คเตอร์ 3/4" เบิกหมด
 assert.strictEqual(byId['misc-054'].used, 150);         // สกรู No.7 เบิก 10, 20, 21 พ.ย.
-assert.strictEqual(byId['el-039'].remain, 7);           // ไฟล์โชว์ 2 เพราะสูตรอ้างผิดแถว
+assert.strictEqual(byId['el-039'].remain, 7);
+assert.strictEqual(byId['hw-174'].remain, 2);           // สามทาง PPR DN32 รับ 5 เบิก 3
+assert.strictEqual(byId['hw-223'].remain, 7);           // ท่อ PPR DN32 เต็มเส้น เบิก 5
 
 // เบิก คืน รับเพิ่ม ลบ แก้
 let moves = data.seedMoves.map(M.normalizeMove);
@@ -40,7 +43,7 @@ assert.strictEqual(b['hw-006'].remain, 4);
 // รายการใหม่
 moves = M.applyOps(moves, [{ op: 'upsert', row: { id: 'n1', itemId: 'new-1', type: 'item', cat: 'el', name: 'สายไฟ VCT 2x2.5', unit: 'ม้วน', qty: 3, date: '2026-11-21' } }]);
 const all = M.balances(data.items, moves);
-assert.strictEqual(all.length, 345);
+assert.strictEqual(all.length, 344);
 assert.strictEqual(all.find(r => r.item.id === 'new-1').remain, 3);
 assert.strictEqual(M.thaiDate('2026-11-21'), '21/11/2569');
 assert.strictEqual(M.status(1, 10), 'low');
@@ -60,7 +63,7 @@ let st = M.applyAll({ moves: data.seedMoves, items: [], cats: [] }, [
 let mm = M.mergeMaster(data, st.items, st.cats);
 assert.strictEqual(mm.categories.length, 6);
 assert.strictEqual(mm.categories.find(c => c.id === 'ins').name, 'ฉนวนยาง');
-assert.strictEqual(mm.items.length, 344);                 // +1 ใหม่ −1 ลบ
+assert.strictEqual(mm.items.length, 343);                 // +1 ใหม่ −1 ลบ
 assert.ok(!mm.items.find(i => i.id === 'hw-007'));
 let bb = Object.fromEntries(M.balances(mm.items, st.moves).map(r => [r.item.id, r]));
 assert.strictEqual(bb['u-1'].remain, 6);
