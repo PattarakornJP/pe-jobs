@@ -1145,6 +1145,15 @@
       "src": "Google Maps / hotel address 111 Moo 3 Nongthalay, Krabi"
     },
     {
+      "id": 220,
+      "so": "SO2611-116",
+      "loc": "Aonang Colors",
+      "lat": 8.038203,
+      "lng": 98.819528,
+      "how": "exact",
+      "src": "Google Maps / place listing: Ao Nang Colors Hotel, Krabi"
+    },
+    {
       "id": 0,
       "so": "SO2604-065",
       "loc": "บ้านคุณโจ้ (เฉพาะสินค้า)",
