@@ -10,6 +10,7 @@
  *        ?table=service อ่านแท็บ service
  *        ?table=plan อ่านแท็บ plan (ไม่ส่ง table = งาน Project เหมือนเดิม)
  *        ?table=nonstock อ่านแท็บ nonstock (ประวัติเบิกวัสดุนอกสต๊อก)
+ *        ?action=saleAssign อ่านแท็บ sale_assign (เซลล์ผู้รับผิดชอบ คนละแท็บกับงาน)
  *        ถ้าแท็บ nonstock ยังว่าง จะนำเข้าการเบิกจากไฟล์ Excel (data/nonstock.json) ให้เองครั้งแรก
  * POST = บันทึกทั้งชุด ส่งเป็น text/plain เพื่อไม่ให้เบราว์เซอร์ถาม CORS ก่อน
  *        body.table = 'service' บันทึกลงแท็บ service
@@ -93,6 +94,9 @@ function setup() {
 
 function doGet(e) {
   e = e || {};
+  var action = String((e.parameter && e.parameter.action) || '').trim();
+  if (action === 'saleAssign' && typeof doGetSaleAssign_ === 'function') return doGetSaleAssign_(e);
+  if (action === 'resolveMap' && typeof resolveMapUrl_ === 'function') return emit_(e, resolveMapUrl_(e.parameter && e.parameter.url));
   var table = requestedTable_(e && e.parameter);
   if (table === 'service') return doGetService_(e);
   if (table === 'plan') return doGetPlan_(e);
@@ -128,6 +132,10 @@ function doPost(e) {
   }
   if (!body || typeof body !== 'object') {
     return json_({ ok: false, error: 'ไม่มีข้อมูลให้บันทึก' });
+  }
+  if (String(body.action || '') === 'saleAssign' || requestedTable_(body) === 'sale_assign') {
+    if (typeof postSaleAssign_ === 'function') return postSaleAssign_(body);
+    return json_({ ok: false, action: 'saleAssign', error: 'ยังไม่พร้อม' });
   }
   if (requestedTable_(body) === 'service') return postService_(body);
   if (requestedTable_(body) === 'plan') return postPlan_(body);
@@ -195,6 +203,7 @@ function requestedTable_(obj) {
   if (t === 'service') return 'service';
   if (t === 'plan') return 'plan';
   if (t === 'nonstock') return 'nonstock';
+  if (t === 'sale_assign' || t === 'saleassign') return 'sale_assign';
   return 'jobs';
 }
 
